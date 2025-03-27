@@ -7,11 +7,11 @@ type Book = {
   totalCopies: number;
   availableCopies: number;
   description: string;
-  coverColor?: string;  
-  coverImage?: string;  
-  videoUrl?: string;    
-  summary?: string;
-  isLoanedBook: boolean;
+  coverColor: string;  
+  coverImage: string;  
+  videoUrl: string;    
+  summary: string;
+  isLoanedBook?: boolean;
 };
 
 interface AuthCredentials {
