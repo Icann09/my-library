@@ -14,7 +14,5 @@ export default function Page() {
       </form>
       <BookList title="Borrowed Books" books={sampleBooks}/>
     </div>
-    
-
   )
 }
