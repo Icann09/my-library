@@ -10,7 +10,7 @@
   --background-image-pattern: url("/background.png");
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-bebas-neue: var(--font-bebas-neue)
+  --font-bebas-neue: var(--font-bebas-neue);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -142,7 +142,6 @@
 
 
 @layer base {
-
   * {
     @apply border-border outline-ring/50;
   }
