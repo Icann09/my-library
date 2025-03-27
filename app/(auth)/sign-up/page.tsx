@@ -15,7 +15,7 @@ export default function Page() {
          email:"",
          password:"",
          fullName:"",
-         universityId:"",
+         universityId:0,
          universityCard:"",
         }}
         onSubmit={signUp}
