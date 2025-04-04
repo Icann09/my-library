@@ -8,6 +8,8 @@ import { signIn } from "@/auth";
 import { headers } from "next/headers";
 import ratelimit from "../ratelimit";
 import { redirect } from "next/navigation";
+import { workflowClient } from "../workflow";
+import  config from "@/lib/config";
 
 
  
@@ -51,6 +53,13 @@ export const signUp = async (params: AuthCredentials) => {
   const hashedPassword = await hash(password, 10);
   try {
     await db.insert(users).values({ fullName, email, universityId, universityCard, password: hashedPassword });
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
+    });
     return { success: true }; 
   } catch (error) {
     console.log(error, "Signup error"); 
