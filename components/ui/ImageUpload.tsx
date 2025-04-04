@@ -33,7 +33,7 @@ const authenticator = async() => {
 }
 
 
-export default function ImageUpload({ onFileChange }: { onFileChange: (FieldPath: string) => void;}) {
+export default function ImageUpload({ onFileChange }: { onFileChange: (fieldPath: string) => void;}) {
   const ikUploadRef = useRef(null);
   const [file, setFile] = useState<{ filePath: string } | null>(null);
   const onError = (error: any) => {
