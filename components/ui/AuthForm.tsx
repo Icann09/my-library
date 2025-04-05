@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DefaultValues, FieldValue, Path, SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
+import { DefaultValues, FieldValues, Path, SubmitHandler, useForm, UseFormReturn } from "react-hook-form"
 import { ZodType } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./form"
 import { Input } from "./input"
@@ -14,14 +14,14 @@ import { useRouter } from "next/navigation"
 
 
 
-interface Props<T extends FieldValue> {
+interface Props<T extends FieldValues> {
   schema: ZodType;
   defaultValues: T;
   onSubmit: (data: T) => Promise<{ success: boolean; error?: string}>;
   type: "SIGN_IN" | "SIGN_UP";
 }
 
-export default function AuthForm <T extends FieldValue<any>>({ type, schema, defaultValues, onSubmit }: Props<T>) {
+export default function AuthForm <T extends FieldValues>({ type, schema, defaultValues, onSubmit }: Props<T>) {
   const router = useRouter();
   const isSignIn = type === "SIGN_IN";
   const form: UseFormReturn<T> = useForm({

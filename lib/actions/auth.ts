@@ -34,7 +34,7 @@ export const signInWithCredentials = async (params: Pick<AuthCredentials, "email
   } 
   catch (error) {
     console.log(error, "Signin error");
-    return { success: false, error: "Sigin error" };
+    return { success: false, error: "Signin error" };
   }
 };
 
