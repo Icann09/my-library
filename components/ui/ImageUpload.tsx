@@ -18,7 +18,7 @@ const authenticator = async () => {
     if (!apiEndpoint) {
       throw new Error("API endpoint is not defined.");
     }
-    const response = await fetch(`${apiEndpoint}/api/imagekit`);
+    const response = await fetch(`${apiEndpoint}/api/auth/imagekit`);
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Request failed with status ${response.status}: ${errorText}`);
