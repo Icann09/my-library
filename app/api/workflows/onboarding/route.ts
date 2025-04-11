@@ -1,4 +1,4 @@
-import { serve } from "@upstash/workflow/nextjs"
+import { serve } from "@upstash/workflow/nextjs";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
@@ -12,10 +12,10 @@ type InitialData = {
 }
 
 const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
-const THREE_DAY_IN_MS = 3 * ONE_DAY_IN_MS;
+const THREE_DAYS_IN_MS = 3 * ONE_DAY_IN_MS;
 const ONE_MONTH_IN_MS = 30 * ONE_DAY_IN_MS;
 
-const getUserState = async(email: string) : Promise<UserState> => {
+const getUserState = async (email: string) : Promise<UserState> => {
   const user = await db 
     .select()
     .from(users)
@@ -24,13 +24,13 @@ const getUserState = async(email: string) : Promise<UserState> => {
   
   if (user.length === 0) return "non-active";
 
-  const lastAcyivityDate = new Date(user[0].lastActivityDate!);
+  const lastActivityDate = new Date(user[0].lastActivityDate!);
   const now = new Date(); 
-  const timeDifference = now.getTime() - lastAcyivityDate.getTime();
+  const timeDifference = now.getTime() - lastActivityDate.getTime();
 
-  if( 
-    timeDifference > THREE_DAY_IN_MS && 
-    timeDifference < ONE_MONTH_IN_MS 
+  if ( 
+    timeDifference > THREE_DAYS_IN_MS && 
+    timeDifference <= ONE_MONTH_IN_MS 
   ) {
     return "non-active";
   }
@@ -38,7 +38,7 @@ const getUserState = async(email: string) : Promise<UserState> => {
 }
 
 export const { POST } = serve<InitialData>(async (context) => {
-  const { email, fullName } = context.requestPayload
+  const { email, fullName } = context.requestPayload;
 
   //welcome email
   await context.run("new-signup", async () => {
