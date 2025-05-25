@@ -1,6 +1,9 @@
+"use client"
+
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import BookCoverSvg from "./BookCoverSvg";
+import { IKImage } from "imagekitio-next";
+import config from "@/lib/config";
 
 type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
 
@@ -19,12 +22,24 @@ interface Props {
   coverImage: string;
 }
 
-export default function BookCover({ className, variant = "regular", coverColor = "#012B48", coverImage = "https://placehold.co/400x600.png"}: Props) {
+export default function BookCover({ className, variant = "regular", coverColor = "#012B48", coverImage}: Props) {
   return (
     <div className={cn("relative transition-all duration-300", variantStyles[variant], className)}>
       <BookCoverSvg coverColor={coverColor}/>
       <div className="absolute z-10" style={{ left: "12%", width: "87.5%", height: "88%"}} >
-        <Image src={coverImage} alt="Book Cover" fill className="rounded-sm object-fill"/>
+      <IKImage
+        path={coverImage}
+        urlEndpoint={config.env.imageKit.urlEndpoint}
+        alt="Book cover"
+        fill
+        className="rounded-sm object-fill"
+        loading="lazy"
+        lqip={{ active: true }}
+        onError={() => {
+          console.error('Failed to load image');
+          // Optionally, you could set a default image here
+        }}
+      />
       </div>
     </div>
   )
