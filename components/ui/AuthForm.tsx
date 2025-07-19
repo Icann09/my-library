@@ -11,6 +11,8 @@ import { FIELD_NAMES, FIELD_TYPES } from "@/constants"
 import FileUpload from "./FileUpload"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
 
 
 
@@ -22,6 +24,7 @@ interface Props<T extends FieldValues> {
 }
 
 export default function AuthForm <T extends FieldValues>({ type, schema, defaultValues, onSubmit }: Props<T>) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const isSignIn = type === "SIGN_IN";
   const form: UseFormReturn<T> = useForm({
@@ -30,14 +33,17 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
   })
 
   const handleSubmit: SubmitHandler<T> = async (data) => {
+    setIsLoading(true);
     const result = await onSubmit(data);
+    setIsLoading(false);
+  
     if (result.success) {
-      toast.success(isSignIn ? "You have successfully Signed in." : "You have succesfully Signed up.");
+      toast.success(isSignIn ? "You have successfully signed in." : "You have successfully signed up.");
       router.push("/");
     } else {
       toast.error(`Error ${isSignIn ? "signing in" : "signing up"}`);
     }
-  }
+  };
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold text-white">
@@ -72,7 +78,15 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
             />
           ))}
   
-          <Button type="submit" className="form-btn">{isSignIn ? "Sign In" : "Sign Up"}</Button>
+  <Button type="submit" className="form-btn" disabled={isLoading}>
+  {isLoading ? (
+    <>
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      Loading...
+    </>
+  ) : isSignIn ? "Sign In" : "Sign Up"}
+</Button>
+
         </form>
       </Form>
       <p className="text-center text-base font-medium">
