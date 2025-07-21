@@ -63,7 +63,7 @@ export const { POST } = serve<InitialData>(async (context) => {
         await sendEmail({ email, subject: "Welcome back!", message: `Welcome back ${fullName}!` });
       });
     }
-
+    retries++;
     await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30)
   }
 })
