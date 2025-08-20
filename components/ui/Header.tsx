@@ -3,13 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { LogOutIcon } from "lucide-react";
 import { Avatar, AvatarFallback } from "./avatar"; // Adjust path if needed
 import { getInitials } from "@/lib/utils"; // Helper to get initials
 
-export default function Header() {
-  const { data: session } = useSession();
+export default function Header({ session }: { session: any })  {
   const pathname = usePathname();
   const user = session?.user;
   const initials = getInitials(user?.name || "IN");
@@ -50,8 +49,9 @@ export default function Header() {
               {initials}
             </AvatarFallback>
           </Avatar>
-          <span className={`text-lg font-medium ${
-            pathname === "/my-profile" ? "text-yellow-300" : "text-gray-400"
+          <span
+            className={`text-lg font-medium ${
+              pathname === "/my-profile" ? "text-yellow-300" : "text-gray-400"
             }`}
           >
             {user.name || "Guest"}

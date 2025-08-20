@@ -35,7 +35,7 @@ import { eq } from "drizzle-orm";
   });
   return (
     <main className="root-container">
-       <div className="max-auto mx-w-7xl">
+       <div className="max-auto mx-w-7xl relative">
         <Header session={session}/>
         
         <div className="mt-20 pb-20">{children}</div>

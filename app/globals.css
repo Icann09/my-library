@@ -163,7 +163,7 @@
 
 /* book */
   .book-overview {
-    @apply flex flex-col-reverse items-center gap-12 sm:gap-32 xl:flex-row xl:gap-8;
+    @apply mx-auto max-w-7xl flex flex-col-reverse items-center gap-12 sm:gap-32 xl:flex-row xl:gap-8;
   }
   .book-overview h1 {
     @apply text-5xl font-semibold text-white md:text-7xl;

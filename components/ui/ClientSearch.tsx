@@ -61,7 +61,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
       </section>
 
       {/* Filter */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="mx-auto max-w-7xl flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold text-white">Search Results</h3>
         <select
           className="bg-gray-800 text-white border border-gray-700 px-4 py-2 rounded"
@@ -81,7 +81,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
       </div>
 
       {/* Books */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+      <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
         {paginatedBooks.map((book) => (
           <BookCard key={book.id} {...book} />
         ))}

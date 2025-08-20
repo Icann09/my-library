@@ -16,7 +16,7 @@ export default async function Home() {
       <BookList 
         title="Latest Books" 
         books={latestBooks.slice(1)} 
-        containerClassName="mt-28"
+        containerClassName="mt-28 mx-auto max-w-7xl"
       />
     </>
   )
