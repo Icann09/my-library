@@ -5,6 +5,7 @@
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import MobileNavigation from "@/components/ui/MobileNavigation";
  
  
  export default async function RootLayout({
@@ -36,9 +37,10 @@ import { eq } from "drizzle-orm";
   return (
     <main className="root-container">
        <div className="max-auto mx-w-7xl relative">
+        <MobileNavigation session={session}/>
         <Header session={session}/>
-        
-        <div className="mt-20 pb-20">{children}</div>
+        <div className="mt-20 pb-20">{children}
+        </div>
        </div>
     </main>
   );

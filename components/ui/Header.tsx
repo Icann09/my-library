@@ -12,10 +12,9 @@ export default function Header({ session }: { session: any })  {
   const pathname = usePathname();
   const user = session?.user;
   const initials = getInitials(user?.name || "IN");
-  console.log(user);
 
   return (
-    <header className="my-10 flex justify-between items-center px-4">
+    <header className="hidden my-10 md:flex justify-between items-center px-4">
       {/* Logo */}
       <Link href="/">
         <Image src="/logo.png" alt="logo" width={40} height={40} />
