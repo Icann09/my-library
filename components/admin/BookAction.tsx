@@ -1,24 +1,3 @@
-// "use client"
-
-// import { Trash2, Pencil } from "lucide-react";
-// import { deleteBook } from "@/lib/admin/actions/book";
-
-// export default function BookAction({ bookId }: {bookId: string}) {
-//   return (
-//     <div className="flex justify-between">
-//         <Pencil className="text-blue-600 cursor-pointer" size={16} />
-//         <Trash2 className="text-red-600 cursor-pointer" size={16} 
-//           onClick={() => {
-//             if (confirm("Are you sure you want to delete this book?")) {
-//               deleteBook(bookId);
-//             }
-//           }} 
-//       />
-//     </div>
-
-//   )
-// }
-
 "use client"
 
 import { Trash2, Pencil } from "lucide-react";
