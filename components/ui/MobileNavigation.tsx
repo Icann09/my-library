@@ -17,10 +17,6 @@ import { signOut } from "next-auth/react";
 import { LogOutIcon } from "lucide-react";
 
 
-
-
-
-
 interface Props {
   $id: string,
   accountId: string,
@@ -42,10 +38,10 @@ export default function MobileNavigation({ session }: { session: any })  {
       </Link>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger>
-          <Image src="/icons/menu.svg" alt="menu" width={30} height={30}/>
+          <Image src="/icons/menu.svg" alt="menu" width={30} height={30} className="bg-white"/>
         </SheetTrigger>
-        <SheetContent className="shad-sheet h-screen px-3">
-          <SheetTitle>
+        <SheetContent className="h-screen px-3 bg-accent-foreground">
+          <SheetTitle className="text-center py-2">
             <Link href="/my-profile" className="flex items-center gap-3">
               <Avatar>
                 <AvatarFallback className="bg-amber-100 text-black font-bold">
@@ -53,14 +49,14 @@ export default function MobileNavigation({ session }: { session: any })  {
                 </AvatarFallback>
               </Avatar>
               <span
-                className={`text-lg font-medium ${
+                className={`text-sm font-medium ${
                   pathname === "/my-profile" ? "text-yellow-300" : "text-gray-400"
                 }`}
               >
                 {user.name || "Guest"}
               </span>
             </Link>
-            <Separator className="mb-4 bg-light-200/20"/>
+            <Separator className="mb-4 mt-2 bg-light-200/20"/>
           </SheetTitle>
           <nav className="flex items-center gap-6">
             <Link
@@ -85,9 +81,10 @@ export default function MobileNavigation({ session }: { session: any })  {
             <button
               onClick={() => signOut()}
               aria-label="Log out"
-              className="text-red-400 hover:text-red-500 transition-colors"
+              className="text-red-400 hover:text-red-500 transition-colors flex"
             >
-              <LogOutIcon className="w-6 h-6" />
+              <LogOutIcon className="w-6 h-6 mr-2"/>
+              Sign out
             </button>
           </div>
         </SheetContent>

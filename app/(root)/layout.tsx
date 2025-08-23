@@ -36,7 +36,7 @@ import MobileNavigation from "@/components/ui/MobileNavigation";
   });
   return (
     <main className="root-container">
-       <div className="max-auto mx-w-7xl relative">
+       <div className="mx-auto max-w-7xl relative">
         <MobileNavigation session={session}/>
         <Header session={session}/>
         <div className="mt-20 pb-20">{children}
