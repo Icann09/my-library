@@ -42,19 +42,22 @@ export default function MobileNavigation({ session }: { session: any })  {
         </SheetTrigger>
         <SheetContent className="h-screen px-3 bg-accent-foreground">
           <SheetTitle className="text-center py-2">
-            <Link href="/my-profile" className="flex items-center gap-3">
-              <Avatar>
-                <AvatarFallback className="bg-amber-100 text-black font-bold">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
-              <span
-                className={`text-sm font-medium ${
-                  pathname === "/my-profile" ? "text-yellow-300" : "text-gray-400"
-                }`}
-              >
-                {user.name || "Guest"}
-              </span>
+            <Link href="/my-profile" className="flex items-center">
+              <div className="flex items-center justify-items-start">
+                <Avatar>
+                  <AvatarFallback className="bg-amber-100 text-black font-bold">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+                <h2
+                  className={`text-sm flex items-start ml-2 font-medium truncate w-[50vw] ${
+                    pathname === "/my-profile" ? "text-yellow-300" : "text-gray-400"
+                  }`}
+                >
+                  {user.name || "Guest"}
+                </h2>
+              </div>
+              
             </Link>
             <Separator className="mb-4 mt-2 bg-light-200/20"/>
           </SheetTitle>

@@ -10,34 +10,49 @@ import ratelimit from "@/lib/ratelimit";
 import { redirect } from "next/navigation";
 import { workflowClient } from "@/lib/workflow";
 import config from "@/lib/config";
+import { compare } from "bcryptjs"
 
 export const signInWithCredentials = async (
-  params: Pick<AuthCredentials, "email" | "password">,
+  params: { email: string; password: string }
 ) => {
-  const { email, password } = params;
+  const { email, password } = params
 
-  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
-  const { success } = await ratelimit.limit(ip);
+  // 🔒 Rate limit
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1"
+  const { success } = await ratelimit.limit(ip)
+  if (!success) return redirect("/too-fast")
 
-  if (!success) return redirect("/too-fast");
+  // 🟢 Step 1: Check user
+  const user = await db.select().from(users).where(eq(users.email, email)).limit(1)
+  if (user.length === 0) {
+    return { success: false, error: "Email does not exist" }
+  }
 
+  // 🟢 Step 2: Check password
+  const isPasswordValid = await compare(password, user[0].password)
+  if (!isPasswordValid) {
+    return { success: false, error: "Wrong password" }
+  }
+
+  // 🟢 Step 3: Call NextAuth signIn()
   try {
     const result = await signIn("credentials", {
-      email,
-      password,
+      id: user[0].id.toString(),
+      email: user[0].email,
+      name: user[0].fullName,
       redirect: false,
-    });
+    })
 
     if (result?.error) {
-      return { success: false, error: result.error };
+      return { success: false, error: "Signin failed" }
     }
 
-    return { success: true };
-  } catch (error) {
-    console.log(error, "Signin error");
-    return { success: false, error: "Signin error" };
+    return { success: true }
+  } catch (err) {
+    console.error("Signin error:", err)
+    return { success: false, error: "Signin error" }
   }
-};
+}
 
 export const signUp = async (params: AuthCredentials) => {
   const { fullName, email, universityId, password, universityCard } = params;

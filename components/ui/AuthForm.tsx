@@ -41,7 +41,12 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
       toast.success(isSignIn ? "You have successfully signed in." : "You have successfully signed up.");
       router.push("/");
     } else {
-      toast.error(`Error ${isSignIn ? "signing in" : "signing up"}`);
+      if (result.error) {
+        // 👇 show error message from backend / next-auth
+        toast.error(result.error);
+      } else {
+        toast.error(`Error ${isSignIn ? "signing in" : "signing up"}`);
+      }
     }
   };
   return (
@@ -60,7 +65,7 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
           {Object.keys(defaultValues).map((field) => (
             <FormField
               key={field}
-              control={form.control}
+              control={form.control} 
               name={field as Path<T>}
               render={({ field }) => (
                 <FormItem>
@@ -77,16 +82,14 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
               )}
             />
           ))}
-  
-  <Button type="submit" className="form-btn" disabled={isLoading}>
-  {isLoading ? (
-    <>
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      Loading...
-    </>
-  ) : isSignIn ? "Sign In" : "Sign Up"}
-</Button>
-
+            <Button type="submit" className="form-btn" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : isSignIn ? "Sign In" : "Sign Up"}
+          </Button>
         </form>
       </Form>
       <p className="text-center text-base font-medium">
@@ -96,9 +99,5 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
         </Link>
       </p>
     </div>
-  );
-  
-    
-    
-  
+  );  
 }
