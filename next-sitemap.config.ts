@@ -1,7 +1,7 @@
 import type { IConfig } from "next-sitemap";
 
 const config: IConfig = {
-  siteUrl: process.env.SITE_URL || "https://yourdomain.com",
+  siteUrl: process.env.SITE_URL || "https://my-library-dun.vercel.app",
   generateRobotsTxt: true,
   outDir: "public", // 👈 important for Vercel
   changefreq: "daily",
@@ -10,7 +10,7 @@ const config: IConfig = {
   exclude: ["/server-sitemap.xml"],
   robotsTxtOptions: {
     additionalSitemaps: [
-      "https://yourdomain.com/server-sitemap.xml",
+      "https://my-library-dun.vercel.app/server-sitemap.xml",
     ],
   },
 };
