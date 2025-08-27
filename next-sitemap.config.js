@@ -1,6 +1,5 @@
-import type { IConfig } from "next-sitemap";
-
-const config: IConfig = {
+/** @type {import('next-sitemap').IConfig} */
+const config = {
   siteUrl: process.env.SITE_URL || "https://my-library-dun.vercel.app",
   generateRobotsTxt: true,
   outDir: "public", // 👈 important for Vercel
