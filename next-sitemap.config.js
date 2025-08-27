@@ -1,17 +1,18 @@
 /** @type {import('next-sitemap').IConfig} */
-const config = {
-  siteUrl: process.env.SITE_URL || "https://my-library-dun.vercel.app",
+module.exports = {
+  siteUrl: "https://my-library-dun.vercel.app",
   generateRobotsTxt: true,
-  outDir: "public", // 👈 important for Vercel
-  changefreq: "daily",
-  priority: 0.7,
   sitemapSize: 7000,
-  exclude: ["/server-sitemap.xml"],
-  robotsTxtOptions: {
-    additionalSitemaps: [
-      "https://my-library-dun.vercel.app/server-sitemap.xml",
-    ],
+
+  // 👇 Add this to include dynamic routes
+  additionalPaths: async (config) => {
+    const books = [
+      { id: "1", updatedAt: "2025-08-01" },
+      { id: "2", updatedAt: "2025-08-15" },
+    ];
+    return books.map((book) => ({
+      loc: `/books/${book.id}`,
+      lastmod: book.updatedAt,
+    }));
   },
 };
-
-export default config;

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://my-library-dun.vercel.app
+
+# Sitemaps
+Sitemap: https://my-library-dun.vercel.app/sitemap.xml
