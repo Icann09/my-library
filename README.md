@@ -38,5 +38,14 @@ It provides a clean interface, authentication system, and activity tracking to m
 Clone the repository:
 
 ```bash
-git clone https://github.com/Icann09/my-library2.git
-cd my-library2
+git clone https://github.com/Icann09/my-library.git
+cd my-library
+
+
+Set up environment variables in .env.local:
+  DATABASE_URL=your_postgres_connection
+  AUTH_SECRET=your_auth_secret
+  NEXTAUTH_URL=http://localhost:3000
+  REDIS_URL=your_upstash_redis_url
+  RESEND_API_KEY=your_resend_api_key
+  QSTASH_URL=your_qstash_url
