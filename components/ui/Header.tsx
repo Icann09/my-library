@@ -8,13 +8,16 @@ import { LogOutIcon } from "lucide-react";
 import { Avatar, AvatarFallback } from "./avatar"; // Adjust path if needed
 import { getInitials } from "@/lib/utils"; // Helper to get initials
 
+
 export default function Header({ session }: { session: any })  {
   const pathname = usePathname();
   const user = session?.user;
   const initials = getInitials(user?.name || "IN");
 
+
+
   return (
-    <header className="hidden my-10 md:flex justify-between items-center px-4">
+    <header className="hidden md:flex w-full max-w-7xl mx-auto my-6 px-4 justify-between items-center ">
       {/* Logo */}
       <Link href="/">
         <Image src="/logo.png" alt="logo" width={40} height={40} />

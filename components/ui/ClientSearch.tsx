@@ -50,7 +50,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
           <Input
             type="text"
             placeholder="Thriller, Mystery..."
-            className="w-full px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700"
+            className="w-full px-4 py-3 rounded-lg border border-gray-700"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
