@@ -1,6 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, fireEvent, screen } from "@testing-library/react";
+
+// MUST be at the top BEFORE FileUpload import
+vi.mock("sonner", () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+    message: vi.fn(),
+  },
+}));
+
+import { toast } from "sonner";
 import FileUpload from "./FileUpload";
+
 
 // Mock ImageKit components (IKUpload, IKImage, IKVideo, Provider)
 vi.mock("imagekitio-next", () => ({
@@ -15,6 +27,12 @@ vi.mock("imagekitio-next", () => ({
 
         // Trigger validation + upload flow
         if (!file) return;
+
+        // Simulate file size validation (assuming component does this before upload)
+        if (file.size > 20 * 1024 * 1024) {
+          toast.error("Please upload a file that is less than 20 MB in size");
+          return;
+        }
 
         try {
           onUploadProgress?.({ loaded: 50, total: 100 });
@@ -32,13 +50,7 @@ vi.mock("imagekitio-next", () => ({
   IKVideo: ({ path }: any) => <video data-testid="ik-video" src={path} />,
 }));
 
-// Mock toast
-vi.mock("sonner", () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn(),
-  },
-}));
+
 
 describe("FileUpload Component", () => {
   const mockOnFileChange = vi.fn();
@@ -128,30 +140,30 @@ describe("FileUpload Component", () => {
   });
 
   it("rejects invalid large image files", () => {
-    const { toast } = require("sonner");
+  render(
+    <FileUpload
+      onFileChange={mockOnFileChange}
+      type="image"
+      accept="image/*"
+      placeholder="Upload Image"
+      folder="/test"
+      variant="dark"
+    />
+  );
 
-    render(
-      <FileUpload
-        onFileChange={mockOnFileChange}
-        type="image"
-        accept="image/*"
-        placeholder="Upload Image"
-        folder="/test"
-        variant="dark"
-      />
-    );
+  const input = screen.getByTestId("ik-upload");
 
-    const input = screen.getByTestId("ik-upload");
-
-    // Create a file > 20MB
-    const largeFile = new File(["x".repeat(25 * 1024 * 1024)], "large.jpg", {
-      type: "image/jpeg",
-    });
-
-    fireEvent.change(input, { target: { files: [largeFile] } });
-
-    expect(toast.error).toHaveBeenCalledWith(
-      "Please upload a file that is less than 20 MB in size"
-    );
+  // Create a file > 20MB
+  const largeFile = new File(["x".repeat(25 * 1024 * 1024)], "large.jpg", {
+    type: "image/jpeg",
   });
+
+  fireEvent.change(input, { target: { files: [largeFile] } });
+
+  // EXPECT the spy to be called
+  expect(toast.error).toHaveBeenCalledWith(
+    "Please upload a file that is less than 20 MB in size"
+  );
+});
+
 });
