@@ -153,17 +153,18 @@ describe("FileUpload Component", () => {
 
   const input = screen.getByTestId("ik-upload");
 
-  // Create a file > 20MB
-  const largeFile = new File(["x".repeat(25 * 1024 * 1024)], "large.jpg", {
-    type: "image/jpeg",
-  });
+  // Create ANY file
+  const largeFile = new File(["a"], "large.jpg", { type: "image/jpeg" });
+
+  // Force override its size to > 20MB
+  Object.defineProperty(largeFile, "size", { value: 25 * 1024 * 1024 });
 
   fireEvent.change(input, { target: { files: [largeFile] } });
 
-  // EXPECT the spy to be called
   expect(toast.error).toHaveBeenCalledWith(
     "Please upload a file that is less than 20 MB in size"
   );
 });
+
 
 });
