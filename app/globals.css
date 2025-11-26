@@ -169,13 +169,13 @@
     @apply text-5xl font-semibold text-white md:text-7xl;
   }
   .book-overview_btn {
-    @apply mt-4 min-h-14 w-fit bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full;
+    @apply mt-8 min-h-14 w-fit bg-primary text-dark-100 hover:bg-primary/90 max-md:w-full;
   }
   .book-info {
-    @apply mt-7 flex flex-row flex-wrap gap-4 text-xl text-light-100;
+    @apply mt-7 flex flex-row flex-wrap gap-3 text-xl text-light-100;
   }
   .book-copies {
-    @apply flex flex-row flex-wrap gap-4 mt-1;
+    @apply flex flex-row flex-wrap gap-4;
   }
   .book-copies p {
     @apply text-xl text-light-100 my-4;
@@ -184,7 +184,7 @@
     @apply ml-2 font-semibold text-primary;
   }
   .book-description {
-    @apply mt-2 text-justify text-xl text-light-100;
+    @apply text-justify text-xl text-light-100;
   }
   .book-cover_extra_small {
     @apply w-[28.95px] h-10;
@@ -202,7 +202,7 @@
     @apply xs:w-[296px] w-[256px] xs:h-[404px] h-[354px];
   }
   .book-list {
-    @apply mt-10 flex flex-wrap gap-5 max-xs:justify-between xs:gap-10;
+    @apply mt-6 flex flex-wrap gap-5 max-xs:justify-between xs:gap-10;
   }
   .book-title {
     @apply mt-2 line-clamp-1 text-base font-semibold text-white xs:text-xl;

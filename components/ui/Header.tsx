@@ -17,15 +17,15 @@ export default function Header({ session }: { session: any })  {
 
 
   return (
-    <header className="hidden md:flex w-full max-w-7xl mx-auto my-6 px-4 justify-between items-center ">
+    <header className="hidden md:flex w-full mx-auto my-6 px-4 justify-between items-center ">
       {/* Logo */}
       <Link href="/">
         <Image src="/logo.png" alt="logo" width={40} height={40} />
       </Link>
 
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-6 min-w-[180px] justify-center">
         {/* Navigation */}
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-6 whitespace-nowrap">
           <Link
             href="/"
             className={`text-lg font-medium ${
@@ -64,7 +64,7 @@ export default function Header({ session }: { session: any })  {
         <button
           onClick={() => signOut()}
           aria-label="Log out"
-          className="text-red-400 hover:text-red-500 transition-colors"
+          className="text-red-400 hover:text-red-500 transition-colors cursor-pointer"
         >
           <LogOutIcon className="w-6 h-6" />
         </button>

@@ -11,7 +11,7 @@ export default function BookList({ title, books, containerClassName }: Props) {
   
   return (
     <section className={containerClassName}>
-      <h2 className="font-bebas-neue text-4xl text-light-100 uppercase">{title}</h2>
+      <h2 className="font-bebas-neue font-bold text-4xl w-full text-light-100 text-left">{title}</h2>
       <ul className="book-list">
         {books.map((book) => {
           return <BookCard key={book.id} {...book}/>

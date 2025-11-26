@@ -18,8 +18,8 @@ export default async function BookOverview ({ title, author, genre, rating, tota
   };
   return (
     <section className="book-overview">
-      <div className="flex flex-1 flex-col gap-5">
-        <h1 className="text-">{title}</h1>
+      <div className="flex flex-1 flex-col gap-0">
+        <h1 className="">{title}</h1>
         <div className="book-info">
           <p>By <span className="font-semibold text-light-200">{author}</span> </p>
           <p>Category{" "} <span className="font-semibold text-light-200">{genre}</span></p>
