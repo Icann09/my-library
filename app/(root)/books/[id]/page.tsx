@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
+  const id = await params.id;
   const session = await auth();
 
   const [bookDetails] = await db
