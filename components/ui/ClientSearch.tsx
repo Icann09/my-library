@@ -93,7 +93,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
             {/* Books Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
               {paginatedBooks.map((book) => (
-                <BookCard key={book.id} {...book} />
+                <BookCard  key={book.id} {...book} />
               ))}
             </div>
 

@@ -12,7 +12,8 @@ export default async function Home() {
   return (
     <>
       <BookOverview {...latestBooks[0]} userId={session?.user?.id as string} />
-      <BookList 
+      <BookList
+        variant="Book" 
         title="Popular Books" 
         books={latestBooks.slice(1)} 
         containerClassName="mt-20 mx-auto max-w-7xl flex flex-col items-center  "
