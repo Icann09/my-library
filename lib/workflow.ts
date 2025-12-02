@@ -74,7 +74,7 @@ export const sendEmail = async ({
       from: "My Library <teknik09@ican09.com>",
       to: [email],
       subject,
-      html: '<p style="font-size: 16px; margin-bottom: 16px"> This is boarding workflow </p>',
+      html: '<p style="font-size: 16px; margin-bottom: 16px; background-color: #0f1117; "> This is boarding workflow </p>',
     },
   });
 };
