@@ -42,7 +42,7 @@ export const { POST } = serve<InitialData>(async (context) => {
 
   //welcome email
   await context.run("new-signup", async () => {
-    await sendEmail({ email, subject: "Welcome to My Library", message: `Welcome ${fullName}`})
+    await sendEmail({ email, subject: "Welcome to My Library"})
   })
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3)
@@ -56,11 +56,11 @@ export const { POST } = serve<InitialData>(async (context) => {
 
     if (state === "non-active") {
       await context.run("send-email-non-active", async () => {
-        await sendEmail({ email, subject: "We miss you!", message: `Hey ${fullName}, we miss you!` });
+        await sendEmail({ email, subject: "We miss you!" });
       });
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
-        await sendEmail({ email, subject: "Welcome back!", message: `Welcome back ${fullName}!` });
+        await sendEmail({ email, subject: "Welcome back!" });
       });
     }
     retries++;

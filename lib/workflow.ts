@@ -59,11 +59,11 @@ const qstashClient = new QStashClient({
 export const sendEmail = async ({
   email,
   subject,
-  message,
+
 }: {
   email: string;
   subject: string;
-  message: string;
+
 }) => {
   await qstashClient.publishJSON({
     api: {
@@ -74,7 +74,7 @@ export const sendEmail = async ({
       from: "My Library <teknik09@ican09.com>",
       to: [email],
       subject,
-      html: message,
+      html: '<p style="font-size: 16px; margin-bottom: 16px"> This is boarding workflow </p>',
     },
   });
 };
