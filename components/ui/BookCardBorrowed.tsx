@@ -2,7 +2,7 @@ import Link from "next/link"
 import BookCover from "./BookCover"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { ReceiptText } from "lucide-react"
+import { ReceiptText, OctagonAlert } from "lucide-react"
 import { Button } from "./button"
 import { BookOpen } from "lucide-react"
 
@@ -31,7 +31,7 @@ export default function BookCardBorrowed({ id, title, genre, coverColor, coverUr
       <Link href={`/books/${id}`} className="w-full flex flex-col gap">
         <div
             className="backdrop-blur-md w-64 h-72 flex justify-center items-center rounded-md"
-            style={{ backgroundColor: `${coverColor}20` }}  /* adds opacity */
+            style={{ backgroundColor: `${coverColor}30` }}  /* adds opacity */
           >
 
           <BookCover coverColor={coverColor} coverImage={coverUrl} />
@@ -48,8 +48,16 @@ export default function BookCardBorrowed({ id, title, genre, coverColor, coverUr
           </div>
           <div className="flex flex-row items-center gap-1 justify-between">
             <div className="flex gap-2">
-              <Image src="/icons/calendar.svg" alt="calendar" width={18} height={18} className="object-contain"/>
-              <p className="text-light-100">{daysLeft} days left</p>
+              {daysLeft == 0 ? (
+                <OctagonAlert width={18} height={18}/>
+              ) : (
+                <Image src="/icons/calendar.svg" alt="calendar" width={18} height={18} className="object-contain"/>
+              )}
+              {daysLeft == 0 ? (
+                <p className="text-red-400">Overdue Return</p>
+              ) : (
+                <p className="text-light-100">{daysLeft} days left</p>
+              )}
             </div>
             <Button className="bg-[#8B38484D] cursor-pointer">
               <ReceiptText size={16}/>

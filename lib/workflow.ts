@@ -74,7 +74,7 @@ export const sendEmail = async ({
       from: "My Library <teknik09@ican09.com>",
       to: [email],
       subject,
-      html: OnBoardingEmailTemplate(studentName),
+      html: message,
     },
   });
 };
