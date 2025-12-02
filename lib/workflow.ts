@@ -59,11 +59,11 @@ const qstashClient = new QStashClient({
 export const sendEmail = async ({
   email,
   subject,
-  studentName,
+  message,
 }: {
   email: string;
   subject: string;
-  studentName: string;
+  message: string;
 }) => {
   await qstashClient.publishJSON({
     api: {
