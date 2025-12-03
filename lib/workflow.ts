@@ -17,11 +17,13 @@ export const sendEmail = async ({
   email,
   subject,
   fullName,
+  html,
 
 }: {
   email: string;
   subject: string;
   fullName: string;
+  html: string;
 
 }) => {
   await qstashClient.publishJSON({
@@ -33,7 +35,7 @@ export const sendEmail = async ({
       from: "My Library <teknik09@ican09.com>",
       to: [email],
       subject,
-      html: wellcomeEmail(fullName),
+      html,
     },
   });
 };

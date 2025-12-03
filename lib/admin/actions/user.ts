@@ -3,7 +3,9 @@
 import { db } from "@/database/drizzle"
 import { borrowRecords } from "@/database/schema"
 import { users } from "@/database/schema";
+import { sendEmail } from "@/lib/workflow";
 import { eq } from "drizzle-orm";
+import { accountApprovalEmail } from "@/lib/email";
 
 export const user = async () => {
   const record = await db.select().from(borrowRecords);
@@ -38,7 +40,9 @@ export async function approveAccountRequest(userId: string) {
       .returning();
 
     // TODO: send email confirmation here (e.g., via Resend/SendGrid)
-
+    const user = result[0];
+    await sendEmail({ email: user.email, subject: "Account Approval from My-Library", fullName: user.fullName, html: "This is approval confirmation" });
+  
     return { success: true, result };
   } catch (err) {
     console.error("❌ Failed to approve user:", err);
