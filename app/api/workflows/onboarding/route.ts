@@ -3,6 +3,7 @@ import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
 import { db } from "@/database/drizzle";
+import { welcomeOnboarding } from "@/lib/emails/welcome-onboarding";
 
 type UserState = "non-active" | "active";
 
@@ -42,7 +43,7 @@ export const { POST } = serve<InitialData>(async (context) => {
 
   //welcome email
   await context.run("new-signup", async () => {
-    await sendEmail({ email, subject: "Welcome to My Library", fullName: fullName, html: "This is wellcome onboarding"})
+    await sendEmail({ email, subject: "Welcome to My Library", message: welcomeOnboarding(fullName)})
   })
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3)
@@ -56,11 +57,11 @@ export const { POST } = serve<InitialData>(async (context) => {
 
     if (state === "non-active") {
       await context.run("send-email-non-active", async () => {
-        await sendEmail({ email, subject: "We miss you!", fullName: fullName, html: "Please comeback" });
+        await sendEmail({ email, subject: "We miss you!", message: "Please comeback" });
       });
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
-        await sendEmail({ email, subject: "Welcome back!", fullName: fullName, html: "Selamat datang kembali" });
+        await sendEmail({ email, subject: "Welcome back!", message: "Selamat datang kembali" });
       });
     }
     retries++;
