@@ -3,7 +3,7 @@ import { books, borrowRecords, users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import BookCover from "@/components/ui/BookCover";
 import BorrowedStatusBtn from "@/components/admin/BorrowedStatusBtn";
-import { cn } from "@/lib/utils";
+import BorrowReceiptBtn from "@/components/admin/BorrowReceiptBtn";
 
 
 
@@ -98,22 +98,7 @@ export default async function Page() {
                 {record.dueDate}
               </td>
               <td className="p-4 text-center">
-                <button
-                  disabled={isGenerated}
-                  className={cn(
-                    "px-3 py-1 text-sm rounded-md text-white transition",
-                    isGenerated
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : "bg-indigo-600 hover:bg-indigo-700"
-                  )}
-                  onClick={() => {
-                    if (isGenerated) {
-                      console.log("Generate receipt for", record.borrowId);
-                    }
-                  }}
-                >
-                  {isGenerated ? "Receipt Generated" : "Generate Receipt"}
-                </button>
+                <BorrowReceiptBtn />
               </td>
             </tr>
           ))}

@@ -1,13 +1,4 @@
-export const bookBorrowReceipt = (
-  receiptId: string,
-  issuedDate: string,
-  bookTitle: string,
-  bookAuthor: string,
-  bookGenre: string,
-  borrowDate: string,
-  dueDate: string,
-  duration: string
-) => `
+export const bookBorrowReceipt = (params: ReceiptParams) => `
   <div style="padding: 40px; font-family: Arial, sans-serif; background-color: #0F1117;">
     <div style="
       max-width: 640px;
@@ -41,12 +32,11 @@ export const bookBorrowReceipt = (
       <h3 style="font-size: 20px; margin-bottom: 16px; color: white;">Book Details:</h3>
 
       <ul style="font-size: 16px; line-height: 1.8; padding-left: 20px;">
-        <li><strong>Title:</strong> ${bookTitle}</li>
-        <li><strong>Author:</strong> ${bookAuthor}</li>
-        <li><strong>Genre:</strong> ${bookGenre}</li>
-        <li><strong>Borrowed On:</strong> ${borrowDate}</li>
-        <li><strong>Due Date:</strong> ${dueDate}</li>
-        <li><strong>Duration:</strong> ${duration}</li>
+        <li><strong>Title:</strong> ${params.bookTitle}</li>
+        <li><strong>Author:</strong> ${params.bookAuthor}</li>
+        <li><strong>Genre:</strong> ${params.bookGenre}</li>
+        <li><strong>Borrowed On:</strong> ${params.borrowDate}</li>
+        <li><strong>Due Date:</strong> ${params.dueDate}</li>
       </ul>
 
       <hr style="border: 0; height: 1px; background: #2D3140; margin: 24px 0;" />

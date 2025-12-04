@@ -40,3 +40,13 @@ interface BorrowBookParams {
   userId: string;
   bookId: string;
 }
+
+interface ReceiptParams {
+  receiptId: string;
+  issuedDate: string;
+  bookTitle: string;
+  bookAuthor: string;
+  bookGenre: string;
+  borrowDate: string;
+  dueDate: string;
+}
