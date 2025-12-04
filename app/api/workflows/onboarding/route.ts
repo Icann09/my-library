@@ -4,6 +4,9 @@ import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
 import { db } from "@/database/drizzle";
 import { welcomeOnboarding } from "@/lib/emails/welcome-onboarding";
+import { inactivityReminder } from "@/lib/emails/inactivity-reminder";
+
+
 
 type UserState = "non-active" | "active";
 
@@ -57,11 +60,11 @@ export const { POST } = serve<InitialData>(async (context) => {
 
     if (state === "non-active") {
       await context.run("send-email-non-active", async () => {
-        await sendEmail({ email, subject: "We miss you!", message: "Please comeback" });
+        await sendEmail({ email, subject: "We miss you!", message: inactivityReminder(fullName) });
       });
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
-        await sendEmail({ email, subject: "Welcome back!", message: "Selamat datang kembali" });
+        await sendEmail({ email, subject: "Welcome back!", message:  "Happy to see You againn!!"});
       });
     }
     retries++;

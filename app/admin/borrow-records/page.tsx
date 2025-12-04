@@ -1,17 +1,15 @@
-import BorrowRecordDelBtn from "@/components/admin/BorrowRecordDelBtn";
-import UserRoleBtn from "@/components/admin/UserRoleSwitcher";
-import ViewIdCardButton from "@/components/admin/ViewIdCardBtn";
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import BookCover from "@/components/ui/BookCover";
 import BorrowedStatusBtn from "@/components/admin/BorrowedStatusBtn";
+import { cn } from "@/lib/utils";
 
 
 
 
 export default async function Page() {
-
+  const isGenerated = false;
   //Fetch data
   const borrowDetails = await db
     .select({
@@ -31,6 +29,8 @@ export default async function Page() {
     .from(borrowRecords)
     .innerJoin(users, eq(borrowRecords.userId, users.id))
     .innerJoin(books, eq(borrowRecords.bookId, books.id));
+
+
   
   // Render
   return (
@@ -98,7 +98,22 @@ export default async function Page() {
                 {record.dueDate}
               </td>
               <td className="p-4 text-center">
-                Receipt
+                <button
+                  disabled={isGenerated}
+                  className={cn(
+                    "px-3 py-1 text-sm rounded-md text-white transition",
+                    isGenerated
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-indigo-600 hover:bg-indigo-700"
+                  )}
+                  onClick={() => {
+                    if (isGenerated) {
+                      console.log("Generate receipt for", record.borrowId);
+                    }
+                  }}
+                >
+                  {isGenerated ? "Receipt Generated" : "Generate Receipt"}
+                </button>
               </td>
             </tr>
           ))}

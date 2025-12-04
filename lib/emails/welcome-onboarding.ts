@@ -25,9 +25,11 @@ export const welcomeOnboarding = (studentName: string) => `
       Explore a wide range of books, borrow with ease, and manage your reading journey seamlessly.
     </p>
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+      Please wait while we review and approve your account for full access.
+    </p>
+    <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
       Get started by logging in to your account:
     </p>
-
     <!-- Call-to-action Button -->
     <a href="https://my-library-dun.vercel.app" 
        style="display: inline-block; padding: 12px 24px; background-color: #F3D6A2; 

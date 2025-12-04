@@ -5,7 +5,7 @@ import { borrowRecords } from "@/database/schema"
 import { users } from "@/database/schema";
 import { sendEmail } from "@/lib/workflow";
 import { eq } from "drizzle-orm";
-import { accountApprovalEmail } from "@/lib/email";
+import { accountApproval } from "@/lib/emails/account-approval";
 
 export const user = async () => {
   const record = await db.select().from(borrowRecords);
@@ -41,7 +41,7 @@ export async function approveAccountRequest(userId: string) {
 
     // TODO: send email confirmation here (e.g., via Resend/SendGrid)
     const user = result[0];
-    await sendEmail({ email: user.email, subject: "Account Approval from My-Library", fullName: user.fullName, html: "This is approval confirmation" });
+    await sendEmail({ email: user.email, subject: "Account Approval from My-Library",  message: accountApproval(user.fullName)});
   
     return { success: true, result };
   } catch (err) {
