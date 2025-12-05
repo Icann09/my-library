@@ -42,11 +42,9 @@ interface BorrowBookParams {
 }
 
 interface ReceiptParams {
-  receiptId: string;
-  issuedDate: string;
   bookTitle: string;
   bookAuthor: string;
   bookGenre: string;
-  borrowDate: string;
+  borrowDate: Date;
   dueDate: string;
 }

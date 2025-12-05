@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import BookCover from "@/components/ui/BookCover";
 import BorrowedStatusBtn from "@/components/admin/BorrowedStatusBtn";
 import BorrowReceiptBtn from "@/components/admin/BorrowReceiptBtn";
+import { user } from "@/lib/admin/actions/user";
 
 
 
@@ -11,24 +12,28 @@ import BorrowReceiptBtn from "@/components/admin/BorrowReceiptBtn";
 export default async function Page() {
   const isGenerated = false;
   //Fetch data
-  const borrowDetails = await db
-    .select({
-      borrowId: borrowRecords.id,
-      borrowDate: borrowRecords.borrowDate,
-      dueDate: borrowRecords.dueDate,
-      returnDate: borrowRecords.returnDate,
-      status: borrowRecords.status,
-      userId: users.id,
-      fullName: users.fullName,
-      email: users.email,
-      bookId: books.id,
-      bookTitle: books.title,
-      coverUrl: books.coverUrl,
-      coverColor: books.coverColor,
-    })
-    .from(borrowRecords)
-    .innerJoin(users, eq(borrowRecords.userId, users.id))
-    .innerJoin(books, eq(borrowRecords.bookId, books.id));
+const borrowDetails = await db
+  .select({
+    borrowId: borrowRecords.id,
+    borrowDate: borrowRecords.borrowDate,
+    dueDate: borrowRecords.dueDate,
+    returnDate: borrowRecords.returnDate,
+    status: borrowRecords.status,
+
+    userId: users.id,
+    fullName: users.fullName,
+    email: users.email,
+
+    bookId: books.id,
+    bookTitle: books.title,
+    bookAuthor: books.author,      // 👈 added
+    bookGenre: books.genre,        // 👈 added
+    coverUrl: books.coverUrl,
+    coverColor: books.coverColor,
+  })
+  .from(borrowRecords)
+  .innerJoin(users, eq(borrowRecords.userId, users.id))
+  .innerJoin(books, eq(borrowRecords.bookId, books.id));
 
 
   
@@ -98,7 +103,18 @@ export default async function Page() {
                 {record.dueDate}
               </td>
               <td className="p-4 text-center">
-                <BorrowReceiptBtn />
+                <BorrowReceiptBtn
+                  receipt={{
+                    bookTitle: record.bookTitle,
+                    bookAuthor: record.bookAuthor,
+                    bookGenre: record.bookAuthor,
+                    borrowDate: record.borrowDate,
+                    dueDate: record.dueDate,
+                  }}
+                  email={record.email}
+                  subject="Borrow Receipt"
+                  isGenerated={false}
+                />
               </td>
             </tr>
           ))}

@@ -15,17 +15,8 @@ export const bookBorrowReceipt = (params: ReceiptParams) => `
         <span style="font-size: 36px;">📖</span>
         <span>BookWise</span>
       </div>
-
+      
       <h2 style="margin-top: 28px; font-size: 26px; color: #FFFFFF;">Borrow Receipt</h2>
-
-      <!-- Receipt Meta -->
-      <p style="margin: 6px 0; font-size: 16px;">
-        <strong>Receipt ID:</strong> <span style="color: #D4B17A;">#${receiptId}</span>
-      </p>
-      <p style="margin: 6px 0 20px; font-size: 16px;">
-        <strong>Date Issued:</strong> <span style="color: #D4B17A;">${issuedDate}</span>
-      </p>
-
       <hr style="border: 0; height: 1px; background: #2D3140; margin: 24px 0;" />
 
       <!-- Book Details -->
