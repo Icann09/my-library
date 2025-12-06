@@ -83,8 +83,7 @@ const borrowDetails = await db
                 </div>
               </td>
               <td className="p-4">
-                Receipt
-                {/* <BorrowedStatusBtn status={record.status} borrowId={record.borrowId}/> */}
+                <BorrowedStatusBtn status={record.status} borrowId={record.borrowId}/>
               </td>
               <td className="p-4 text-center">
                 {record.borrowDate
@@ -102,7 +101,8 @@ const borrowDetails = await db
                 {String(record.dueDate)}
               </td>
               <td className="p-4 text-center">
-                <BorrowReceiptBtn
+                receipt
+                {/* <BorrowReceiptBtn
                   receipt={{
                     bookTitle: record.bookTitle,
                     bookAuthor: record.bookAuthor,
@@ -114,7 +114,7 @@ const borrowDetails = await db
                   subject="Borrow Receipt"
                   isGenerated={Boolean(record.receiptIsGenerated)}
                   borrowId={String(record.borrowId)}     // ✅ Add this
-                />
+                /> */}
               </td>
             </tr>
           ))}
