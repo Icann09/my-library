@@ -32,7 +32,7 @@ export default function BorrowReceiptBtn({
 
     try {
     
-      // await sendEmail({ email: email, subject: subject, message: bookBorrowReceipt(receipt) });
+      await sendEmail({ email, subject, message: bookBorrowReceipt(receipt) });
 
       const markResult = await markReceiptGenerated(borrowId);
       console.log("🔧 Marked as generated:", markResult);
