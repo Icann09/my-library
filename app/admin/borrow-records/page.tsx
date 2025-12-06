@@ -4,10 +4,6 @@ import { eq } from "drizzle-orm";
 import BookCover from "@/components/ui/BookCover";
 import BorrowedStatusBtn from "@/components/admin/BorrowedStatusBtn";
 import BorrowReceiptBtn from "@/components/admin/BorrowReceiptBtn";
-import { user } from "@/lib/admin/actions/user";
-
-
-
 
 export default async function Page() {
   const isGenerated = false;
@@ -26,10 +22,12 @@ const borrowDetails = await db
 
     bookId: books.id,
     bookTitle: books.title,
-    bookAuthor: books.author,      // 👈 added
-    bookGenre: books.genre,        // 👈 added
+    bookAuthor: books.author,
+    bookGenre: books.genre,
     coverUrl: books.coverUrl,
     coverColor: books.coverColor,
+
+    receiptIsGenerated: borrowRecords.receiptIsGenerated, // ✅ include it here
   })
   .from(borrowRecords)
   .innerJoin(users, eq(borrowRecords.userId, users.id))
@@ -54,7 +52,7 @@ const borrowDetails = await db
         </thead>
         <tbody>
           {borrowDetails.map(record => (
-            <tr key={record.borrowId} className="border-b  hover:bg-gray-50">
+            <tr key={String(record.borrowId)} className="border-b  hover:bg-gray-50">
               <td className="p-4">
                 <div className="flex items-center gap-3">
                   <BookCover coverColor={record.coverColor} coverImage={record.coverUrl} variant="extraSmall"/> 
@@ -97,10 +95,10 @@ const borrowDetails = await db
                   : "N/A"}
               </td>
               <td className="p-4 text-center">
-                {record.returnDate ? record.returnDate : "N/A"}
+                {record.returnDate ? String(record.returnDate) : "N/A"}
               </td>
               <td className="p-4 text-center">
-                {record.dueDate}
+                {String(record.dueDate)}
               </td>
               <td className="p-4 text-center">
                 <BorrowReceiptBtn
@@ -108,12 +106,13 @@ const borrowDetails = await db
                     bookTitle: record.bookTitle,
                     bookAuthor: record.bookAuthor,
                     bookGenre: record.bookAuthor,
-                    borrowDate: record.borrowDate,
-                    dueDate: record.dueDate,
+                    borrowDate: new Date(record.borrowDate as string),   // ✅ Fix
+                    dueDate: record.dueDate as string, 
                   }}
                   email={record.email}
                   subject="Borrow Receipt"
-                  isGenerated={false}
+                  isGenerated={Boolean(record.receiptIsGenerated)}
+                  borrowId={String(record.borrowId)}     // ✅ Add this
                 />
               </td>
             </tr>

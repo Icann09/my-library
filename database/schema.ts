@@ -1,4 +1,5 @@
 
+import { boolean } from "drizzle-orm/gel-core";
 import { integer, text, date, varchar, timestamp, pgEnum, pgTable, uuid } from "drizzle-orm/pg-core";
 
 
@@ -45,4 +46,5 @@ export const borrowRecords = pgTable("borrow_records", {
   returnDate: date("return_date"),
   status: BORROW_STATUS_ENUM("status").default("BORROWED").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  receiptIsGenerated: boolean("receipt_is_generated").default(false).notNull(),
 });

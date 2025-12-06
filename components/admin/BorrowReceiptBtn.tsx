@@ -5,25 +5,29 @@ import { cn } from "@/lib/utils";
 import { sendEmail } from "@/lib/workflow";
 import { Button } from "../ui/button";
 import { bookBorrowReceipt } from "@/lib/emails/book-borrow-receipt";
+import { markReceiptGenerated } from "@/lib/actions/book";
 
 interface BorrowReceiptBtnProps {
   receipt: ReceiptParams;
   email: string;
   subject: string;
   isGenerated: boolean;
+  borrowId: string;
 }
 
 export default function BorrowReceiptBtn({
   receipt,
   email,
   subject,
-  isGenerated
+  isGenerated,
+  borrowId,
 }: BorrowReceiptBtnProps) {
 
   const [loading, setLoading] = useState(false);
+  const [generated, setGenerated] = useState(isGenerated); // ✅ sync local UI state
 
   const generateReceipt = async () => {
-    if (isGenerated || loading) return;
+    if (generated || loading) return;
 
     setLoading(true);
 
@@ -33,7 +37,8 @@ export default function BorrowReceiptBtn({
       message: bookBorrowReceipt(receipt),
     });
 
-    console.log("Receipt sent to:", email);
+    await markReceiptGenerated(borrowId);
+    setGenerated(true); // 🔥 update UI instantly
 
     setLoading(false);
   };
@@ -41,16 +46,16 @@ export default function BorrowReceiptBtn({
   return (
     <div>
       <Button
-        disabled={isGenerated || loading}
+        disabled={generated || loading}
         className={cn(
           "px-3 py-1 text-sm rounded-md text-white transition",
-          isGenerated || loading
+          generated || loading
             ? "bg-gray-300 cursor-not-allowed"
             : "bg-indigo-600 hover:bg-indigo-700"
         )}
         onClick={generateReceipt}
       >
-        {isGenerated
+        {generated
           ? "Receipt Generated"
           : loading
             ? "Sending..."

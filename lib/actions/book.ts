@@ -70,3 +70,11 @@ export const borrowBook = async (params: BorrowBookParams) => {
 export const borrowedBooksList = async (id: string) => {
   await db.select().from(borrowRecords).where(eq(borrowRecords.userId, id));
 }
+
+
+export async function markReceiptGenerated(borrowId: string) {
+  await db
+    .update(borrowRecords)
+    .set({ receiptIsGenerated: true })
+    .where(eq(borrowRecords.id, borrowId));
+}

@@ -22,6 +22,13 @@
       "when": 1745755368505,
       "tag": "0002_public_thing",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1765018771738,
+      "tag": "0003_clammy_anthem",
+      "breakpoints": true
     }
   ]
 }
