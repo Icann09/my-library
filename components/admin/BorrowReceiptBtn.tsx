@@ -27,10 +27,11 @@ export default function BorrowReceiptBtn({
   const [generated, setGenerated] = useState(isGenerated); // ✅ sync local UI state
 
   const generateReceipt = async () => {
-    if (generated || loading) return;
+  if (generated || loading) return;
 
-    setLoading(true);
+  setLoading(true);
 
+  try {
     await sendEmail({
       email,
       subject,
@@ -38,10 +39,15 @@ export default function BorrowReceiptBtn({
     });
 
     await markReceiptGenerated(borrowId);
-    setGenerated(true); // 🔥 update UI instantly
-
+    setGenerated(true);
+  } catch (error) {
+    console.error("Receipt generation failed:", error);
+    alert("Failed to generate receipt. Please try again.");
+  } finally {
     setLoading(false);
-  };
+  }
+};
+
 
   return (
     <div>
