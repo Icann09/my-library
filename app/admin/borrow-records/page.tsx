@@ -101,8 +101,7 @@ const borrowDetails = await db
                 {String(record.dueDate)}
               </td>
               <td className="p-4 text-center">
-                receipt
-                {/* <BorrowReceiptBtn
+                <BorrowReceiptBtn
                   receipt={{
                     bookTitle: record.bookTitle,
                     bookAuthor: record.bookAuthor,
@@ -114,7 +113,7 @@ const borrowDetails = await db
                   subject="Borrow Receipt"
                   isGenerated={Boolean(record.receiptIsGenerated)}
                   borrowId={String(record.borrowId)}     // ✅ Add this
-                /> */}
+                />
               </td>
             </tr>
           ))}
