@@ -30,36 +30,37 @@ export default function BorrowReceiptBtn({
 
     setLoading(true);
 
-  try {
-  console.log("📨 Sending email with payload:", {
-    email,
-    subject,
-    receipt,
-  });
+    try {
+      console.log("📨 Sending email with payload:", {
+        email,
+        subject,
+        receipt,
+      });
 
-  const emailResult = await sendEmail({
-    email,
-    subject,
-    message: bookBorrowReceipt(receipt),
-  });
+      const emailResult = await sendEmail({
+        email,
+        subject,
+        message: bookBorrowReceipt(receipt),
+      });
 
-  console.log("✅ Email sent:", emailResult);
+      console.log("✅ Email sent:", emailResult);
 
-  const markResult = await markReceiptGenerated(borrowId);
-  console.log("🔧 Marked as generated:", markResult);
+      const markResult = await markReceiptGenerated(borrowId);
+      console.log("🔧 Marked as generated:", markResult);
 
-  setGenerated(true);
-} catch (error: any) {
-  console.error("❌ Receipt generation failed:");
-  console.error("Error message:", error?.message);
-  console.error("Full error:", error);
+      setGenerated(true);
+    } catch (error: any) {
+      console.error("❌ Receipt generation failed:");
+      console.error("Error message:", error?.message);
+      console.error("Full error:", error);
 
-  alert("Failed to generate receipt. Please try again.");
-} finally {
-  setLoading(false);
-}
+      alert("Failed to generate receipt. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
+  // 🔥 Return INSIDE component, not inside the function above
   return (
     <div>
       <Button
