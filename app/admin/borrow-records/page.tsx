@@ -111,7 +111,6 @@ const borrowDetails = await db
 
                   }}
                   email={record.email}
-                  subject="Borrow Receipt"
                   isGenerated={Boolean(record.receiptIsGenerated)}
                   borrowId={String(record.borrowId)}     // ✅ Add this
                 />

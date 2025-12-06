@@ -10,7 +10,6 @@ import { markReceiptGenerated } from "@/lib/actions/book";
 interface BorrowReceiptBtnProps {
   receipt: ReceiptParams;
   email: string;
-  subject: string;
   isGenerated: boolean;
   borrowId: string;
 }
@@ -18,7 +17,6 @@ interface BorrowReceiptBtnProps {
 export default function BorrowReceiptBtn({
   receipt,
   email,
-  subject,
   isGenerated,
   borrowId,
 }: BorrowReceiptBtnProps) {
@@ -32,7 +30,7 @@ export default function BorrowReceiptBtn({
 
     try {
     
-      await sendEmail({ email, subject, message: bookBorrowReceipt(receipt) });
+      await sendEmail({ email, subject: "This is your receipt", message: bookBorrowReceipt(receipt) });
 
       const markResult = await markReceiptGenerated(borrowId);
       console.log("🔧 Marked as generated:", markResult);
