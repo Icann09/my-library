@@ -4,9 +4,9 @@ import config from "@/lib/config";
 
 
 export const workflowClient = new WorkflowClient({
-  token: config.env.upstash.qstashToken!,
+  baseUrl: config.env.upstash.qstashUrl,
+  token: config.env.upstash.qstashToken,
 });
-
 
 const qstashClient = new QStashClient({
   token: config.env.upstash.qstashToken,
