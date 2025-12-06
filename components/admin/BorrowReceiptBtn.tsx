@@ -22,14 +22,13 @@ export default function BorrowReceiptBtn({
   isGenerated,
   borrowId,
 }: BorrowReceiptBtnProps) {
-
   const [loading, setLoading] = useState(false);
-  const [generated, setGenerated] = useState(isGenerated); // ✅ sync local UI state
+  const [generated, setGenerated] = useState(isGenerated);
 
   const generateReceipt = async () => {
-  if (generated || loading) return;
+    if (generated || loading) return;
 
-  setLoading(true);
+    setLoading(true);
 
   try {
   console.log("📨 Sending email with payload:", {
@@ -61,7 +60,6 @@ export default function BorrowReceiptBtn({
 }
 
 
-
   return (
     <div>
       <Button
@@ -77,8 +75,8 @@ export default function BorrowReceiptBtn({
         {generated
           ? "Receipt Generated"
           : loading
-            ? "Sending..."
-            : "Generate Receipt"}
+          ? "Sending..."
+          : "Generate Receipt"}
       </Button>
     </div>
   );
