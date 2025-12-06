@@ -31,19 +31,8 @@ export default function BorrowReceiptBtn({
     setLoading(true);
 
     try {
-      // console.log("📨 Sending email with payload:", {
-      //   email,
-      //   subject,
-      //   receipt,
-      // });
-
-      // const emailResult = await sendEmail({
-      //   email,
-      //   subject,
-      //   message: bookBorrowReceipt(receipt),
-      // });
-
-      // console.log("✅ Email sent:", emailResult);
+    
+      await sendEmail({ email: email, subject: subject, message: bookBorrowReceipt(receipt) })
 
       const markResult = await markReceiptGenerated(borrowId);
       console.log("🔧 Marked as generated:", markResult);
