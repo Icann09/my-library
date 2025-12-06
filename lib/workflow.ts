@@ -26,7 +26,7 @@ export const sendEmail = async ({
   await qstashClient.publishJSON({
     api: {
       name: "email",
-      provider: resend({ token: config.env.resendToken }),
+      provider: resend({ token: config.env.resendToken! }),
     },
     body: {
       from: "My Library",
