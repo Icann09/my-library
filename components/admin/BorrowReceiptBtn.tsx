@@ -27,12 +27,23 @@ export default function BorrowReceiptBtn({
     if (generated || loading) return;
 
     setLoading(true);
-    await sendEmail({ email, subject: "This is your receipt", message: bookBorrowReceipt(receipt) });
 
-    const markResult = await markReceiptGenerated(borrowId);
-    console.log("🔧 Marked as generated:", markResult);
-    setGenerated(true);
-    setLoading(false);
+    try {
+    
+      // await sendEmail({ email, subject: "This is", message: bookBorrowReceipt(receipt) });
+
+      const markResult = await markReceiptGenerated(borrowId);
+      console.log("🔧 Marked as generated:", markResult);
+
+      setGenerated(true);
+    } catch (error: any) {
+      console.error("❌ Receipt generation failed:");
+      console.error("Error message:", error?.message);
+      console.error("Full error:", error);
+
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
