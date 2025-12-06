@@ -83,7 +83,8 @@ const borrowDetails = await db
                 </div>
               </td>
               <td className="p-4">
-                <BorrowedStatusBtn status={record.status} borrowId={record.borrowId}/>
+                Receipt
+                {/* <BorrowedStatusBtn status={record.status} borrowId={record.borrowId}/> */}
               </td>
               <td className="p-4 text-center">
                 {record.borrowDate
