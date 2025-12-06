@@ -54,7 +54,7 @@ export default function BorrowReceiptBtn({
       console.error("Error message:", error?.message);
       console.error("Full error:", error);
 
-      alert("Failed to generate receipt. Please try again.");
+      alert(error.message);
     } finally {
       setLoading(false);
     }
