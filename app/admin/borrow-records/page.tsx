@@ -105,9 +105,10 @@ const borrowDetails = await db
                   receipt={{
                     bookTitle: record.bookTitle,
                     bookAuthor: record.bookAuthor,
-                    bookGenre: record.bookAuthor,
-                    borrowDate: new Date(record.borrowDate as string),   // ✅ Fix
-                    dueDate: record.dueDate as string, 
+                    bookGenre: record.bookGenre,
+                    borrowDate: new Date(record.borrowDate as string).toLocaleDateString(),
+                    dueDate: new Date(record.dueDate as string).toLocaleDateString(),
+
                   }}
                   email={record.email}
                   subject="Borrow Receipt"

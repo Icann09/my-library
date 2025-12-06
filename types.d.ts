@@ -45,6 +45,6 @@ interface ReceiptParams {
   bookTitle: string;
   bookAuthor: string;
   bookGenre: string;
-  borrowDate: Date;
+  borrowDate: string;
   dueDate: string;
 }
