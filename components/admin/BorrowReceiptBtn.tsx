@@ -32,21 +32,34 @@ export default function BorrowReceiptBtn({
   setLoading(true);
 
   try {
-    await sendEmail({
-      email,
-      subject,
-      message: bookBorrowReceipt(receipt),
-    });
+  console.log("📨 Sending email with payload:", {
+    email,
+    subject,
+    receipt,
+  });
 
-    await markReceiptGenerated(borrowId);
-    setGenerated(true);
-  } catch (error) {
-    console.error("Receipt generation failed:", error);
-    alert("Failed to generate receipt. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  const emailResult = await sendEmail({
+    email,
+    subject,
+    message: bookBorrowReceipt(receipt),
+  });
+
+  console.log("✅ Email sent:", emailResult);
+
+  const markResult = await markReceiptGenerated(borrowId);
+  console.log("🔧 Marked as generated:", markResult);
+
+  setGenerated(true);
+} catch (error: any) {
+  console.error("❌ Receipt generation failed:");
+  console.error("Error message:", error?.message);
+  console.error("Full error:", error);
+
+  alert("Failed to generate receipt. Please try again.");
+} finally {
+  setLoading(false);
+}
+
 
 
   return (
