@@ -2,52 +2,33 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { sendEmail } from "@/lib/workflow";
 import { Button } from "../ui/button";
-import { bookBorrowReceipt } from "@/lib/emails/book-borrow-receipt";
-import { markReceiptGenerated } from "@/lib/actions/book";
-
-interface BorrowReceiptBtnProps {
-  receipt: ReceiptParams;
-  email: string;
-  isGenerated: boolean;
-  borrowId: string;
-}
+import { generateReceipt } from "@/lib/admin/actions/user";
 
 export default function BorrowReceiptBtn({
-  receipt,
-  email,
-  isGenerated,
   borrowId,
-}: BorrowReceiptBtnProps) {
+  isGenerated,
+}: {
+  borrowId: string;
+  isGenerated: boolean;
+}) {
   const [loading, setLoading] = useState(false);
   const [generated, setGenerated] = useState(isGenerated);
 
-  const generateReceipt = async () => {
-    if (generated || loading) return;
+  const handleGenerate = async () => {
+    if (loading || generated) return;
 
     setLoading(true);
 
-    try {
-    
-      // await sendEmail({ email, subject: "This is", message: bookBorrowReceipt(receipt) });
+    const res = await generateReceipt(borrowId);
 
-      const markResult = await markReceiptGenerated(borrowId);
-      console.log("🔧 Marked as generated:", markResult);
-
+    if (res?.success) {
       setGenerated(true);
-    } catch (error: any) {
-      console.error("❌ Receipt generation failed:");
-      console.error("Error message:", error?.message);
-      console.error("Full error:", error);
-
-      alert(error.message);
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
-  // 🔥 Return INSIDE component, not inside the function above
   return (
     <div>
       <Button
@@ -58,7 +39,7 @@ export default function BorrowReceiptBtn({
             ? "bg-gray-300 cursor-not-allowed"
             : "bg-indigo-600 hover:bg-indigo-700"
         )}
-        onClick={generateReceipt}
+        onClick={handleGenerate}
       >
         {generated
           ? "Receipt Generated"

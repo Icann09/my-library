@@ -72,9 +72,4 @@ export const borrowedBooksList = async (id: string) => {
 }
 
 
-export async function markReceiptGenerated(borrowId: string) {
-  await db
-    .update(borrowRecords)
-    .set({ receiptIsGenerated: true })
-    .where(eq(borrowRecords.id, borrowId));
-}
+

@@ -8,32 +8,30 @@ import BorrowReceiptBtn from "@/components/admin/BorrowReceiptBtn";
 export default async function Page() {
   const isGenerated = false;
   //Fetch data
-const borrowDetails = await db
-  .select({
-    borrowId: borrowRecords.id,
-    borrowDate: borrowRecords.borrowDate,
-    dueDate: borrowRecords.dueDate,
-    returnDate: borrowRecords.returnDate,
-    status: borrowRecords.status,
+  const borrowDetails = await db
+    .select({
+      borrowId: borrowRecords.id,
+      borrowDate: borrowRecords.borrowDate,
+      dueDate: borrowRecords.dueDate,
+      returnDate: borrowRecords.returnDate,
+      status: borrowRecords.status,
 
-    userId: users.id,
-    fullName: users.fullName,
-    email: users.email,
+      userId: users.id,
+      fullName: users.fullName,
+      email: users.email,
 
-    bookId: books.id,
-    bookTitle: books.title,
-    bookAuthor: books.author,
-    bookGenre: books.genre,
-    coverUrl: books.coverUrl,
-    coverColor: books.coverColor,
+      bookId: books.id,
+      bookTitle: books.title,
+      bookAuthor: books.author,
+      bookGenre: books.genre,
+      coverUrl: books.coverUrl,
+      coverColor: books.coverColor,
 
-    receiptIsGenerated: borrowRecords.receiptIsGenerated, // ✅ include it here
-  })
-  .from(borrowRecords)
-  .innerJoin(users, eq(borrowRecords.userId, users.id))
-  .innerJoin(books, eq(borrowRecords.bookId, books.id));
-
-
+      receiptIsGenerated: borrowRecords.receiptIsGenerated, // ✅ include it here
+    })
+    .from(borrowRecords)
+    .innerJoin(users, eq(borrowRecords.userId, users.id))
+    .innerJoin(books, eq(borrowRecords.bookId, books.id));
   
   // Render
   return (
@@ -101,18 +99,9 @@ const borrowDetails = await db
                 {String(record.dueDate)}
               </td>
               <td className="p-4 text-center">
-                <BorrowReceiptBtn
-                  receipt={{
-                    bookTitle: record.bookTitle,
-                    bookAuthor: record.bookAuthor,
-                    bookGenre: record.bookGenre,
-                    borrowDate: new Date(record.borrowDate as string).toLocaleDateString(),
-                    dueDate: new Date(record.dueDate as string).toLocaleDateString(),
-
-                  }}
-                  email={record.email}
+                <BorrowReceiptBtn 
+                  borrowId={String(record.borrowId)}
                   isGenerated={Boolean(record.receiptIsGenerated)}
-                  borrowId={String(record.borrowId)}     // ✅ Add this
                 />
               </td>
             </tr>
