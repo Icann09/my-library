@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { generateReceipt } from "@/lib/admin/actions/user";
+import { generateReceipt } from "@/lib/admin/actions/borrow";
 
 export default function BorrowReceiptBtn({
   borrowId,
