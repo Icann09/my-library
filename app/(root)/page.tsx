@@ -8,6 +8,7 @@ import { desc } from "drizzle-orm";
 
 export default async function Home() {
   const session = await auth();
+  if (!session?.user) throw new Error("Not authenticated");
   const latestBooks = (await db.select().from(books).limit(13).orderBy(desc(books.createdAt))) as Book[];
   return (
     <>
