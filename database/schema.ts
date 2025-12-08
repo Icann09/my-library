@@ -1,7 +1,8 @@
 
-import { boolean } from "drizzle-orm/gel-core";
-import { integer, text, date, varchar, timestamp, pgEnum, pgTable, uuid } from "drizzle-orm/pg-core";
+
+import { integer, text, date, varchar, timestamp, pgEnum, pgTable, uuid, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+
 
 
 export const STATUS_ENUM = pgEnum("status", ["PENDING", "APPROVED", "REJECTED",]);
@@ -38,6 +39,7 @@ export const books = pgTable("books", {
   summary: varchar("summary").notNull(),
   createdAt: timestamp("created_at", {withTimezone: true}).defaultNow(),
 });
+
 
 export const borrowRecords = pgTable("borrow_records", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),

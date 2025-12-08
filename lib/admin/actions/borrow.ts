@@ -54,7 +54,7 @@ export async function generateReceipt(borrowId: string) {
       bookAuthor: borrow.book.author,
       bookGenre: borrow.book.genre,
       borrowDate: borrow.borrowDate.toISOString(),
-      dueDate: borrow.dueDate.toISOString(),
+      dueDate: borrow.dueDate.toString(),
     };
 
     // 4. Send email
