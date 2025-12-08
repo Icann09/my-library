@@ -2,7 +2,7 @@
 
 import { db } from "@/database/drizzle";
 import { books, borrowRecords } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import dayjs from "dayjs";
 
 
@@ -28,8 +28,11 @@ export const borrowBook = async (params: BorrowBookParams) => {
     const existingBorrow = await db
       .select()
       .from(borrowRecords)
-      .where(eq(borrowRecords.userId, userId))
-      .where(eq(borrowRecords.bookId, bookId));
+      .where(and(
+        eq(borrowRecords.userId, userId),
+        eq(borrowRecords.bookId, bookId)
+      )
+    );
 
     if (existingBorrow.length > 0) {
       return {

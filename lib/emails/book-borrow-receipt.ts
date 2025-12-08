@@ -1,5 +1,5 @@
 export const bookBorrowReceipt = (params: ReceiptParams) => `
-  <div style="padding: 40px; font-family: Arial, sans-serif; background-color: #0F1117;">
+  <div style="padding: 40px; font-family: Arial, sans-serif;">
     <div style="
       max-width: 640px;
       margin: auto;
@@ -45,8 +45,8 @@ export const bookBorrowReceipt = (params: ReceiptParams) => `
       <!-- Footer -->
       <p style="margin-top: 20px; font-size: 16px;">
         Thank you for using <strong>BookWise</strong>!<br />
-        Website: <a style="color: #D4B17A; text-decoration: none;" href="https://bookwise.example.com">bookwise.example.com</a><br />
-        Email: <a style="color: #D4B17A; text-decoration: none;" href="mailto:support@bookwise.example.com">support@bookwise.example.com</a>
+        Website: <a style="color: #D4B17A; text-decoration: none;" href="https://my-library-dun.vercel.app">my-library-dun.vercel.app</a><br />
+        Email: <a style="color: #D4B17A; text-decoration: none;" href="mailto:support@bookwise.example.com">support@my-library-dun.vercel.app</a>
       </p>
 
     </div>
