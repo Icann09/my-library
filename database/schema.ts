@@ -1,11 +1,13 @@
 
 import { boolean } from "drizzle-orm/gel-core";
 import { integer, text, date, varchar, timestamp, pgEnum, pgTable, uuid } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 
 export const STATUS_ENUM = pgEnum("status", ["PENDING", "APPROVED", "REJECTED",]);
 export const ROLE_ENUM = pgEnum("role", ["USER", "ADMIN",]);
 export const BORROW_STATUS_ENUM = pgEnum("borrow_status", ["BORROWED", "RETURNED", "LATE RETURN"])
+
 
 
 export const users = pgTable("users", {
@@ -48,3 +50,14 @@ export const borrowRecords = pgTable("borrow_records", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   receiptIsGenerated: boolean("receipt_is_generated").default(false).notNull(),
 });
+
+export const borrowRecordsRelations = relations(borrowRecords, ({ one }) => ({
+  user: one(users, {
+    fields: [borrowRecords.userId],
+    references: [users.id],
+  }),
+  book: one(books, {
+    fields: [borrowRecords.bookId],
+    references: [books.id],
+  }),
+}));
