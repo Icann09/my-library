@@ -1,4 +1,14 @@
-export const bookBorrowedConfirmation = (studentName: string, bookTitle: string, borrowDate: string, dueDate: Date) => `
+export const bookBorrowedConfirmation = ({
+    studentName,
+    bookTitle,
+    borrowDate,
+    dueDate,
+  }: {
+    studentName: string;
+    bookTitle: string;
+    borrowDate: string;
+    dueDate: string;
+  }) => `
   <div style="padding: 40px; font-family: Arial, sans-serif;">
     <div style="max-width: 600px; margin: auto; background-color: #151821; border-radius: 12px; padding: 40px; color: #E5E7EB;">
       <!-- Logo -->

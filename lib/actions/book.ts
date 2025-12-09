@@ -5,8 +5,9 @@ import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
 import { eq, and } from "drizzle-orm";
 import dayjs from "dayjs";
-import { workflowClient } from "@/lib/workflow";
+import { sendEmail, workflowClient } from "@/lib/workflow";
 import config from "@/lib/config";
+import { bookBorrowedConfirmation } from "../emails/book-borrowed-confirmation";
 
 export async function borrowBook(bookId: string) {
   const session = await auth();
@@ -62,6 +63,23 @@ export async function borrowBook(bookId: string) {
       dueDate,
       status: "BORROWED",
     }).returning();
+
+    // Send email for borrow book confirmation
+    // Send email for borrow book confirmation
+    await sendEmail({
+      email: user.email,
+      subject: "Book Borrowed Successfully",
+      message: bookBorrowedConfirmation({
+        studentName: user.fullName,
+        bookTitle: book.title,
+        borrowDate: created.createdAt
+          ? new Date(created.createdAt).toISOString()
+          : "",
+        dueDate: created.dueDate
+          ? new Date(created.dueDate).toISOString()
+          : "",
+      }),
+    });
 
     // Decrease stock
     await db
