@@ -52,7 +52,7 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold text-white">
-        {isSignIn ? "Welcome Back to BookWise" : "Create Your Library Account"}
+        {isSignIn ? "Welcome Back to My Library" : "Create Your Library Account"}
       </h1>
       <p className="text-light-100">
         {isSignIn
@@ -93,7 +93,7 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
         </form>
       </Form>
       <p className="text-center text-base font-medium">
-        {isSignIn ? "New to BookWise? " : "Already Have an Account? "}
+        {isSignIn ? "New to My Library? " : "Already Have an Account? "}
         <Link href={isSignIn ? "/sign-up" : "/sign-in"} className="font-bold text-primary">
           {isSignIn ? "Create an Account" : "Sign In"}
         </Link>

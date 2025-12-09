@@ -4,14 +4,14 @@ export const welcomeOnboarding = (studentName: string) => `
     <!-- Logo -->
     <div style="font-size: 28px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
       <span style="font-size: 32px;">📚</span>
-      <span>BookWise</span>
+      <span>My Library</span>
     </div>
 
     <hr style="border: 0; height: 1px; background: #2D3140; margin: 24px 0;" />
 
     <!-- Title -->
     <h1 style="font-size: 28px; color: white; margin: 0 0 16px;">
-      Welcome to BookWise, Your Reading Companion!
+      Welcome to My Library, Your Reading Companion!
     </h1>
 
     <!-- Greeting -->
@@ -21,7 +21,7 @@ export const welcomeOnboarding = (studentName: string) => `
 
     <!-- Body -->
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-      Welcome to BookWise! We're excited to have you join our community of book enthusiasts. 
+      Welcome to My Library! We're excited to have you join our community of book enthusiasts. 
       Explore a wide range of books, borrow with ease, and manage your reading journey seamlessly.
     </p>
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
@@ -34,13 +34,13 @@ export const welcomeOnboarding = (studentName: string) => `
     <a href="https://my-library-dun.vercel.app" 
        style="display: inline-block; padding: 12px 24px; background-color: #F3D6A2; 
               color: #000; text-decoration: none; border-radius: 8px; font-weight: 600;">
-      Login to BookWise
+      Login to My Library
     </a>
 
     <!-- Footer -->
     <p style="margin-top: 32px; font-size: 16px;">
       Happy reading,<br />
-      The BookWise Team
+      The My Library Team
     </p>
   </div>
 </div>

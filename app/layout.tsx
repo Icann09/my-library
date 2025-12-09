@@ -24,8 +24,8 @@ const bebasNeue = localFont ({
 })
 
 export const metadata: Metadata = {
-  title: "BookWise",
-  description: "BookWise is book borrowing university library management solution",
+  title: "My Library",
+  description: "My Library is book borrowing university library management solution",
 };
 
 export default async function RootLayout({

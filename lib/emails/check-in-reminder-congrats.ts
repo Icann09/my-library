@@ -4,7 +4,7 @@ export const checkInReminderCongrats = (studentName: string) => `
     <!-- Logo -->
     <div style="font-size: 28px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
       <span style="font-size: 32px;">📚</span>
-      <span>BookWise</span>
+      <span>My Library</span>
     </div>
 
     <hr style="border: 0; height: 1px; background: #2D3140; margin: 24px 0;" />
@@ -21,7 +21,7 @@ export const checkInReminderCongrats = (studentName: string) => `
 
     <!-- Body -->
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-      Great news! You've reached a new milestone in your reading journey with BookWise. 🎉 Whether it's finishing a challenging book, staying consistent with your reading goals, or exploring new genres, your dedication inspires us.
+      Great news! You've reached a new milestone in your reading journey with My Library. 🎉 Whether it's finishing a challenging book, staying consistent with your reading goals, or exploring new genres, your dedication inspires us.
     </p>
     <p style="font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
       Keep the momentum going—there are more exciting books and features waiting for you!
@@ -40,7 +40,7 @@ export const checkInReminderCongrats = (studentName: string) => `
     <!-- Footer -->
     <p style="margin-top: 32px; font-size: 16px;">
       Keep the pages turning,<br />
-      The BookWise Team
+      The My Library Team
     </p>
   </div>
 </div>

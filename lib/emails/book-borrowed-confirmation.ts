@@ -14,7 +14,7 @@ export const bookBorrowedConfirmation = ({
       <!-- Logo -->
       <div style="font-size: 28px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
         <span style="font-size: 32px;">📚</span>
-        <span>BookWise</span>
+        <span>My Library</span>
       </div>
 
       <hr style="border: 0; height: 1px; background: #2D3140; margin: 24px 0;" />
@@ -51,7 +51,7 @@ export const bookBorrowedConfirmation = ({
       <!-- Footer -->
       <p style="margin-top: 32px; font-size: 16px;">
         Happy reading,<br />
-        The BookWise Team
+        The My Library Team
       </p>
     </div>
   </div>

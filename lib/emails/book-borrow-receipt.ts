@@ -13,7 +13,7 @@ export const bookBorrowReceipt = (params: ReceiptParams) => `
       <!-- Logo -->
       <div style="font-size: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
         <span style="font-size: 36px;">📖</span>
-        <span>BookWise</span>
+        <span>My Library</span>
       </div>
       
       <h2 style="margin-top: 28px; font-size: 26px; color: #FFFFFF;">Borrow Receipt</h2>
@@ -44,9 +44,9 @@ export const bookBorrowReceipt = (params: ReceiptParams) => `
 
       <!-- Footer -->
       <p style="margin-top: 20px; font-size: 16px;">
-        Thank you for using <strong>BookWise</strong>!<br />
+        Thank you for using <strong>My Library</strong>!<br />
         Website: <a style="color: #D4B17A; text-decoration: none;" href="https://my-library-dun.vercel.app">my-library-dun.vercel.app</a><br />
-        Email: <a style="color: #D4B17A; text-decoration: none;" href="mailto:support@bookwise.example.com">support@my-library-dun.vercel.app</a>
+        Email: <a style="color: #D4B17A; text-decoration: none;" href="mailto:support@My Library.example.com">support@my-library-dun.vercel.app</a>
       </p>
 
     </div>

@@ -1,6 +1,6 @@
-# 📚 BookWise
+# 📚 My Library
 
-BookWise is a **university library management solution** that enables students to borrow, return, and manage books online.  
+My Library is a **university library management solution** that enables students to borrow, return, and manage books online.  
 It provides a clean interface, authentication system, and activity tracking to make library management more efficient.
 
 ---
