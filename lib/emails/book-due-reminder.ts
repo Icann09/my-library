@@ -1,4 +1,12 @@
-export const bookDueReminder = (studentName: string, bookTitle: string, dueDate: Date) => `
+export const bookDueReminder = ({
+  studentName,
+  bookTitle,
+  dueDate,
+}: {
+  studentName: string;
+  bookTitle: string;
+  dueDate: string;
+}) =>`
 <div style="padding: 40px; font-family: Arial, sans-serif;">
   <div style="max-width: 600px; margin: auto; background-color: #151821; border-radius: 12px; padding: 40px; color: #E5E7EB;">
     <!-- Logo -->

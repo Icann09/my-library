@@ -5,96 +5,97 @@ import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
 import { eq, and } from "drizzle-orm";
 import dayjs from "dayjs";
+import { workflowClient } from "@/lib/workflow";
+import config from "@/lib/config";
 
 export async function borrowBook(bookId: string) {
-  // 1. Authenticate user securely
   const session = await auth();
   const userId = session?.user?.id;
 
-  if (!userId) {
-    return { success: false, error: "Not authenticated" };
-  }
+  if (!userId) return { success: false, error: "Not authenticated" };
 
-  // 2. Verify user account exists
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
   });
 
-  if (!user) {
-    return { success: false, error: "User not found" };
-  }
+  if (!user) return { success: false, error: "User not found" };
 
-  // Optional: Validate user status (APPROVED users only)
   if (user.status !== "APPROVED") {
     return { success: false, error: "You are not eligible to borrow this book" };
   }
 
   try {
-    // 3. Check book availability
-    const book = await db
-      .select({ availableCopies: books.availableCopies })
-      .from(books)
-      .where(eq(books.id, bookId))
-      .limit(1);
+    // ⬅️ Fetch book availability
+    const book = await db.query.books.findFirst({
+      where: eq(books.id, bookId),
+      columns: {
+        availableCopies: true,
+        title: true,
+      }
+    });
 
-    if (!book.length || book[0].availableCopies <= 0) {
+    if (!book || book.availableCopies <= 0) {
+      return { success: false, error: "Book is not available" };
+    }
+
+    // Already borrowed?
+    const existingBorrow = await db.query.borrowRecords.findFirst({
+      where: and(
+        eq(borrowRecords.userId, userId),
+        eq(borrowRecords.bookId, bookId)
+      ),
+    });
+
+    if (existingBorrow) {
       return {
         success: false,
-        error: "Book is not available for borrowing",
+        error: "You already borrowed this book",
       };
     }
 
-    // 4. Check if already borrowed
-    const existingBorrow = await db
-      .select()
-      .from(borrowRecords)
-      .where(
-        and(
-          eq(borrowRecords.userId, userId),
-          eq(borrowRecords.bookId, bookId)
-        )
-      );
+    // Create borrow record
+    const dueDate = dayjs().add(7, "day").toISOString();
 
-    if (existingBorrow.length > 0) {
-      return {
-        success: false,
-        error: "You have already borrowed this book. Check your profile page!",
-      };
-    }
-
-    // 5. Create borrow record
-    const dueDate = dayjs().add(7, "day").toDate().toDateString();
-
-    await db.insert(borrowRecords).values({
+    const [created] = await db.insert(borrowRecords).values({
       userId,
       bookId,
       dueDate,
       status: "BORROWED",
-    });
+    }).returning();
 
-    // 6. Decrease available copies
+    // Decrease stock
     await db
       .update(books)
-      .set({ availableCopies: book[0].availableCopies - 1 })
+      .set({ availableCopies: book.availableCopies - 1 })
       .where(eq(books.id, bookId));
 
-    return {
-      success: true,
-      message: "Book borrowed successfully",
-    };
+    //
+    // ⬇️ Trigger due-date reminder workflow HERE (correct)
+    //
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflows/due-reminder`,
+      body: {
+        email: user.email,
+        fullName: user.fullName!,
+        bookTitle: book.title,
+        dueDate,
+      },
+    });
+
+    return { success: true };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      error: "An error occurred while borrowing the book",
-    };
+    return { success: false, error: "Error borrowing book" };
   }
 }
 
 
 export const borrowedBooksList = async (id: string) => {
-  await db.select().from(borrowRecords).where(eq(borrowRecords.userId, id));
-}
+  return await db
+    .select()
+    .from(borrowRecords)
+    .where(eq(borrowRecords.userId, id));
+};
 
 
 
