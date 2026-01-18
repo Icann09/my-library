@@ -19,8 +19,9 @@ export default function Header({ session }: { session: any })  {
   return (
     <header className="hidden md:flex w-full mx-auto my-6 px-4 justify-between items-center ">
       {/* Logo */}
-      <Link href="/">
+      <Link href="/" className="flex items-center gap-2">
         <Image src="/logo.png" alt="logo" width={40} height={40} />
+        <h1 className="hidden lg:flex text-2xl font-semibold font-bebas-neue">My Library</h1>
       </Link>
 
       <div className="flex items-center gap-6 min-w-[180px] justify-center">

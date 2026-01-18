@@ -1,0 +1,29 @@
+What problem does it solve?
+"
+This app handles users and admin. 
+Users features: pages (sign-up, sign-in, home, searc, profile, books/id), authentications (sign-up, sign-in, sign-out, session), books search, key features (borrow-books, borrowed books list, overdue information, overdue-notification, activity tracking workflow).
+Admin features: pages (home/dashboard, users, books, borrow-records, account-requests), key features (admin route role,  create and edit books, account permission, edit user role and delete users, receipt generate for borrowed books, borrow-records status edit), 
+"
+
+This application solves the problem of managing a digital library system where regular users and administrators have clearly separated responsibilities. It enables users to securely search, borrow, and track books while allowing administrators to manage inventory, user permissions, users and borrowing workflows in a controlled, and role-based environment.
+
+
+
+Architecture decision 
+The application is built using a layered architecture with Next.js App Router, where server-side rendering, authentication, and role-based access control are handled on the server, while interactive features and UI state are managed on the client.
+
+
+Core Architectural Decisions
+
+1. App Router + Server Components (Server-first)
+I used Next.js App Router to leverage Server Components for data fetching and page rendering, ensuring secure access to authentication data and improving performance by reducing client-side JavaScript.
+
+2. Session-Based Authentication (Server-Side)
+Authentication is handled using session-based auth stored in HttpOnly cookies, allowing secure user identification on every request without exposing tokens to the client.
+z
+3. Role-Based Access Control (RBAC)
+I implemented role-based access control by validating user roles at the layout and server-action level, ensuring that admin-only routes and mutations cannot be accessed from the client.
+
+4. Data Fetching and Server Actions for Mutations
+
+All data fetching, create, update, and delete operations are implemented using Server Actions instead of API routes, reducing boilerplate and keeping business logic on the server.

@@ -12,13 +12,18 @@ export default async function SearchPage() {
     .orderBy(desc(books.createdAt))
     .limit(50);
 
-  // ❗ Convert Date → string so they can be passed safely to a client component
+  // Serialize Date → string for client component
   const latestBooks = rawBooks.map((book) => ({
     ...book,
     createdAt: book.createdAt.toISOString(),
   }));
 
-  const genres = [...new Set(latestBooks.map((book) => book.genre))];
+  const genres = [...new Set(latestBooks.map((book) => book.genre).filter(Boolean))];
 
-  return <ClientSearch latestBooks={latestBooks} genres={genres} />;
+  return (
+    <ClientSearch
+      latestBooks={latestBooks}
+      genres={genres}
+    />
+  );
 }
