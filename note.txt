@@ -1,17 +1,12 @@
 What problem does it solve?
-"
-This app handles users and admin. 
-Users features: pages (sign-up, sign-in, home, searc, profile, books/id), authentications (sign-up, sign-in, sign-out, session), books search, key features (borrow-books, borrowed books list, overdue information, overdue-notification, activity tracking workflow).
-Admin features: pages (home/dashboard, users, books, borrow-records, account-requests), key features (admin route role,  create and edit books, account permission, edit user role and delete users, receipt generate for borrowed books, borrow-records status edit), 
-"
-
-This application solves the problem of managing a digital library system where regular users and administrators have clearly separated responsibilities. It enables users to securely search, borrow, and track books while allowing administrators to manage inventory, user permissions, users and borrowing workflows in a controlled, and role-based environment.
-
+"This application solves the problem of managing a digital library system with clearly separated responsibilities between regular users and administrators. 
+It allows users to securely search, borrow, and track books, while enabling administrators to manage inventory, user permissions, and borrowing workflows in a controlled, role-based environment. 
+The system includes background workflows for overdue reminders using Upstash Workflows, enabling reliable, serverless email notifications independent of user activity.
+Data is stored in a relational database using neon-prostegreSQL (with drizzle ORM) with clear separation between user, book, and borrowing entities, ensuring consistent authorization checks at the query level."
 
 
 Architecture decision 
-The application is built using a layered architecture with Next.js App Router, where server-side rendering, authentication, and role-based access control are handled on the server, while interactive features and UI state are managed on the client.
-
+"The application is built using a layered, server-first architecture with Next.js App Router. Server-side rendering, authentication, and role-based access control are handled on the server, while interactive UI and local state are managed on the client."
 
 Core Architectural Decisions
 
@@ -25,5 +20,55 @@ z
 I implemented role-based access control by validating user roles at the layout and server-action level, ensuring that admin-only routes and mutations cannot be accessed from the client.
 
 4. Data Fetching and Server Actions for Mutations
-
 All data fetching, create, update, and delete operations are implemented using Server Actions instead of API routes, reducing boilerplate and keeping business logic on the server.
+
+5.URL-Based State & Search
+Search and filtering are driven by URL query parameters, enabling shareable, bookmarkable pages while keeping server-rendered data in sync with client interactions.
+
+
+
+🔍 Trade-offs & Technical Decisions
+Server Actions vs API Routes
+
+Why Server Actions
+. Reduced boilerplate by colocating mutations with business logic
+. Automatic server-side authentication and authorization
+. Type-safe mutations without manual request/response handling
+. Better alignment with Next.js App Router architecture
+
+Trade-offs
+. Tighter coupling to Next.js (less framework-agnostic)
+. Limited reusability for external consumers (e.g. mobile apps)
+. Requires careful handling of optimistic UI and error states
+
+Decision
+. Server Actions were chosen to prioritize security, maintainability, and developer productivity for a web-only application.
+
+
+
+⚠️ Challenges Faced
+1. Server vs Client Boundaries
+. Managing clear separation between Server Components and Client Components
+. Avoiding accidental client-side access to sensitive authentication data
+Solution
+. Centralized auth logic in server-only utilities
+. Enforced role checks at layout and server-action levels
+
+2. Role-Based Access Control
+. Preventing privilege escalation beyond UI restrictions
+Solution
+. Role validation performed on the server for every protected route and mutation
+. UI checks used only as a convenience layer
+
+3. Background Workflows & Due Date Notifications
+Challenge
+. Handling time-based workflows (book due reminders) without relying on client-side logic
+. Ensuring notifications are reliable even when users are inactive or offline
+. Avoiding long-running cron jobs or custom background servers
+✅ Solution: Upstash Workflow + Email Notifications
+. Implemented Upstash Workflows to manage delayed and scheduled background tasks
+. When a book is borrowed, a workflow is triggered that:
+. Calculates the due date
+. Schedules reminder steps (e.g. 3 days before due, on due date, overdue)
+. Sends email notifications automatically without user interaction
+. Workflow execution is durable, retry-safe, and serverless-friendly
