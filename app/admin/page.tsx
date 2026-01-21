@@ -7,19 +7,34 @@ import { Plus } from "lucide-react";
 import BooksCard from "@/components/admin/home/BooksCard";
 import Link from "next/link";
 
+const dateFormat = (date: Date | string) =>
+  format(new Date(date), "MM/dd/yy");
 
 export default async function Page() {
   // Fetching data
     // Stats Data
-    const statsData = await fetchStatsData();
-    const statsArray = Object.entries(statsData);
-    // Borrow records
-    const borrowDetails = await fetchBorrowDetails();
-    const users = await fetchAccountRequest();
-    const books = await fetchBooks();
 
-  // Date format
-  const dateFormat = (date: Date | string) => format(new Date(date), "MM/dd/yy");
+    const [
+      statsData,
+      borrowDetails,
+      users,
+      books
+    ] = await Promise.all([
+      fetchStatsData(),
+      fetchBorrowDetails(),
+      fetchAccountRequest(),
+      fetchBooks(),
+    ]);
+
+  const statsArray = Object.entries(statsData);
+  const booksWithFormattedDate = books.map(book => ({
+    ...book,
+    createdAtFormatted: book.createdAt
+      ? dateFormat(book.createdAt)
+      : "—", // or "N/A"
+  }));
+
+
 
 
   return (
@@ -96,13 +111,13 @@ export default async function Page() {
           </div>
           <div className="relative flex-1 overflow-hidden">
             <div className="flex gap-1 flex-col mt-3 overflow-y-auto pr-2 h-full">
-              {books.map((book, index) => (
+              {booksWithFormattedDate.map((book) => (
                 <BooksCard 
-                  key={index}
+                  key={book.id}
                   title={book.title}
                   author={book.author}
                   genre={book.genre}
-                  createdAt={dateFormat(book.createdAt)}
+                  createdAt={book.createdAtFormatted}
                   coverColor={book.coverColor}
                   coverUrl={book.coverUrl}
                 />

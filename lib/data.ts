@@ -44,6 +44,7 @@ export const fetchAccountRequest = async () => {
 export const fetchBooks = async () => {
   const bookList = await db 
     .select({
+      id: books.id,
       title: books.title,
       author: books.author,
       genre: books.genre,
