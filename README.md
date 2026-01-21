@@ -34,6 +34,14 @@ https://github.com/Icann09/my-library
   <img src="./public/assets/admin/users.webp" alt="Admin Users Page" width="380" />
 </p>
 
+### 📧 Emails 
+<p align="center">
+  <img src="./public/assets/emails/account-approve.webp" alt="Accoint Approve" width="380" />
+  <img src="./public/assets/emails/borrow-book.webp" alt="Borrow Book" width="380" />
+  <img src="./public/assets/emails/borrow-receipt.webp" alt="Borrow Receipt" width="380" />
+  <img src="./public/assets/emails/welcomeback.webp" alt="Welcome Back" width="380" />
+</p>
+
 
 ## 🚩 Problem Statement
 - Managing a digital library requires:
