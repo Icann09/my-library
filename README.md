@@ -118,6 +118,17 @@ High-level design:
 - Server-rendered data always stays in sync
 
 
+## 🧪 Testing
+- Unit testing for utility functions and business logic
+- Manual QA for critical user flows (authentication, borrowing)
+
+
+## 🛡 Error Handling
+- Graceful server-side error handling in Server Actions
+- User-friendly error feedback via toast notifications
+- Centralized logging for debugging production issues
+
+
 ## 🔍 Trade-offs & Technical Decisions
 Server Actions vs API Routes
 Why Server Actions
