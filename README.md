@@ -18,14 +18,14 @@ https://github.com/Icann09/my-library
   <img src="./public/assets/home-page.webp" alt="Home Page" width="800" />
 </p>
 
-### 🛍️ BookId, Search & Profile Pages
+### 📚 BookId, Search & Profile Pages
 <p align="center">
   <img src="./public/assets/booksId-page.webp" alt="Book Id Page" width="380" />
   <img src="./public/assets/search-page.webp" alt="Search Page" width="380" />
   <img src="./public/assets/profile-page.webp" alt="Profile  Page" width="380" />
 </p>
 
-### ❤️ Admin Pages
+### 🧑🏻‍💻 Admin Pages
 <p align="center">
   <img src="./public/assets/admin/accounts.webp" alt="Admin Accounts Page" width="380" />
   <img src="./public/assets/admin/books.webp" alt="Admin Books Page" width="380" />
