@@ -3,12 +3,27 @@
 import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
-import { eq, and, gt, sql } from "drizzle-orm";
+import { eq, and, gt, sql, desc } from "drizzle-orm";
 import dayjs from "dayjs";
 import { sendEmail, workflowClient } from "@/lib/workflow";
 import config from "@/lib/config";
 import { bookBorrowedConfirmation } from "../emails/book-borrowed-confirmation";
+import { unstable_cache } from "next/cache";
 
+
+export const fetchLatestBooks = unstable_cache(
+  async () => {
+    return await db
+      .select()
+      .from(books)
+      .orderBy(desc(books.createdAt))
+      .limit(13);
+  },
+  ["latest-books"], // cache key
+  {
+    revalidate: 3600,
+  }
+);
 
 
 export async function borrowBook(bookId: string) {

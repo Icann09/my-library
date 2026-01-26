@@ -10,14 +10,6 @@ import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 
 
-type Book = {
-  id: number;
-  title: string;
-  genre?: string;
-  department?: string;
-  createdAt: string;
-};
-
 type ClientSearchProps = {
   latestBooks: Book[];
   genres: string[];
@@ -100,6 +92,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
             placeholder="Search books by title…"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            className="pl-9"
           />
         </div>
       </div>

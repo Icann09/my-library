@@ -1,10 +1,21 @@
-"use server"
-
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
-import { eq, lt, and, sql } from "drizzle-orm"
+import { eq, lt, and, sql, desc } from "drizzle-orm"
 import { subHours } from "date-fns";
+import { unstable_cache } from "next/cache";
 
+
+export  const getLatestBooks  = unstable_cache(
+    async () => {
+      return await db
+        .select()
+        .from(books)
+        .orderBy(desc(books.createdAt))
+        .limit(50);
+    },
+    ["latest-books"],
+    { revalidate: 3600 }
+  );
 
 export const fetchBorrowDetails = async () => {
   const borrowDetails = await db

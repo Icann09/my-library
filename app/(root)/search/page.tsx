@@ -1,23 +1,11 @@
 // app/search/page.tsx
 
-import { db } from "@/database/drizzle";
-import { books } from "@/database/schema";
-import { desc } from "drizzle-orm";
 import ClientSearch from "@/components/ui/ClientSearch";
+import { getLatestBooks } from "@/lib/data";
 
 export default async function SearchPage() {
-  const rawBooks = await db
-    .select()
-    .from(books)
-    .orderBy(desc(books.createdAt))
-    .limit(50);
 
-  // Serialize Date → string for client component
-  const latestBooks = rawBooks.map((book) => ({
-    ...book,
-    createdAt: book.createdAt.toISOString(),
-  }));
-
+  const latestBooks = await getLatestBooks();
   const genres = [...new Set(latestBooks.map((book) => book.genre).filter(Boolean))];
 
   return (
