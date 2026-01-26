@@ -38,9 +38,20 @@ export default async function BookOverview ({ title, author, genre, rating, tota
       </div>
       <div className="relative flex flex-1 justify-center">
         <div className="relative">
-          <BookCover variant="wide" className="z-10" coverColor={coverColor} coverImage={coverUrl}/>
+          <BookCover
+            variant="wide"
+            className="z-10"
+            coverImage={coverUrl}
+            coverColor={coverColor}
+            priority
+          />
           <div className="absolute left-16 top-10 rotate-12 opacity-40 max-sm:hidden">
-            <BookCover variant="wide" coverColor={coverColor} coverImage={coverUrl}/>
+            <BookCover
+              variant="wide"
+              coverImage={coverUrl}
+              coverColor={coverColor}
+              priority
+            />
           </div>
         </div>
       </div>

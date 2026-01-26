@@ -15,14 +15,17 @@ const variantStyles: Record<BookCoverVariant, string> = {
   wide: "book-cover_wide",
 }
 
+
 interface Props {
   className?: string;
   variant?: BookCoverVariant;
   coverColor: string;
   coverImage: string;
+  priority?: boolean;
 }
 
-export default function BookCover({ className, variant = "regular", coverColor = "#012B48", coverImage}: Props) {
+
+export default function BookCover({ className, variant = "regular", coverColor = "#012B48", coverImage, priority}: Props) {
   return (
     <div className={cn("relative transition-all duration-300", variantStyles[variant], className)}>
       <BookCoverSvg coverColor={coverColor}/>
@@ -33,8 +36,7 @@ export default function BookCover({ className, variant = "regular", coverColor =
         alt="Book cover"
         fill
         className="rounded-sm object-fill"
-        loading="lazy"
-        lqip={{ active: true }}
+        lqip={priority ? undefined : { active: true }}
         onError={() => {
           console.error('Failed to load image');
           // Optionally, you could set a default image here
