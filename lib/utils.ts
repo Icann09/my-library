@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { format } from "date-fns";
+
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,3 +16,7 @@ export function getInitials(name: string) {
     .toUpperCase() // Convert to uppercase
     .slice(0, 2); // Keep only the first 2 characters
 }
+
+export function dateFormat (date: Date | string) {
+  return format(new Date(date), "MM/dd/yy");
+};
