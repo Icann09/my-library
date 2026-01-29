@@ -34,6 +34,7 @@ export const fetchBorrowDetails = async () => {
       bookGenre: books.genre,
       coverUrl: books.coverUrl,
       coverColor: books.coverColor,
+      receiptIsGenerated: borrowRecords.receiptIsGenerated, 
     })
     .from(borrowRecords)
     .innerJoin(users, eq(borrowRecords.userId, users.id))
@@ -44,8 +45,12 @@ export const fetchBorrowDetails = async () => {
 export const fetchAccountRequest = async () => {
   const accountRequest = await db
     .select({
+      id: users.id,
       fullName: users.fullName,
       email: users.email,
+      createdAt: users.createdAt,
+      universityId: users.universityId,
+      universityCard: users.universityCard,
     })
     .from(users)
     .where(eq(users.status, "PENDING"));

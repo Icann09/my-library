@@ -254,3 +254,102 @@ export  function BooksTableSkeleton({ rows = 9 }: { rows?: number }) {
   );
 }
 
+export function BorrowRecordsTableSkeleton({
+  rows = 7,
+}: {
+  rows?: number;
+}) {
+  return (
+    <tbody>
+      {Array.from({ length: rows }).map((_, index) => (
+        <tr key={index} className="border-b animate-pulse">
+          {/* Book */}
+          <td className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-12 rounded-sm bg-gray-200" />
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+            </div>
+          </td>
+
+          {/* User */}
+          <td className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gray-200" />
+            <div className="space-y-2">
+              <div className="h-4 w-28 bg-gray-200 rounded" />
+              <div className="h-3 w-36 bg-gray-200 rounded" />
+            </div>
+          </td>
+
+          {/* Status */}
+          <td className="p-4">
+            <div className="h-8 w-24 bg-gray-200 rounded-full mx-auto" />
+          </td>
+
+          {/* Borrow date */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-24 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* Return date */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-24 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* Due date */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-24 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* Receipt */}
+          <td className="p-4 text-center">
+            <div className="h-8 w-24 bg-gray-200 rounded-md mx-auto" />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+
+
+
+export function AccountRequestsTableSkeleton({ rows = 11 }: { rows?: number }) {
+  return (
+    <tbody>
+      {Array.from({ length: rows }).map((_, i) => (
+        <tr key={`account-request-skeleton-${i}`} className="border-t animate-pulse">
+          {/* User */}
+          <td className="px-4 py-3 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-gray-200" />
+            <div className="space-y-2">
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+              <div className="h-3 w-40 bg-gray-100 rounded" />
+            </div>
+          </td>
+
+          {/* Date */}
+          <td className="px-4 py-3 text-center">
+            <div className="h-4 w-24 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* University ID */}
+          <td className="px-4 py-3 text-center">
+            <div className="h-4 w-20 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* ID Card */}
+          <td className="px-4 py-3 text-center">
+            <div className="h-4 w-16 bg-gray-200 rounded mx-auto" />
+          </td>
+
+          {/* Actions */}
+          <td className="px-4 py-3">
+            <div className="flex justify-center gap-3">
+              <div className="h-8 w-20 bg-gray-200 rounded" />
+              <div className="h-8 w-20 bg-gray-200 rounded" />
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  );
+}
