@@ -166,7 +166,7 @@ export function RecentlyAddedBooksSkeleton() {
 }
 
 
-export default function UsersTableSkeleton() {
+export  function UsersTableSkeleton() {
   return (
     <tbody>
       {Array.from({ length: 6 }).map((_, i) => (
@@ -210,6 +210,43 @@ export default function UsersTableSkeleton() {
           {/* Action */}
           <td className="p-4 text-center">
             <div className="h-8 w-8 mx-auto bg-gray-200 rounded-md animate-pulse" />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+
+
+export  function BooksTableSkeleton({ rows = 9 }: { rows?: number }) {
+  return (
+    <tbody>
+      {Array.from({ length: rows }).map((_, index) => (
+        <tr key={index} className="border-b animate-pulse">
+          {/* Book cover + title */}
+          <td className="p-4 flex items-center gap-3">
+            <div className="w-8 h-12 rounded-sm bg-gray-200" />
+            <div className="h-4 w-32 bg-gray-200 rounded" />
+          </td>
+
+          {/* Author */}
+          <td className="p-4">
+            <div className="h-4 w-28 bg-gray-200 rounded" />
+          </td>
+
+          {/* Genre */}
+          <td className="p-4">
+            <div className="h-4 w-20 bg-gray-200 rounded" />
+          </td>
+
+          {/* Created date */}
+          <td className="p-4">
+            <div className="h-4 w-24 bg-gray-200 rounded" />
+          </td>
+
+          {/* Action */}
+          <td className="p-4">
+            <div className="h-8 w-8 bg-gray-200 rounded-md" />
           </td>
         </tr>
       ))}

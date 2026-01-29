@@ -1,16 +1,12 @@
-import BookAction from "@/components/admin/BookAction";
-import BookCover from "@/components/ui/BookCover";
-import { Button } from "@/components/ui/button"; 
-import { db } from "@/database/drizzle";
-import { books } from "@/database/schema";
+import BooksTable from "@/components/admin/home/BooksTable";
+import { Button } from "@/components/ui/button";
+import { BooksTableSkeleton } from "@/components/ui/Skeletons";
 import Link from "next/link";
-
-
+import { Suspense } from "react";
 
 
 export default async function Page() {
-  const bookRecord = await db.select().from(books);
-  console.log(bookRecord[0]);
+
   return (
     <section className="w-full rounded-2xl bg-white p-4 text-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -33,36 +29,9 @@ export default async function Page() {
                   <th className="p-4">Action</th>
                 </tr>
               </thead>
-              <tbody>
-                {bookRecord.map(book => (
-                  <tr key={book.id} className="border-b hover:bg-gray-50">
-                    <td className="p-4 flex items-center gap-3">
-                      <div className="">
-                        <BookCover coverColor={book.coverColor} coverImage={book.coverUrl} variant="extraSmall"/> 
-                      </div>
-                      <p className="font-semibold">
-                        {book.title}
-                      </p>
-                    </td>
-                    <td className="p-4 max-w-40">
-                      {book.author}
-                    </td>
-                    <td className="p-4">
-                      {book.genre}
-                    </td>
-                    <td className="p-4">
-                      {new Date(book.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                    </td>
-                    <td className="p-4">
-                      <BookAction bookId={book.id}/>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              <Suspense fallback={<BooksTableSkeleton />}>
+                <BooksTable />
+              </Suspense>
             </table>
           </div>
     </section>

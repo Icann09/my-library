@@ -1,5 +1,5 @@
 import UsersTable from "@/components/admin/home/UsersTable";
-import UsersTableSkeleton from "@/components/ui/Skeletons";
+import { UsersTableSkeleton } from "@/components/ui/Skeletons";
 import { Suspense } from "react";
 
 
