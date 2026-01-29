@@ -97,3 +97,24 @@ export const fetchStatsData = async () => {
       borrowRecordsStats: { value: growthBorrowedBooks, total: totalBorrowRecord, title: "Borrowed Books" },
     };
 }
+
+
+export const fetchUsersWithBorrowCount = async () => {
+  const usersWithBorrowCount = await db
+    .select ({
+      id: users.id,
+      fullName: users.fullName,
+      email: users.email,
+      createdAt: users.createdAt,
+      role: users.role,
+      universityId: users.universityId,
+      universityCard: users.universityCard,
+      borrowCount: sql<number>`count(${borrowRecords.id})`,
+    })
+    .from(users)
+    .leftJoin(borrowRecords, eq(users.id, borrowRecords.userId))
+    .where(eq(users.status, "APPROVED"))
+    .groupBy(users.id);
+    
+  return usersWithBorrowCount;
+}

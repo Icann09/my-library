@@ -166,3 +166,54 @@ export function RecentlyAddedBooksSkeleton() {
 }
 
 
+export default function UsersTableSkeleton() {
+  return (
+    <tbody>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <tr key={i} className="border-b">
+          {/* Name */}
+          <td className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
+              <div className="space-y-2">
+                <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+                <div className="h-3 w-40 bg-gray-100 rounded animate-pulse" />
+              </div>
+            </div>
+          </td>
+
+          {/* Date Joined */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-20 mx-auto bg-gray-200 rounded animate-pulse" />
+          </td>
+
+          {/* Role */}
+          <td className="p-4 text-center">
+            <div className="h-8 w-20 mx-auto bg-gray-200 rounded-md animate-pulse" />
+          </td>
+
+          {/* Books Borrowed */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-6 mx-auto bg-gray-200 rounded animate-pulse" />
+          </td>
+
+          {/* University ID */}
+          <td className="p-4 text-center">
+            <div className="h-4 w-24 mx-auto bg-gray-200 rounded animate-pulse" />
+          </td>
+
+          {/* ID Card */}
+          <td className="p-4 text-center">
+            <div className="h-8 w-8 mx-auto bg-gray-200 rounded-md animate-pulse" />
+          </td>
+
+          {/* Action */}
+          <td className="p-4 text-center">
+            <div className="h-8 w-8 mx-auto bg-gray-200 rounded-md animate-pulse" />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  );
+}
+
