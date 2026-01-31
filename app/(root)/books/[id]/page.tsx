@@ -5,6 +5,13 @@ import { db } from "@/database/drizzle";
 import { books } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Book Details",
+};
+
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

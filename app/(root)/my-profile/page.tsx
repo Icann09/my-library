@@ -8,7 +8,13 @@ import { InferSelectModel } from "drizzle-orm"; // <-- helper for types
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
+import type { Metadata } from "next";
 
+
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 // Base Book type from schema
 type Book = InferSelectModel<typeof books>;
 
@@ -21,7 +27,7 @@ export default async function Page() {
   const session = await auth();
   const userId = session?.user?.id;
   const initials = getInitials(session?.user?.name || "IN");
-
+  
   const userUniversity = await db
   .select({
     universityId: users.universityId,

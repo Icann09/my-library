@@ -2,6 +2,11 @@
 
 import ClientSearch from "@/components/ui/ClientSearch";
 import { getLatestBooks } from "@/lib/data";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Search Books",
+};
 
 export default async function SearchPage() {
 
