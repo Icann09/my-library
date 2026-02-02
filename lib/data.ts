@@ -17,6 +17,16 @@ export  const getLatestBooks  = unstable_cache(
     { revalidate: 3600 }
   );
 
+export const fetchBookWithId = async (id: string) => {
+  const book = await db
+    .select()
+    .from(books)
+    .where(eq(books.id, id))
+    .limit(1);
+  
+  return book;
+}
+
 export const fetchBorrowDetails = async () => {
   const borrowDetails = await db
     .select({

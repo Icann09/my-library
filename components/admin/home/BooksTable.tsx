@@ -2,6 +2,7 @@
 import { fetchBooks } from "@/lib/data";
 import BookAction from "@/components/admin/BookAction";
 import BookCover from "@/components/ui/BookCover";
+import Link from "next/link";
 
 
 export default async function BooksTable() {
@@ -11,13 +12,18 @@ export default async function BooksTable() {
     <tbody>
       {bookRecord.map(book => (
         <tr key={book.id} className="border-b hover:bg-gray-50">
-          <td className="p-4 flex items-center gap-3">
-            <div className="">
-              <BookCover coverColor={book.coverColor} coverImage={book.coverUrl} variant="extraSmall"/> 
-            </div>
-            <p className="font-semibold">
-              {book.title}
-            </p>
+          <td className="p-4">
+            <Link
+              href={`/admin/books/${book.id}`}
+              className="flex items-center gap-3 hover:underline"
+            >
+              <BookCover
+                coverColor={book.coverColor}
+                coverImage={book.coverUrl}
+                variant="extraSmall"
+              />
+              <p className="font-semibold">{book.title}</p>
+            </Link>
           </td>
           <td className="p-4 max-w-40">
             {book.author}

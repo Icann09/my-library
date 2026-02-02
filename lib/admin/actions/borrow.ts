@@ -1,6 +1,6 @@
 "use server"
 
-import { borrowRecords } from "@/database/schema";
+import { books, borrowRecords } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { bookBorrowReceipt } from "@/lib/emails/book-borrow-receipt";
@@ -70,3 +70,4 @@ export async function generateReceipt(borrowId: string) {
     return { success: false };
   }
 }
+

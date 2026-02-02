@@ -6,6 +6,7 @@ import { books } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { fetchBookWithId } from "@/lib/data";
 
 
 export const metadata: Metadata = {
@@ -17,11 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const session = await auth();
 
-  const [bookDetails] = await db
-    .select()
-    .from(books)
-    .where(eq(books.id, id))
-    .limit(1);
+  const [bookDetails] = await fetchBookWithId(id);
 
   if (!bookDetails) redirect("/404");
 
