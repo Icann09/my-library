@@ -13,8 +13,8 @@ export default function BookList({ title, books, containerClassName, variant }: 
   
   return (
     <section className={containerClassName}>
-      <h2 className="font-bebas-neue font-bold text-4xl w-full text-light-100 text-left">{title}</h2>
-      <ul className="book-list">
+      <h2 className="font-bebas-neue font-bold text-4xl w-full text-light-100 text-left mb-4">{title}</h2>
+      <div className="book-list">
         {books.map((book) =>
           variant === "Book" ? (
             <BookCard key={book.id} {...book} />
@@ -22,7 +22,7 @@ export default function BookList({ title, books, containerClassName, variant }: 
             <BookCardBorrowed key={book.id} {...book} />
           )
         )}
-      </ul>
+      </div>
     </section>
   )
 }
