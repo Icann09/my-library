@@ -10,8 +10,7 @@ export  const getLatestBooks  = unstable_cache(
       return await db
         .select()
         .from(books)
-        .orderBy(desc(books.createdAt))
-        .limit(50);
+        .orderBy(desc(books.createdAt));
     },
     ["latest-books"],
     { revalidate: 3600 }

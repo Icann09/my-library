@@ -205,7 +205,7 @@
     @apply mt-6 flex flex-wrap gap-5 justify-around;
   }
   .book-title {
-    @apply mt-2 line-clamp-1 text-base font-semibold text-white xs:text-xl;
+    @apply mt-2 line-clamp-1 text-base font-semibold text-white;
   }
   .book-genre {
     @apply mt-1 line-clamp-1 text-sm italic text-light-100 xs:text-base;

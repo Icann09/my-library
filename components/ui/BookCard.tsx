@@ -7,7 +7,7 @@ export default function BookCard({ id, title, genre, coverColor, coverUrl }: Boo
     <li className="">
       <Link href={`/books/${id}`} className="w-full flex flex-col items-center">
         <BookCover coverColor={coverColor} coverImage={coverUrl}/>
-        <div className="mt-4 xs:max-w-40 max-w-2xl">
+        <div className="mt-4 max-w-40 text-center">
           <p className="book-title">{title}</p>
           <p className="book-genre">{genre}</p>
         </div>
