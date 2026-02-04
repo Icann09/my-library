@@ -2,7 +2,6 @@ import { fetchStatsData } from "@/lib/data";
 
 export default async function StatsCard() {
   const statsData = await fetchStatsData();
-// console.log("stats data are:", JSON.stringify(statsData, null, 2));
   const statsArray = Object.entries(statsData);
 
   return (

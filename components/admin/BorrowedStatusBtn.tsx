@@ -9,11 +9,12 @@ import { Check } from "lucide-react";
 type BorrowStatusBtnProps = {
   status: "BORROWED" | "RETURNED" | "LATE RETURN";
   borrowId: string;
+  bookId: string;
 };
 
 const STATUSES = ["BORROWED", "RETURNED", "LATE RETURN"] as const;
 
-export default function BorrowedStatusBtn({ status, borrowId }: BorrowStatusBtnProps) {
+export default function BorrowedStatusBtn({ status, borrowId, bookId }: BorrowStatusBtnProps) {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
@@ -24,8 +25,8 @@ export default function BorrowedStatusBtn({ status, borrowId }: BorrowStatusBtnP
       return;
     }
 
-    const update = await updateBorrowStatus(borrowId, newStatus);
-    console.log("Updating status for borrow ID:", borrowId, "to", newStatus);
+    const update = await updateBorrowStatus(borrowId, newStatus, bookId, status);
+    
 
     if (update.success) {
       toast.success("Borrow status updated");

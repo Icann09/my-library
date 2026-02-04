@@ -24,7 +24,6 @@ export default async function Page({ params }: { params: { bookId: string } }) {
     summary: book.summary,
   };
 
-  console.log(bookData);
 
   return (
     <div>

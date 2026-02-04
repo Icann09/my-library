@@ -33,7 +33,7 @@ export default async function BorrowRecordsTable() {
             </div>
           </td>
           <td className="p-4">
-            <BorrowedStatusBtn status={record.status} borrowId={record.borrowId}/>
+            <BorrowedStatusBtn status={record.status} borrowId={record.borrowId} bookId={record.bookId}/>
           </td>
           <td className="p-4 text-center">
             {record.borrowDate

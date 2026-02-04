@@ -6,7 +6,7 @@ import RejectRequestBtn from "../RejectRequstBtn";
 
 export default async function AccountRequestsTable() {
   const accountRequests = await fetchAccountRequest();
-  // console.log("account:", JSON.stringify(accountRequests, null, 2));
+
   return (
   <tbody>
     {accountRequests.map((user) => (

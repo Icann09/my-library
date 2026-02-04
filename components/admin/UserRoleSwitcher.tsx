@@ -22,7 +22,6 @@ export default function UserRoleBtn({ role, userId }: UserRoleBtnProps) {
       return;
     }
     const update = await updateUserRole(userId, newRole);
-    console.log("Changing role for user:", userId, "to", newRole);
 
     if (update.success) {
       toast.success("User role updated successfully");

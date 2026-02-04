@@ -5,22 +5,56 @@ import { eq } from "drizzle-orm";
 import { db } from "@/database/drizzle";
 import { bookBorrowReceipt } from "@/lib/emails/book-borrow-receipt";
 import { sendEmail } from "@/lib/workflow";
+import { sql } from "drizzle-orm";
 
 export async function updateBorrowStatus(
   borrowId: string,
-  newStatus: "BORROWED" | "RETURNED" | "LATE RETURN"
+  newStatus: "BORROWED" | "RETURNED" | "LATE RETURN",
+  bookId: string,
+  status: "BORROWED" | "RETURNED" | "LATE RETURN",
 ) {
   try {
-    const result = await db
+    const oldStatus = status;
+
+    // 2️⃣ Update borrow status
+    const [updatedBorrow] = await db
       .update(borrowRecords)
       .set({ status: newStatus })
-      .where(eq(borrowRecords.id, borrowId)) // ✅ use borrowId here
+      .where(eq(borrowRecords.id, borrowId))
       .returning();
 
-    console.log("📌 Updating borrow record ID:", borrowId, "to", newStatus);
-    console.log("✅ Update result:", result);
+    // 3️⃣ Determine stock change
+    let stockChange = 0;
 
-    return { success: true, result };
+    if (oldStatus !== "BORROWED" && newStatus === "BORROWED") {
+      stockChange = -1;
+    }
+
+    if (oldStatus === "BORROWED" && newStatus !== "BORROWED") {
+      stockChange = 1;
+    }
+
+    // 4️⃣ Update availableCopies (atomic SQL)
+    if (stockChange !== 0) {
+      await db
+        .update(books)
+        .set({
+          availableCopies: sql`${books.availableCopies} + ${stockChange}`,
+        })
+        .where(eq(books.id, bookId));
+    }
+
+    console.log(
+      "📌 Borrow updated:",
+      borrowId,
+      oldStatus,
+      "→",
+      newStatus,
+      "| stock:",
+      stockChange
+    );
+
+    return { success: true, result: updatedBorrow };
   } catch (error) {
     console.error("❌ Error updating borrow status", error);
     return { success: false, error: "Failed to update borrow status" };
