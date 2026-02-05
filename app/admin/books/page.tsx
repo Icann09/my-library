@@ -1,4 +1,4 @@
-import BooksTable from "@/components/admin/home/BooksTable";
+import BooksTable from "@/components/admin/BooksTable";
 import { Button } from "@/components/ui/button";
 import { BooksTableSkeleton } from "@/components/ui/Skeletons";
 import Link from "next/link";

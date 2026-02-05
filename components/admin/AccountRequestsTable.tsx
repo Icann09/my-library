@@ -1,7 +1,7 @@
 import { fetchAccountRequest } from "@/lib/data"
-import ViewIdCardButton from "../ViewIdCardBtn";
-import ApproveRequestBtn from "../ApproveRequestBtn";
-import RejectRequestBtn from "../RejectRequstBtn";
+import ViewIdCardButton from "./ViewIdCardBtn";
+import ApproveRequestBtn from "./ApproveRequestBtn";
+import RejectRequestBtn from "./RejectRequstBtn";
 
 
 export default async function AccountRequestsTable() {

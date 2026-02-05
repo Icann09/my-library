@@ -3,7 +3,7 @@
  import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, and, ne } from "drizzle-orm";
 import MobileNavigation from "@/components/ui/MobileNavigation";
  
  
@@ -16,18 +16,16 @@ import MobileNavigation from "@/components/ui/MobileNavigation";
   if(!session) redirect("/sign-in");
 
   if (session?.user?.id) {
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, session.user.id))
-      .limit(1);
     const today = new Date().toISOString().slice(0, 10);
-    if (user.length === 0 || user[0].lastActivityDate !== today) {
-      await db
-        .update(users)
-        .set({ lastActivityDate: today })
-        .where(eq(users.id, session.user.id));
-    }
+    await db
+      .update(users)
+      .set({ lastActivityDate: today })
+      .where(
+        and(
+          eq(users.id, session.user.id),
+          ne(users.lastActivityDate, today)
+        )
+      );
   }
   return (
     <main className="root-container">

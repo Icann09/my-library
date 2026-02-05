@@ -1,4 +1,4 @@
-import BorrowRecordsTable from "@/components/admin/home/BorrowRecordsTable";
+import BorrowRecordsTable from "@/components/admin/BorrowRecordsTable";
 import { BorrowRecordsTableSkeleton } from "@/components/ui/Skeletons";
 import { Suspense } from "react";
 

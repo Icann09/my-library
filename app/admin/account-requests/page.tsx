@@ -1,12 +1,4 @@
-import { db } from "@/database/drizzle"
-import { users } from "@/database/schema"
-import { eq } from "drizzle-orm"
-import Image from "next/image";
-import ApproveRequestBtn from "@/components/admin/ApproveRequestBtn";
-import RejectRequestBtn from "@/components/admin/RejectRequstBtn";
-import ViewIdCardButton from "@/components/admin/ViewIdCardBtn";
-import { fetchAccountRequest } from "@/lib/data";
-import AccountRequestsTable from "@/components/admin/home/AccountRequestsTable";
+import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
 import { Suspense } from "react";
 import { AccountRequestsTableSkeleton } from "@/components/ui/Skeletons";
 
