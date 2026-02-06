@@ -24,7 +24,7 @@ export default async function Home() {
         variant="Book" 
         title="Popular Books" 
         books={popularBooks} 
-        containerClassName="mt-20 mx-auto max-w-7xl flex flex-col items-center  "
+        containerClassName="mt-20 mx-auto max-w-7xl flex flex-col items-center py-2"
       />
     </>
   )

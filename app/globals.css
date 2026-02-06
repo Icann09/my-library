@@ -146,6 +146,7 @@
 }
 
 
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -157,6 +158,14 @@
 
 
 @layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
   .root-container {
     @apply flex min-h-screen flex-1 flex-col bg-pattern bg-cover bg-top px-2 text-white xs:px-5 md:px-10;
   }
@@ -202,8 +211,9 @@
     @apply xs:w-[296px] w-[256px] xs:h-[404px] h-[354px];
   }
   .book-list {
-    @apply mt-6 flex flex-wrap gap-5 justify-around;
+    @apply w-full mt-6 flex gap-5 overflow-x-auto snap-x snap-mandatory border-y-2 border-white ;
   }
+
   .book-title {
     @apply mt-2 line-clamp-1 text-base font-semibold text-white;
   }

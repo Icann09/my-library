@@ -27,10 +27,10 @@ export default function BookCardBorrowed({ id, title, genre, coverColor, coverUr
   const daysLeft = getDaysLeft(dueDate);
 
   return (
-    <li className= "xs:w-80 p-8 w-full bg-[linear-gradient(#12141D,#12151F)] rounded-xl">
+    <li className= "list-none xs:w-80 p-5 xs:p-8 w-full bg-[linear-gradient(#12141D,#12151F)] rounded-xl">
       <Link href={`/books/${id}`} className="w-full flex flex-col gap">
         <div
-            className="backdrop-blur-md w-64 h-72 flex justify-center items-center rounded-md"
+            className="backdrop-blur-md w-52 h-60 flex justify-center items-center rounded-md"
             style={{ backgroundColor: `${coverColor}30` }}  /* adds opacity */
           >
 

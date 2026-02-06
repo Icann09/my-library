@@ -4,7 +4,7 @@ import BookCover from "./BookCover"
 
 export default function BookCard({ id, title, genre, coverColor, coverUrl }: Book) {
   return (
-    <li className="">
+    <li className="list-none">
       <Link href={`/books/${id}`} className="w-full flex flex-col items-center">
         <BookCover coverColor={coverColor} coverImage={coverUrl}/>
         <div className="mt-4 max-w-40 text-center">
