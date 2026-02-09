@@ -62,28 +62,39 @@ export async function borrowBook(bookId: string) {
   }).returning();
 
   // Side effects
-  await sendEmail({
-          email: user.email,
-          subject: "Book Borrowed Successfully",
-          message: bookBorrowedConfirmation({
-            studentName: user.fullName!,
-            bookTitle: book.title,
-            borrowDate: created.createdAt
-              ? new Date(created.createdAt).toISOString()
-              : "",
-            dueDate,
-          }),
-        });
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Book Borrowed Successfully",
+      message: bookBorrowedConfirmation({
+        studentName: user.fullName!,
+        bookTitle: book.title,
+        borrowDate: created.createdAt
+          ? new Date(created.createdAt).toISOString()
+          : "",
+        dueDate,
+      }),
+    });
+  } catch (error) {
+    console.error("Failed to send borrow email", error);
+  }
 
-  await workflowClient.trigger({
-          url: `${config.env.prodApiEndpoint}/api/workflows/due-reminder`,
-          body: {
-            email: user.email,
-            fullName: user.fullName!,
-            bookTitle: book.title,
-            dueDate,
-          },
-        });
+  try {
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflows/due-reminder`,
+      body: {
+        email: user.email,
+        fullName: user.fullName!,
+        bookTitle: book.title,
+        dueDate,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to trigger due reminder workflow", error);
+  }
+
+
+
 
   return { success: true };
 }
