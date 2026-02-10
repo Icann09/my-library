@@ -27,8 +27,8 @@ export default async function Page() {
   const initials = getInitials(session?.user?.name || "IN");
   
   const [universityId, borrowedBooks] = await Promise.all([
-  await fetchUserUniversityId(userId),
-  await fetchBorrowedBooksUser(userId),
+    fetchUserUniversityId(userId),
+    fetchBorrowedBooksUser(userId),
 ]);
 
 
@@ -91,7 +91,7 @@ export default async function Page() {
 
     {/* Borrowed Books */}
     <div className="w-full lg:flex-1 min-w-0">
-      {!borrowedBooks ? (
+      {!borrowedBooks || borrowedBooks.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-full text-light-300">
           <p className="text-lg font-semibold">No borrowed books</p>
           <p className="text-sm opacity-70">You haven’t borrowed any books yet</p>
