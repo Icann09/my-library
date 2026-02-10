@@ -10,10 +10,6 @@ import config from "@/lib/config";
 import { bookBorrowedConfirmation } from "../emails/book-borrowed-confirmation";
 
 
-
-
-
-
 export async function borrowBook(bookId: string) {
   const session = await auth();
   const userId = session?.user?.id;

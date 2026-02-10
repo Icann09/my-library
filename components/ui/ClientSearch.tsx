@@ -74,7 +74,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
   }, [filteredBooks, page]);
 
   return (
-    <section className="py-10" aria-labelledby="search-page-heading">
+    <section className="py-3  md:py-10" aria-labelledby="search-page-heading">
       {/* Search */}
       <div className="text-center mb-10">
         <h2 className="text-lg text-gray-400 mb-2">

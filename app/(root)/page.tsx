@@ -1,7 +1,7 @@
 import BookOverview from "@/components/ui/BookOverview";
 import BookList from "@/components/ui/BookList";
 import { auth } from "@/auth";
-import { getLatestBooks } from "@/lib/data";
+import { fetchBooksUser } from "@/lib/data";
 
 
 export default async function Home() {
@@ -9,7 +9,7 @@ export default async function Home() {
   if (!session?.user) throw new Error("Not authenticated");
 
 
-  const latestBooks = await getLatestBooks();
+  const latestBooks = await fetchBooksUser();
 
   if (!latestBooks.length) {
     return <p>No books available</p>;

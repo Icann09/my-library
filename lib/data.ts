@@ -1,21 +1,41 @@
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
-import { eq, lt, and, sql, desc } from "drizzle-orm"
+import { eq, lt, and, sql, desc, getTableColumns } from "drizzle-orm"
 import { subHours } from "date-fns";
 import { unstable_cache } from "next/cache";
 
 
-export  const getLatestBooks  = unstable_cache(
+
+// Books fetchers
+/// Books for public pages with caching
+export  const fetchBooksUser  = unstable_cache(
     async () => {
       return await db
         .select()
         .from(books)
         .orderBy(desc(books.createdAt));
     },
-    ["latest-books"],
+    ["public-books"],
     { revalidate: 3600 }
   );
-
+/// Books for admin/dashboard with caching   
+export const fetchBooksAdmin = unstable_cache( 
+  async () => {
+   return await db 
+    .select({
+      id: books.id,
+      title: books.title,
+      author: books.author,
+      genre: books.genre,
+      createdAt: books.createdAt,
+      coverUrl: books.coverUrl,
+      coverColor: books.coverColor
+    }).from(books)
+  },
+  ["admin-books"],
+  { revalidate: 3600 }
+); 
+/// Books with ID
 export const fetchBookWithId = async (id: string) => {
   const book = await db
     .select()
@@ -26,6 +46,9 @@ export const fetchBookWithId = async (id: string) => {
   return book;
 }
 
+
+// Borrow Records fetchers
+/// Borrow records for admin/dashboard 
 export const fetchBorrowDetails = async () => {
   const borrowDetails = await db
     .select({
@@ -50,7 +73,31 @@ export const fetchBorrowDetails = async () => {
     .innerJoin(books, eq(borrowRecords.bookId, books.id));
   return borrowDetails;
 };
+/// Borroed books for user profile page
+export const fetchBorrowedBooksUser = async (userId: string) => {
+  const bookColumns = getTableColumns(books);
+  const borrowedBooks = await db
+    .select({
+      ...bookColumns,
+      isLoanedBook: sql<boolean>`
+        CASE 
+          WHEN ${borrowRecords.status} = 'BORROWED' 
+          THEN true 
+          ELSE false 
+        END
+      `.as("isLoanedBook"),
+    })
+    .from(borrowRecords)
+    .innerJoin(books, eq(borrowRecords.bookId, books.id))
+    .where(eq(borrowRecords.userId, userId))
+    .orderBy(desc(borrowRecords.createdAt));
 
+  return borrowedBooks;
+};
+
+
+// Users fetchers
+/// Account requests for admin dashboard
 export const fetchAccountRequest = async () => {
   const accountRequest = await db
     .select({
@@ -65,21 +112,41 @@ export const fetchAccountRequest = async () => {
     .where(eq(users.status, "PENDING"));
   return accountRequest;
 }
-
-export const fetchBooks = async () => {
-  const bookList = await db 
-    .select({
-      id: books.id,
-      title: books.title,
-      author: books.author,
-      genre: books.genre,
-      createdAt: books.createdAt,
-      coverUrl: books.coverUrl,
-      coverColor: books.coverColor
-    }).from(books);
-  return bookList;
+/// Users with borrow count for admin dashboard
+export const fetchUsersWithBorrowCount = async () => {
+  const usersWithBorrowCount = await db
+    .select ({
+      id: users.id,
+      fullName: users.fullName,
+      email: users.email,
+      createdAt: users.createdAt,
+      role: users.role,
+      universityId: users.universityId,
+      universityCard: users.universityCard,
+      borrowCount: sql<number>`count(${borrowRecords.id})`,
+    })
+    .from(users)
+    .leftJoin(borrowRecords, eq(users.id, borrowRecords.userId))
+    .where(eq(users.status, "APPROVED"))
+    .groupBy(users.id);
+    
+  return usersWithBorrowCount;
 }
 
+export const fetchUserUniversityId = async (userId: string) => {
+  const userUniversityId = await db
+    .select({ universityId: users.universityId })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  
+  return userUniversityId[0]?.universityId;
+}
+
+
+
+// Stats fetchers
+/// Stats data for admin dashboard
 export const fetchStatsData = async () => {
     const date24HoursAgo = subHours(new Date(), 24);
       // Data counts
@@ -113,22 +180,4 @@ export const fetchStatsData = async () => {
 }
 
 
-export const fetchUsersWithBorrowCount = async () => {
-  const usersWithBorrowCount = await db
-    .select ({
-      id: users.id,
-      fullName: users.fullName,
-      email: users.email,
-      createdAt: users.createdAt,
-      role: users.role,
-      universityId: users.universityId,
-      universityCard: users.universityCard,
-      borrowCount: sql<number>`count(${borrowRecords.id})`,
-    })
-    .from(users)
-    .leftJoin(borrowRecords, eq(users.id, borrowRecords.userId))
-    .where(eq(users.status, "APPROVED"))
-    .groupBy(users.id);
-    
-  return usersWithBorrowCount;
-}
+

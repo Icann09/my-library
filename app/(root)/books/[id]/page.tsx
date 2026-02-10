@@ -18,8 +18,10 @@ export default async function Page({
 }) {
   const { id } = await params; // ✅ THIS is the key
 
-  const session = await auth();
-  const [bookDetails] = await fetchBookWithId(id);
+  const [session, [bookDetails]] = await Promise.all([
+    auth(),
+    fetchBookWithId(id),
+  ]);
 
   if (!bookDetails) notFound();
 

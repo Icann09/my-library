@@ -1,12 +1,12 @@
 import Link from "next/link";
 import BooksCard from "./BooksCard";
 import { Plus } from "lucide-react";
-import { fetchBooks } from "@/lib/data";
+import { fetchBooksAdmin } from "@/lib/data";
 import { dateFormat } from "@/lib/utils";
 
 export default async function RecentlyAddedBooks() {
 
-  const books = await fetchBooks();
+  const books = await fetchBooksAdmin();
   const booksWithFormattedDate = books.map(book => ({
     ...book,
     createdAtFormatted: book.createdAt

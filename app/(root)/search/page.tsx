@@ -1,7 +1,7 @@
 // app/search/page.tsx
 
 import ClientSearch from "@/components/ui/ClientSearch";
-import { getLatestBooks } from "@/lib/data";
+import { fetchBooksUser } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function SearchPage() {
 
-  const latestBooks = await getLatestBooks();
+  const latestBooks = await fetchBooksUser();
   const genres = [...new Set(latestBooks.map((book) => book.genre).filter(Boolean))];
 
   return (

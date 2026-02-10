@@ -1,12 +1,12 @@
 // UsersTable.tsx (SERVER)
-import { fetchBooks } from "@/lib/data";
+import { fetchBooksAdmin } from "@/lib/data";
 import BookAction from "@/components/admin/BookAction";
 import BookCover from "@/components/ui/BookCover";
 import Link from "next/link";
 
 
 export default async function BooksTable() {
-  const bookRecord = await fetchBooks();
+  const bookRecord = await fetchBooksAdmin();
 
   return (
     <tbody>

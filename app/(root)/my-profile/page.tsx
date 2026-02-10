@@ -1,61 +1,35 @@
 
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import BookList from "@/components/ui/BookList";
-import { db } from "@/database/drizzle";
-import { books, borrowRecords, users } from "@/database/schema";
-import { desc, eq, sql } from "drizzle-orm";
-import { InferSelectModel } from "drizzle-orm"; // <-- helper for types
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { fetchBorrowedBooksUser, fetchUserUniversityId } from "@/lib/data";
+import Link from "next/link";
 
 
 
 export const metadata: Metadata = {
   title: "Profile",
 };
-// Base Book type from schema
-type Book = InferSelectModel<typeof books>;
-
-// Extended type for borrowed books
-type LoanedBook = Book & {
-  borrowedAt: Date;
-};
 
 export default async function Page() {
+
   const session = await auth();
-  const userId = session?.user?.id;
+
+  if (!session?.user?.id) {
+    redirect("/sign-in");
+  } 
+  
+  const userId = session.user.id;
   const initials = getInitials(session?.user?.name || "IN");
   
-  const userUniversity = await db
-  .select({
-    universityId: users.universityId,
-  })
-  .from(users)
-  .where(eq(users.id, userId))
-  .limit(1);
-
-  const universityId = userUniversity[0]?.universityId;
-
-  const borrowedBooks: LoanedBook[] = await db
-  .select({
-    ...books,                
-    borrowedAt: borrowRecords.createdAt,
-    dueDate: borrowRecords.dueDate,
-    borrowStatus: borrowRecords.status,
-    isLoanedBook: sql`
-      CASE 
-        WHEN ${borrowRecords.status} = 'BORROWED' 
-        THEN true 
-        ELSE false 
-      END
-    `.as("isLoanedBook"),
-  })
-  .from(borrowRecords)
-  .innerJoin(books, eq(borrowRecords.bookId, books.id))
-  .where(eq(borrowRecords.userId, userId))
-  .orderBy(desc(borrowRecords.createdAt));
+  const [universityId, borrowedBooks] = await Promise.all([
+  await fetchUserUniversityId(userId),
+  await fetchBorrowedBooksUser(userId),
+]);
 
 
 
@@ -117,13 +91,24 @@ export default async function Page() {
 
     {/* Borrowed Books */}
     <div className="w-full lg:flex-1 min-w-0">
-      <BookList
-        variant="BorrowedBook"
-        title="Borrowed Books"
-        books={borrowedBooks}
-        containerClassName="flex flex-col justify-around h-full"
-      />
+      {!borrowedBooks ? (
+        <div className="flex flex-col items-center justify-center h-full text-light-300">
+          <p className="text-lg font-semibold">No borrowed books</p>
+          <p className="text-sm opacity-70">You haven’t borrowed any books yet</p>
+          <Link href="/search" className="mt-4 text-sm font-medium text-blue-200 hover:underline">
+            Browse Books
+          </Link>
+        </div>
+      ) : (
+        <BookList
+          variant="BorrowedBook"
+          title="Borrowed Books"
+          books={borrowedBooks}
+          containerClassName="flex flex-col justify-around h-full"
+        />
+      )}
     </div>
+
   </div>
 );
 
