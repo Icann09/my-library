@@ -16,14 +16,13 @@ export default async function Home() {
   }
 
   const featuredBooks = latestBooks[0];
-  const popularBooks = latestBooks.slice(1,13);
   return (
     <>
       <BookOverview {... featuredBooks} userId={session?.user?.id as string} />
       <BookList
         variant="Book" 
         title="Popular Books" 
-        books={popularBooks} 
+        books={latestBooks} 
         containerClassName="mt-20 mx-auto max-w-7xl flex flex-col items-center py-2"
       />
     </>

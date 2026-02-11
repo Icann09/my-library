@@ -1,51 +1,51 @@
 "use client";
 
-import { useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BookCard from "@/components/ui/BookCard";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 
 type ClientSearchProps = {
-  latestBooks: Book[];
-  genres: string[];
+  books: Book[];
+  total: number;
+  page: number;
+  perPage: number;
+  query: string;
+  genre: string;
 };
 
-export default function ClientSearch({ latestBooks, genres }: ClientSearchProps) {
-  const searchParams = useSearchParams();
+
+export default function ClientSearch({
+  books,
+  total,
+  page,
+  perPage,
+  query,
+  genre,
+  genres
+}: ClientSearchProps & { genres: string[] }) {
+
   const router = useRouter();
   const pathname = usePathname();
 
-  // URL-based state
-  const query = searchParams.get("q") ?? "";
-  const selectedGenre = searchParams.get("genre") ?? "";
-  const page = Number(searchParams.get("page") ?? "1");
   const [input, setInput] = useState(query);
+  const updateParams = (params: Record<string, string | null>) => {
+    const sp = new URLSearchParams(window.location.search);
 
+    Object.entries(params).forEach(([key, value]) => {
+      if (!value) sp.delete(key);
+      else sp.set(key, value);
+    });
+
+    router.replace(`${pathname}?${sp.toString()}`);
+  };
   useEffect(() => {
     setInput(query);
   }, [query]);
-
-
-  const perPage = 12;
-
-  const updateParams = useCallback(
-    (params: Record<string, string | null>) => {
-      const sp = new URLSearchParams(searchParams.toString());
-
-      Object.entries(params).forEach(([key, value]) => {
-        if (!value) sp.delete(key);
-        else sp.set(key, value);
-      });
-
-      router.push(`${pathname}?${sp.toString()}`);
-    },
-    [router, pathname, searchParams]
-  );
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -53,25 +53,13 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
         q: input || null,
         page: "1",
       });
-    }, 300); // debounce delay
-
+    }, 300);
     return () => clearTimeout(id);
   }, [input]);
 
+  const totalPages = Math.ceil(total / perPage);
 
-  const filteredBooks = useMemo(() => {
-    return latestBooks.filter(
-      (book) =>
-        book.title.toLowerCase().includes(query.toLowerCase()) &&
-        (selectedGenre === "" || book.genre === selectedGenre)
-    );
-  }, [latestBooks, query, selectedGenre]);
-
-  const totalPages = Math.ceil(filteredBooks.length / perPage);
-
-  const paginatedBooks = useMemo(() => {
-    return filteredBooks.slice((page - 1) * perPage, page * perPage);
-  }, [filteredBooks, page]);
+  
 
   return (
     <section className="py-3  md:py-10" aria-labelledby="search-page-heading">
@@ -123,7 +111,7 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
         <select
           id="genre-filter"
           className="bg-gray-800 border border-gray-700 px-4 py-2 rounded"
-          value={selectedGenre}
+          value={genre}
           onChange={(e) =>
             updateParams({
               genre: e.target.value,
@@ -146,10 +134,10 @@ export default function ClientSearch({ latestBooks, genres }: ClientSearchProps)
         aria-live="polite"
         aria-busy={false}
       >
-        {paginatedBooks.length > 0 ? (
+        {books.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
-              {paginatedBooks.map((book) => (
+              {books.map((book) => (
                 <BookCard key={book.id} {...book} />
               ))}
             </div>

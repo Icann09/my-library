@@ -1,9 +1,8 @@
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
-import { eq, lt, and, sql, desc, getTableColumns } from "drizzle-orm"
+import { eq, lt, and, sql, desc, getTableColumns, ilike } from "drizzle-orm"
 import { subHours } from "date-fns";
 import { unstable_cache } from "next/cache";
-
 
 
 // Books fetchers
@@ -13,11 +12,57 @@ export  const fetchBooksUser  = unstable_cache(
       return await db
         .select()
         .from(books)
-        .orderBy(desc(books.createdAt));
+        .orderBy(desc(books.createdAt))
+        .limit(12);
     },
     ["public-books"],
-    { revalidate: 3600 }
+    { tags: ["books"] }
   );
+/// Books for search with filtering and pagination
+export const fetchBooksSearch = async ({
+  query,
+  genre,
+  page,
+  perPage,
+  }: {
+    query: string;
+    genre: string;
+    page: number;
+    perPage: number;
+  }) => {
+  const offset = (page - 1) * perPage;
+
+  const conditions = [];
+
+  if (query) {
+    conditions.push(ilike(books.title, `%${query}%`));
+  }
+
+  if (genre) {
+    conditions.push(eq(books.genre, genre));
+  }
+
+  const whereClause =
+    conditions.length > 0 ? and(...conditions) : undefined;
+
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(books)
+    .where(whereClause);
+
+  const booksList = await db
+    .select()
+    .from(books)
+    .where(whereClause)
+    .orderBy(desc(books.createdAt))
+    .limit(perPage)
+    .offset(offset);
+
+  return {
+    books: booksList,
+    total: Number(count),
+  };
+};
 /// Books for admin/dashboard with caching   
 export const fetchBooksAdmin = unstable_cache( 
   async () => {
@@ -33,7 +78,7 @@ export const fetchBooksAdmin = unstable_cache(
     }).from(books)
   },
   ["admin-books"],
-  { revalidate: 3600 }
+  { tags: ["books"] }
 ); 
 /// Books with ID
 export const fetchBookWithId = async (id: string) => {
@@ -45,6 +90,14 @@ export const fetchBookWithId = async (id: string) => {
   
   return book;
 }
+// Genres fetcher
+export const fetchGenres = async () => {
+  const result = await db
+    .selectDistinct({ genre: books.genre })
+    .from(books);
+
+  return result.map((g) => g.genre);
+};
 
 
 // Borrow Records fetchers
