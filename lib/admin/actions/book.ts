@@ -1,6 +1,5 @@
 "use server"
 import { db } from "@/database/drizzle";
-import { Equal } from "drizzle-orm";
 import { eq } from "drizzle-orm";
 import { books, borrowRecords } from "@/database/schema";
 

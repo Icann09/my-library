@@ -2,11 +2,12 @@ import BookOverview from "@/components/ui/BookOverview";
 import BookList from "@/components/ui/BookList";
 import { auth } from "@/auth";
 import { fetchBooksUser } from "@/lib/data";
+import { redirect } from "next/navigation";
 
 
 export default async function Home() {
   const session = await auth();
-  if (!session?.user) throw new Error("Not authenticated");
+  if (!session?.user) redirect("/sign-in");
 
 
   const latestBooks = await fetchBooksUser();

@@ -38,7 +38,7 @@ export default function AuthForm <T extends FieldValues>({ type, schema, default
     setIsLoading(false);
   
     if (result.success) {
-      toast.success(isSignIn ? "You have successfully signed in." : "You have successfully signed up.");
+      toast.success(isSignIn ? "You have successfully signed in." : "Wait for admin approval on your email for your borrowing privileges.");
       router.push("/");
     } else {
       if (result.error) {

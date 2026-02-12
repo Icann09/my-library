@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function BookList({ title, books, containerClassName, variant }: Props) {
-  if (books.length < 2) return;
+  if (books.length < 1) return;
   
   return (
     <section className={containerClassName}>

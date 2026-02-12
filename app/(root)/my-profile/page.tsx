@@ -29,9 +29,7 @@ export default async function Page() {
   const [universityId, borrowedBooks] = await Promise.all([
     fetchUserUniversityId(userId),
     fetchBorrowedBooksUser(userId),
-]);
-
-
+  ]);
 
   return (
   <div className="flex flex-col gap-8 w-full lg:flex-row">

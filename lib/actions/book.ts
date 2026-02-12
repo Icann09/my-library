@@ -11,6 +11,7 @@ import { bookBorrowedConfirmation } from "../emails/book-borrowed-confirmation";
 
 
 export async function borrowBook(bookId: string) {
+  // Authentication & Eligibility Check
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) return { success: false, error: "Not authenticated" };
@@ -23,21 +24,24 @@ export async function borrowBook(bookId: string) {
     return { success: false, error: "Ineligible to borrow" };
   }
   
+  const dueDate = dayjs().add(7, "day").toISOString();
 
-  // Prevent duplicate borrow
-  const existingBorrow = await db.query.borrowRecords.findFirst({
-    where: and(
-      eq(borrowRecords.userId, userId),
-      eq(borrowRecords.bookId, bookId)
-    ),
-  });
+  // Database Operations
+  let created;
+  try {
+   [created] = await db.insert(borrowRecords).values({
+      userId,
+      bookId,
+      dueDate,
+      status: "BORROWED"
+    }).returning();
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return { success: false, error: "Already borrowed" };
+    }
+    return { success: false, error: "Failed to borrow book" };
+  };
 
-
-  if (existingBorrow) {
-    return { success: false, error: "Already borrowed" };
-  }
-
-  // 🔒 Atomic decrement
   const [book] = await db
     .update(books)
     .set({ availableCopies: sql`${books.availableCopies} - 1` })
@@ -45,17 +49,11 @@ export async function borrowBook(bookId: string) {
     .returning();
 
   if (!book) {
-  return { success: false, error: "Book not available" };
-}
+    // 🚨 Rollback manually
+    await db.delete(borrowRecords).where(eq(borrowRecords.id, created.id));
+    return { success: false, error: "Book not available" };
+  }
 
-  const dueDate = dayjs().add(7, "day").toISOString();
-
-  const [created] = await db.insert(borrowRecords).values({
-    userId,
-    bookId,
-    dueDate,
-    status: "BORROWED",
-  }).returning();
 
   // Side effects
   try {
@@ -88,9 +86,5 @@ export async function borrowBook(bookId: string) {
   } catch (error) {
     console.error("Failed to trigger due reminder workflow", error);
   }
-
-
-
-
   return { success: true };
 }
