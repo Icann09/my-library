@@ -1,6 +1,12 @@
 # 🛒 My-Library (Next.js)
 
-A server-first, role-based digital library system built with Next.js App Router, designed to securely manage book borrowing workflows for users and administrators, including background email reminders using serverless workflows.
+A production-ready digital library system demonstrating:
+
+- Server-first architecture with Next.js App Router
+- Role-based access control (RBAC) enforced on the server
+- Real-time borrowing workflows with concurrency safety
+- Background email reminders using Upstash Workflows
+
 
 
 ## 🔗 Live Demo
@@ -43,6 +49,16 @@ https://github.com/Icann09/my-library
 </p>
 
 
+
+## 🧠 Engineering Highlights
+
+- Implemented database-level concurrency safety using unique constraints (user_id, book_id)
+- Prevented race conditions with insert-first pattern and PostgreSQL error handling (23505)
+- Enforced RBAC at layout, server action, and database levels
+- Optimized data fetching with server components to reduce client bundle size
+- Designed background job architecture using QStash for reliable serverless scheduling
+
+
 ## 🚩 Problem Statement
 - Managing a digital library requires:
 - Clear separation of responsibilities between users and administrators
@@ -58,6 +74,15 @@ https://github.com/Icann09/my-library
 - Role-based access control (RBAC) enforced entirely on the server
 - Server-first data fetching and mutations using Server Components and Server Actions
 - Background workflows for overdue reminders using Upstash Workflows, enabling reliable, serverless email notifications
+
+
+## 🧩 Challenges & Solutions
+
+### Handling Duplicate Borrow Requests
+Implemented a database-level unique constraint and graceful error handling to prevent race conditions when users attempt to borrow the same book simultaneously.
+
+### Serverless Background Scheduling
+Used Upstash QStash to reliably trigger overdue reminder workflows without relying on traditional cron jobs.
 
 
 ## ✨ User Roles & Features
@@ -93,6 +118,11 @@ https://github.com/Icann09/my-library
 - Vercel – Deployment
 
 
+## 🧪 Testing
+- Unit testing for utility functions and business logic
+- Manual QA for critical user flows (authentication, borrowing)
+
+
 ## 🧱 Architecture Overview
 The application is built using a layered, server-first architecture with Next.js App Router.
 High-level design:
@@ -126,9 +156,14 @@ High-level design:
 - Server-rendered data always stays in sync
 
 
-## 🧪 Testing
-- Unit testing for utility functions and business logic
-- Manual QA for critical user flows (authentication, borrowing)
+## 🗄 Database Design
+Core tables:
+- users
+- books
+- borrow_records
+
+Key constraint:
+UNIQUE (user_id, book_id)
 
 
 ## 🛡 Error Handling
@@ -191,10 +226,17 @@ npm run dev
 ```
 
 ---
-## 📂 Folder Structure
-app/        → Next.js routes  
-components/ → Reusable UI components  
-lib/        → Database & server logic  
+## 📂 Project Structure
+app/  
+  ├── (public)      → Public routes  
+  ├── admin/        → Protected admin routes  
+  ├── api/          → Webhooks & integrations  
+components/         → UI components (client & server)  
+lib/  
+  ├── db/           → Drizzle schema & queries  
+  ├── auth/         → Authentication logic  
+  └── workflows/    → Background job handlers  
+
  
 
 ## 👨‍💻 About Me
