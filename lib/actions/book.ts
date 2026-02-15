@@ -24,44 +24,65 @@ export async function borrowBook(bookId: string) {
 
   const dueDate = dayjs().add(7, "day").toISOString();
 
-  let createdBorrow;
-  let updatedBook;
+  let wasInserted = false;
+  let borrowRow: any = null;
+  let bookRow: any = null;
 
   try {
     await dbPool.transaction(async (tx) => {
 
-      // 1️⃣ Insert borrow record (protected by UNIQUE constraint)
-      [createdBorrow] = await tx.insert(borrowRecords).values({
-        userId,
-        bookId,
-        dueDate,
-        status: "BORROWED"
-      }).returning();
-
-      // 2️⃣ Atomic decrement
-      [updatedBook] = await tx
-        .update(books)
-        .set({ availableCopies: sql`${books.availableCopies} - 1` })
-        .where(and(eq(books.id, bookId), gt(books.availableCopies, 0)))
+      // 1️⃣ Idempotency gate (UNIQUE user_id + book_id)
+      const inserted = await tx
+        .insert(borrowRecords)
+        .values({ userId, bookId, dueDate, status: "BORROWED" })
+        .onConflictDoNothing()
         .returning();
 
-      // If update failed → throw → rollback happens automatically
-      if (!updatedBook) {
+      // Retry / already borrowed → commit safely
+      if (inserted.length === 0) {
+        return;
+      }
+
+      wasInserted = true;
+      borrowRow = inserted[0];
+
+      // 2️⃣ Atomic inventory decrement
+      const updated = await tx
+        .update(books)
+        .set({
+          availableCopies: sql`${books.availableCopies} - 1`,
+        })
+        .where(
+          and(
+            eq(books.id, bookId),
+            gt(books.availableCopies, 0)
+          )
+        )
+        .returning();
+
+      if (updated.length === 0) {
         throw new Error("OUT_OF_STOCK");
       }
+
+      bookRow = updated[0];
     });
 
   } catch (error: any) {
-
-    if (error.code === "23505") {
-      return { success: false, error: "Already borrowed" };
-    }
 
     if (error.message === "OUT_OF_STOCK") {
       return { success: false, error: "Book not available" };
     }
 
+    if (error.code === "40001") {
+      return { success: false, error: "Retry request" }; // SERIALIZABLE retry
+    }
+
     return { success: false, error: "Failed to borrow book" };
+  }
+
+  // 🔐 Idempotency guard → run side-effects only if state changed
+  if (!wasInserted) {
+    return { success: true };
   }
 
   // ✅ Only runs AFTER successful COMMIT
@@ -72,9 +93,9 @@ export async function borrowBook(bookId: string) {
       subject: "Book Borrowed Successfully",
       message: bookBorrowedConfirmation({
         studentName: user.fullName!,
-        bookTitle: updatedBook.title,
-        borrowDate: createdBorrow.createdAt
-          ? new Date(createdBorrow.createdAt).toISOString()
+        bookTitle: bookRow.title,
+        borrowDate: borrowRow.createdAt
+          ? new Date(borrowRow.createdAt).toISOString()
           : "",
         dueDate,
       }),
@@ -89,7 +110,7 @@ export async function borrowBook(bookId: string) {
       body: {
         email: user.email,
         fullName: user.fullName!,
-        bookTitle: updatedBook.title,
+        bookTitle: bookRow.title,
         dueDate,
       },
     });
