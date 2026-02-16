@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { sendEmail, workflowClient } from "@/lib/workflow";
 import config from "@/lib/config";
 import { bookBorrowedConfirmation } from "../emails/book-borrowed-confirmation";
+import { runSerializableTx } from "@/database/serializable";
 
 export async function borrowBook(bookId: string) {
   const session = await auth();
@@ -29,56 +30,51 @@ export async function borrowBook(bookId: string) {
   let bookRow: any = null;
 
   try {
-    await dbPool.transaction(async (tx) => {
+  await runSerializableTx(async (tx) => {
 
-      // 1️⃣ Idempotency gate (UNIQUE user_id + book_id)
-      const inserted = await tx
-        .insert(borrowRecords)
-        .values({ userId, bookId, dueDate, status: "BORROWED" })
-        .onConflictDoNothing()
-        .returning();
+    // 1️⃣ Idempotency gate
+    const inserted = await tx
+      .insert(borrowRecords)
+      .values({ userId, bookId, dueDate, status: "BORROWED" })
+      .onConflictDoNothing()
+      .returning();
 
-      // Retry / already borrowed → commit safely
-      if (inserted.length === 0) {
-        return;
-      }
+    if (inserted.length === 0) {
+      return;
+    }
 
-      wasInserted = true;
-      borrowRow = inserted[0];
+    wasInserted = true;
+    borrowRow = inserted[0];
 
-      // 2️⃣ Atomic inventory decrement
-      const updated = await tx
-        .update(books)
-        .set({
-          availableCopies: sql`${books.availableCopies} - 1`,
-        })
-        .where(
-          and(
-            eq(books.id, bookId),
-            gt(books.availableCopies, 0)
-          )
+    // 2️⃣ Predicate write (SERIALIZABLE tracked)
+    const updated = await tx
+      .update(books)
+      .set({
+        availableCopies: sql`${books.availableCopies} - 1`,
+      })
+      .where(
+        and(
+          eq(books.id, bookId),
+          gt(books.availableCopies, 0)
         )
-        .returning();
+      )
+      .returning();
 
-      if (updated.length === 0) {
-        throw new Error("OUT_OF_STOCK");
-      }
-
-      bookRow = updated[0];
-    });
-
-  } catch (error: any) {
-
-    if (error.message === "OUT_OF_STOCK") {
-      return { success: false, error: "Book not available" };
+    if (updated.length === 0) {
+      throw new Error("OUT_OF_STOCK");
     }
 
-    if (error.code === "40001") {
-      return { success: false, error: "Retry request" }; // SERIALIZABLE retry
-    }
+    bookRow = updated[0];
+  });
 
-    return { success: false, error: "Failed to borrow book" };
+} catch (error: any) {
+
+  if (error.message === "OUT_OF_STOCK") {
+    return { success: false, error: "Book not available" };
   }
+
+  return { success: false, error: "Failed to borrow book" };
+}
 
   // 🔐 Idempotency guard → run side-effects only if state changed
   if (!wasInserted) {
