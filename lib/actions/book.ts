@@ -32,7 +32,19 @@ export async function borrowBook(bookId: string) {
   try {
   await runSerializableTx(async (tx) => {
 
-    // 1️⃣ Idempotency gate
+    // 🔒  Row-Level Lock
+    const lockedBook = await tx.execute(sql`
+      SELECT id, available_copies
+      FROM books
+      WHERE id = ${bookId}
+      FOR UPDATE
+    `);
+
+    if (!lockedBook.rows.length || lockedBook.rows[0].available_copies <= 0) {
+      throw new Error("OUT_OF_STOCK");
+    }
+
+    //  Idempotency gate
     const inserted = await tx
       .insert(borrowRecords)
       .values({ userId, bookId, dueDate, status: "BORROWED" })
@@ -46,19 +58,15 @@ export async function borrowBook(bookId: string) {
     wasInserted = true;
     borrowRow = inserted[0];
 
-    // 2️⃣ Predicate write (SERIALIZABLE tracked)
+    //  Predicate write (SERIALIZABLE tracked)
     const updated = await tx
       .update(books)
       .set({
         availableCopies: sql`${books.availableCopies} - 1`,
       })
-      .where(
-        and(
-          eq(books.id, bookId),
-          gt(books.availableCopies, 0)
-        )
-      )
+      .where(eq(books.id, bookId))
       .returning();
+
 
     if (updated.length === 0) {
       throw new Error("OUT_OF_STOCK");

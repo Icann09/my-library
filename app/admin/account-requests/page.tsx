@@ -1,6 +1,7 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
 import { Suspense } from "react";
 import { AccountRequestsTableSkeleton } from "@/components/ui/Skeletons";
+import AccountRequestActionController from "@/components/admin/AccountRequestActionsController";
 
 export default async function Page() {
   // const accountRequests = await db.select().from(users).where(eq(users.status, "PENDING"));
@@ -18,9 +19,8 @@ export default async function Page() {
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
-          <Suspense fallback={<AccountRequestsTableSkeleton />}>
-            <AccountRequestsTable />
-          </Suspense>
+          <AccountRequestsTable />
+          <AccountRequestActionController />
         </table>
       </div>
     </div>

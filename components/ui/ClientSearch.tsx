@@ -33,29 +33,38 @@ export default function ClientSearch({
   const pathname = usePathname();
 
   const [input, setInput] = useState(query);
+  const [isTyping, setIsTyping] = useState(false);
+
+  
+
   const updateParams = (params: Record<string, string | null>) => {
-    const sp = new URLSearchParams(window.location.search);
+  const sp = new URLSearchParams(window.location.search);
 
-    Object.entries(params).forEach(([key, value]) => {
-      if (!value) sp.delete(key);
-      else sp.set(key, value);
-    });
+  Object.entries(params).forEach(([key, value]) => {
+    if (!value) sp.delete(key);
+    else sp.set(key, value);
+  });
 
-    router.replace(`${pathname}?${sp.toString()}`);
-  };
+  router.replace(`${pathname}?${sp.toString()}`);
+};
+  // sync from server
   useEffect(() => {
     setInput(query);
+    setIsTyping(false);   // 👈 server update
   }, [query]);
-
+  // only fire when USER types
   useEffect(() => {
+    if (!isTyping) return;
+
     const id = setTimeout(() => {
       updateParams({
         q: input || null,
         page: "1",
       });
     }, 300);
+
     return () => clearTimeout(id);
-  }, [input]);
+  }, [input, isTyping]);
 
   const totalPages = Math.ceil(total / perPage);
 
@@ -88,7 +97,10 @@ export default function ClientSearch({
               type="text"
               placeholder="Search books by title…"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setIsTyping(true);   // 👈 mark user interaction
+              }}
               className="pl-9"
               aria-describedby="search-help"
             />

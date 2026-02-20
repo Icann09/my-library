@@ -18,6 +18,37 @@ export  const fetchBooksUser  = unstable_cache(
     ["public-books"],
     { tags: ["books"] }
   );
+
+/// Books count 
+export const fetchBooksCountFiltered = async ({
+  query,
+  genre,
+}: {
+  query: string;
+  genre: string;
+}) => {
+  const conditions = [];
+
+  if (query) {
+    conditions.push(ilike(books.title, `%${query}%`));
+  }
+
+  if (genre) {
+    conditions.push(eq(books.genre, genre));
+  }
+
+  const whereClause =
+    conditions.length > 0 ? and(...conditions) : undefined;
+
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(books)
+    .where(whereClause);
+
+  return Number(count);
+};
+
+
 /// Books for search with filtering and pagination
 export const fetchBooksSearch = async ({
   query,
@@ -45,11 +76,6 @@ export const fetchBooksSearch = async ({
   const whereClause =
     conditions.length > 0 ? and(...conditions) : undefined;
 
-  const [{ count }] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(books)
-    .where(whereClause);
-
   const booksList = await db
     .select()
     .from(books)
@@ -60,7 +86,6 @@ export const fetchBooksSearch = async ({
 
   return {
     books: booksList,
-    total: Number(count),
   };
 };
 /// Books for admin/dashboard with caching   
@@ -139,6 +164,8 @@ export const fetchBorrowedBooksUser = async (userId: string) => {
           ELSE false 
         END
       `.as("isLoanedBook"),
+      dueDate: borrowRecords.dueDate,
+      borrowedAt: borrowRecords.createdAt,
     })
     .from(borrowRecords)
     .innerJoin(books, eq(borrowRecords.bookId, books.id))
@@ -147,6 +174,7 @@ export const fetchBorrowedBooksUser = async (userId: string) => {
 
   return borrowedBooks;
 };
+
 
 
 // Users fetchers

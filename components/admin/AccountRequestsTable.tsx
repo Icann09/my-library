@@ -1,14 +1,14 @@
 import { fetchAccountRequest } from "@/lib/data"
 import ViewIdCardButton from "./ViewIdCardBtn";
-import ApproveRequestBtn from "./ApproveRequestBtn";
-import RejectRequestBtn from "./RejectRequstBtn";
 
 
 export default async function AccountRequestsTable() {
   const accountRequests = await fetchAccountRequest();
+  
 
   return (
-  <tbody>
+
+    <tbody id="account-request-body">
     {accountRequests.map((user) => (
       <tr key={user.id} className="border-t">
         <td className="px-4 py-3 flex items-center gap-3">
@@ -38,14 +38,32 @@ export default async function AccountRequestsTable() {
           <ViewIdCardButton imageUrl={user.universityCard}/>
         </td>
         <td className="px-4 py-3 text-center"> 
-          <div className="flex justify-center gap-3">
-            <ApproveRequestBtn userId={user.id} />
-            <RejectRequestBtn userId={user.id}/>
+          <div>
+            {/* Account Actions */}
+            <div className="flex gap-3 py-3 text-center">
+              <button
+                data-action="approve"
+                data-user-id={user.id}
+                className="cursor-pointer bg-green-200 text-green-800 hover:bg-green-300 px-3 py-1 rounded"
+              >
+                Approve Account
+              </button>
+
+              <button
+                data-action="reject"
+                data-user-id={user.id}
+                className="bg-transparent cursor-pointer"
+              >
+                <p className="w-4 h-4 rounded-full border-red-500 border-2 flex justify-center items-center text-red-500">
+                  ×
+                </p>
+              </button>
+            </div>
+
           </div>
-          
         </td>
       </tr>
     ))}
-  </tbody>
+    </tbody>
     )
   }
