@@ -1,10 +1,8 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
-import { Suspense } from "react";
-import { AccountRequestsTableSkeleton } from "@/components/ui/Skeletons";
 import AccountRequestActionController from "@/components/admin/AccountRequestActionsController";
 
 export default async function Page() {
-  // const accountRequests = await db.select().from(users).where(eq(users.status, "PENDING"));
+
   return (
     <div className="p-6">
       <h2 className="text-lg font-semibold mb-4">Account Registration Requests</h2>

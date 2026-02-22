@@ -23,21 +23,6 @@ export default function AccountRequestActionController() {
   const [action, setAction] = useState<"approve" | "reject" | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLTableSectionElement>) => {
-    const target = e.target as HTMLElement;
-    const btn = target.closest("[data-action]");
-
-    if (!btn) return;
-
-    const actionType = btn.getAttribute("data-action");
-    const userId = btn.getAttribute("data-user-id");
-
-    if (!actionType || !userId) return;
-
-    setSelectedUserId(userId);
-    setAction(actionType as "approve" | "reject");
-  };
-
   const handleConfirm = async () => {
     if (!selectedUserId || !action) return;
 

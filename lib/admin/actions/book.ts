@@ -2,6 +2,7 @@
 import { db } from "@/database/drizzle";
 import { eq } from "drizzle-orm";
 import { books, borrowRecords } from "@/database/schema";
+import { revalidateTag } from "next/cache";
 
 
 export const createBook = async (params: BookParams) => {
@@ -9,6 +10,8 @@ export const createBook = async (params: BookParams) => {
     const newBook = await db.insert(books).values({
       ...params, availableCopies: params.totalCopies,
     }).returning();
+
+    revalidateTag("books"); // Revalidate the "books" tag to update any cached data related to books
     return {
       success: true,
       data: JSON.parse(JSON.stringify(newBook[0])),
@@ -63,6 +66,7 @@ export const deleteBook = async (bookId: string) => {
     const deleted = await db.delete(books)
       .where(eq(books.id, bookId))
       .returning();
+    revalidateTag("books"); // Revalidate the "books" tag to update any cached data related to books
 
     return { success: true, deleted };
   } catch (error) {

@@ -1,8 +1,9 @@
 // UsersTable.tsx (SERVER)
 import { fetchBooksAdmin } from "@/lib/data";
-import BookAction from "@/components/admin/BookAction";
 import BookCover from "@/components/ui/BookCover";
 import Link from "next/link";
+import { Trash2, Pencil } from "lucide-react";
+
 
 
 export default async function BooksTable() {
@@ -41,7 +42,18 @@ export default async function BooksTable() {
               : "—"}
           </td>
           <td className="p-4">
-            <BookAction bookId={book.id}/>
+            {/* <BookAction bookId={book.id}/> */}
+            <div className="flex justify-between">
+              <Link href={`/admin/books/edit/${book.id}`} aria-label="Edit book">
+                <Pencil className="text-blue-600 cursor-pointer" size={16} />
+              </Link>
+              <Trash2
+                className="text-red-600 cursor-pointer"
+                size={16}
+                data-book-id={book.id}
+                data-action ="delete"
+              />
+            </div>
           </td>
         </tr>
       ))}
