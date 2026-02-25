@@ -1,5 +1,6 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
-import AccountRequestActionController from "@/components/admin/AccountRequestActionsController";
+import { Suspense } from "react";
+import { AccountRequestsTableSkeleton } from "@/components/ui/Skeletons";
 
 export default async function Page() {
 
@@ -17,8 +18,9 @@ export default async function Page() {
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
-          <AccountRequestsTable />
-          <AccountRequestActionController />
+          <Suspense fallback={<AccountRequestsTableSkeleton />}>
+            <AccountRequestsTable />
+          </Suspense>
         </table>
       </div>
     </div>

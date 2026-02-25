@@ -1,15 +1,17 @@
 // UsersTable.tsx (SERVER)
-import BorrowRecordDelBtn from "@/components/admin/BorrowRecordDelBtn";
 import ViewIdCardButton from "@/components/admin/ViewIdCardBtn";
-import UserRoleBtn from "@/components/admin/UserRoleSwitcher";
 import { fetchUsersWithBorrowCount } from "@/lib/data";
+import { Trash2 } from "lucide-react";
+import UsersTableController from "./home/UsersTableController";
+
 
 
 export default async function UsersTable() {
   const users = await fetchUsersWithBorrowCount();
+  const ROLES: ("USER" | "ADMIN")[] = ["USER", "ADMIN"];
 
   return (
-    <tbody>
+    <UsersTableController>
     {users.map(user => (
       <tr key={user.id} className="border-b hover:bg-gray-50">
         <td className="p-4 flex items-center gap-3">
@@ -35,7 +37,52 @@ export default async function UsersTable() {
             : "N/A"}
         </td>
         <td className="p-4 text-center">
-          <UserRoleBtn userId={user.id} role={user.role}/>
+          {/* Users Role Switcher Component */}
+          {/* =============================== */}
+
+          <div className="relative">
+            {/* Toggle Button */}
+            <button
+              data-action="toggle-role"
+              data-user-id={user.id}
+              data-current-role={user.role}
+              className={`px-2 py-1 rounded-full text-xs ${
+                user.role === "USER"
+                  ? "bg-pink-100 text-pink-600"
+                  : "bg-green-100 text-green-600"
+              }`}
+            >
+              {user.role}
+            </button>
+
+            {/* Dropdown */}
+            <div
+              data-dropdown-role
+              className="absolute bg-white shadow-md rounded-xl border w-28 mt-1 z-10 hidden"
+            >
+              {ROLES.map((roleOption) => (
+                <div
+                  key={roleOption}
+                  data-action="change-role"
+                  data-new-role={roleOption}
+                  className={`px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+                    user.role === roleOption ? "font-semibold" : ""
+                  }`}
+                >
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      roleOption === "USER"
+                        ? "bg-pink-100 text-pink-600"
+                        : "bg-green-100 text-green-600"
+                    }`}
+                  >
+                    {roleOption}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* =============================== */}
         </td>
         <td className="p-4 text-center">{user.borrowCount}</td>
         <td className="p-4 text-center">{user.universityId}</td>
@@ -43,10 +90,19 @@ export default async function UsersTable() {
           <ViewIdCardButton imageUrl={user.universityCard}/>
         </td>
         <td className="p-4 text-center">
-          <BorrowRecordDelBtn userId={user.id} />
+          {/* Users Delete Button */}
+          {/* =============================== */}
+          <button 
+            data-action="delete-user"
+            data-user-id={user.id}
+            className="text-red-500 hover:text-red-700">
+            <Trash2 size={18} />
+          </button>
+          {/* =============================== */}
         </td>
       </tr>
     ))}
-    </tbody>
+    </UsersTableController>
+
   );
 }

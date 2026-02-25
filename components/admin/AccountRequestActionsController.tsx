@@ -15,13 +15,16 @@ import {
   rejectAccountRequest,
 } from "@/lib/admin/actions/user";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
-export default function AccountRequestActionController() {
+export default function AccountRequestActionController({children}: {children: React.ReactNode }) {
   const router = useRouter();
 
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [action, setAction] = useState<"approve" | "reject" | null>(null);
   const [loading, setLoading] = useState(false);
+  const tableRef = useRef<HTMLTableSectionElement>(null);
+
 
   const handleConfirm = async () => {
     if (!selectedUserId || !action) return;
@@ -46,7 +49,9 @@ export default function AccountRequestActionController() {
   };
 
     useEffect(() => {
-      const tbody = document.getElementById("account-request-body");
+
+      const tbody = tableRef.current;
+
       if (!tbody) return;
 
       const handler = (e: MouseEvent) => {
@@ -72,17 +77,17 @@ export default function AccountRequestActionController() {
 
 
   return (
-    <>
-      <Dialog open={!!action} onOpenChange={() => setAction(null)}>
+      <tbody ref={tableRef}>{children}
+        <Dialog open={!!action} onOpenChange={() => setAction(null)}>
         <DialogContent className="text-center px-8 py-6 max-w-md">
           <DialogHeader>
-            <div className="mx-auto mb-4">
+            <p> className="mx-auto mb-4"
               {action === "approve" ? (
                 <CheckCircle className="text-green-600 w-10 h-10" />
               ) : (
                 <AlertCircle className="text-red-600 w-10 h-10" />
               )}
-            </div>
+            </p>
 
             <DialogTitle>
               {action === "approve"
@@ -99,6 +104,6 @@ export default function AccountRequestActionController() {
           </Button>
         </DialogContent>
       </Dialog>
-    </>
+      </tbody>
   );
 }

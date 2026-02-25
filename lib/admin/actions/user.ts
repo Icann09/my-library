@@ -71,3 +71,17 @@ export async function rejectAccountRequest(userId: string) {
     return { success: false };
   }
 }
+
+
+export const deleteUser = async (userId: string) => {
+  try {
+    const deleted = await db.delete(users)
+      .where(eq(users.id, userId))
+      .returning();
+
+    return { success: true, deleted }
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return { success: false, error: "Failed to delete user" }; 
+  } 
+}

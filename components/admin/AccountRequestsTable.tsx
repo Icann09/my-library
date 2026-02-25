@@ -1,5 +1,6 @@
 import { fetchAccountRequest } from "@/lib/data"
 import ViewIdCardButton from "./ViewIdCardBtn";
+import AccountRequestActionController from "./AccountRequestActionsController";
 
 
 export default async function AccountRequestsTable() {
@@ -8,7 +9,8 @@ export default async function AccountRequestsTable() {
 
   return (
 
-    <tbody id="account-request-body">
+    <AccountRequestActionController>
+
     {accountRequests.map((user) => (
       <tr key={user.id} className="border-t">
         <td className="px-4 py-3 flex items-center gap-3">
@@ -64,6 +66,7 @@ export default async function AccountRequestsTable() {
         </td>
       </tr>
     ))}
-    </tbody>
+    </AccountRequestActionController>
+
     )
   }
