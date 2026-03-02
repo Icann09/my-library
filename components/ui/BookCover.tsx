@@ -35,10 +35,6 @@ export default function BookCover({ className, variant = "regular", coverColor =
         className="rounded-sm object-fill"
         loading="lazy"
         lqip={{ active: true }}
-        onError={() => {
-          console.error('Failed to load image');
-          // Optionally, you could set a default image here
-        }}
       />
       </div>
     </div>

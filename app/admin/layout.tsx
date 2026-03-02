@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/sign-in");
+  // console.log("Admin Layout - Session:", session);  
 
   const user = await db
     .select({ role: users.role })

@@ -3,7 +3,7 @@ import { BorrowRecordsTableSkeleton } from "@/components/ui/Skeletons";
 import { Suspense } from "react";
 
 export default async function Page() {
-
+  console.log("Rendering Borrow Records Page");
   return (
     <div className="overflow-x-auto p-4">
       <table className="min-w-full table-auto border-collapse">

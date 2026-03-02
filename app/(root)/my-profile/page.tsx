@@ -31,7 +31,6 @@ export default async function Page() {
     fetchBorrowedBooksUser(userId),
   ]);
 
-  console.log("Borrowed Books:", borrowedBooks);
 
   return (
   <div className="flex flex-col gap-8 w-full lg:flex-row">

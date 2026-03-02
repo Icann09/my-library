@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { updateBorrowStatus } from "@/lib/admin/actions/borrow";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
 
@@ -15,26 +14,40 @@ type BorrowStatusBtnProps = {
 const STATUSES = ["BORROWED", "RETURNED", "LATE RETURN"] as const;
 
 export default function BorrowedStatusBtn({ status, borrowId, bookId }: BorrowStatusBtnProps) {
-  const router = useRouter();
+  // const router = useRouter();
+  const [currentStatus, setCurrentStatus] = useState(status);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null);
 
-  const handleStatusChange = async (borrowId: string, newStatus: typeof STATUSES[number]) => {
-    if (status === newStatus) {
+  const handleStatusChange = async (
+    borrowId: string,
+    newStatus: typeof STATUSES[number]
+    ) => {
+    if (currentStatus === newStatus) {
       setIsDropdownOpen(false);
       return;
     }
 
-    const update = await updateBorrowStatus(borrowId, newStatus, bookId, status);
-    
+    const previousStatus = currentStatus;
+
+    // ✅ Optimistic update (instant UI change)
+    setCurrentStatus(newStatus);
+
+    const update = await updateBorrowStatus(
+      borrowId,
+      newStatus,
+      bookId,
+      previousStatus
+    );
 
     if (update.success) {
       toast.success("Borrow status updated");
-      router.refresh();
     } else {
+      // ❌ rollback if failed
+      setCurrentStatus(previousStatus);
       toast.error("Failed to update status");
     }
-  };
+    };
 
   return (
     <div className="relative">
@@ -44,7 +57,7 @@ export default function BorrowedStatusBtn({ status, borrowId, bookId }: BorrowSt
             <div
               key={statusOption}
               className={`px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
-                status === statusOption ? "font-semibold" : ""
+                currentStatus === statusOption ? "font-semibold" : ""
               }`}
               onMouseEnter={() => setHoveredStatus(statusOption)}
               onMouseLeave={() => setHoveredStatus(null)}
@@ -72,14 +85,14 @@ export default function BorrowedStatusBtn({ status, borrowId, bookId }: BorrowSt
         <button
           onClick={() => setIsDropdownOpen(true)}
           className={`px-3 py-1 rounded-full text-xs font-medium ${
-            status === "BORROWED"
+            currentStatus === "BORROWED"
               ? "bg-purple-100 text-purple-700"
-              : status === "RETURNED"
+              : currentStatus  === "RETURNED"
               ? "bg-blue-100 text-blue-700"
               : "bg-red-100 text-red-700"
           }`}
         >
-          {status ?? "UNKNOWN"}
+          {currentStatus ?? "UNKNOWN"}
         </button>
       )}
     </div>

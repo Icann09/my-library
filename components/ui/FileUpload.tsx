@@ -27,7 +27,6 @@ const authenticator = async () => {
     }
     return await response.json();
   } catch (error: any) {
-    console.error("ImageKit authentication error:", error);
     throw new Error(`Authentication request failed: ${error.message}`);
   }
 };
@@ -53,7 +52,6 @@ export default function FileUpload({ onFileChange, type, accept, placeholder, fo
   }
 
   const onError = (error: any) => {
-    console.error("Upload error:", error);
     toast.error(`${type} upload failed.`);
   };
 

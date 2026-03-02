@@ -29,6 +29,8 @@ export default function BorrowReceiptBtn({
     setLoading(false);
   };
 
+  console.log(`BorrowReceiptBtn - borrowId: ${borrowId}`);
+
   return (
     <div>
       <Button
