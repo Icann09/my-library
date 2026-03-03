@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local"
 import { Toaster } from "sonner";
-import { SessionProvider } from "next-auth/react"
 import { auth } from "@/auth";
 
 
@@ -76,14 +75,12 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en">
-      <SessionProvider session={session}>
         <body
         className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased `}
         >
           {children}
           <Toaster />  
       </body>
-      </SessionProvider>
     </html>
   );
 }

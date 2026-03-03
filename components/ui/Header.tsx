@@ -3,10 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { logOut } from "@/lib/actions/auth";
 import { LogOutIcon } from "lucide-react";
 import { Avatar, AvatarFallback } from "./avatar"; // Adjust path if needed
 import { getInitials } from "@/lib/utils"; // Helper to get initials
+
+
 
 
 export default function Header({ session }: { session: any })  {
@@ -63,7 +65,7 @@ export default function Header({ session }: { session: any })  {
 
         {/* Logout button */}
         <button
-          onClick={() => signOut()}
+          onClick={() => logOut()}
           aria-label="Log out"
           className="text-red-400 hover:text-red-500 transition-colors cursor-pointer"
         >

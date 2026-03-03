@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Session } from "next-auth";
 import { LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { logOut } from "@/lib/actions/auth";
 
 
 export default function Sidebar({ session }: { session: Session }) {
@@ -54,7 +54,7 @@ export default function Sidebar({ session }: { session: Session }) {
         </div>
         <button
           title="Logout"
-          onClick={() => signOut()} // <-- wrap it in a function
+          onClick={() => logOut()} // <-- wrap it in a function
         >
           <LogOut className="w-6 h-6 text-red-400 hover:text-red-500" />
         </button>

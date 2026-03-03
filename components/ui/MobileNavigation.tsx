@@ -13,17 +13,9 @@ import { usePathname } from "next/navigation";
 import { Separator } from "./separator";
 import { Avatar, AvatarFallback } from "./avatar"; 
 import { getInitials } from "@/lib/utils";
-import { signOut } from "next-auth/react";
+import { logOut } from "@/lib/actions/auth";
 import { LogOutIcon } from "lucide-react";
 
-
-interface Props {
-  $id: string,
-  accountId: string,
-  fullName: string, 
-  avatar: string,
-  email: string,
-}
 
 
 export default function MobileNavigation({ session }: { session: any })  {
@@ -82,7 +74,7 @@ export default function MobileNavigation({ session }: { session: any })  {
           <Separator className="my-5 bg-light-200/20"/>
           <div className="flex flex-col justify-between gap-5">
             <button
-              onClick={() => signOut()}
+              onClick={() => logOut()}
               aria-label="Log out"
               className="text-red-400 hover:text-red-500 transition-colors flex"
             >
