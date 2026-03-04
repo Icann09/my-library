@@ -179,8 +179,16 @@ export const fetchBorrowedBooksUser = async (userId: string) => {
 
 // Users fetchers
 /// Account requests for admin dashboard
-export const fetchAccountRequest = async () => {
-  const accountRequest = await db
+export const fetchAccountRequest = async ({
+  page = 1,
+  limit = 20,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
+  const offset = (page - 1) * limit;
+
+  const data = await db
     .select({
       id: users.id,
       fullName: users.fullName,
@@ -190,9 +198,21 @@ export const fetchAccountRequest = async () => {
       universityCard: users.universityCard,
     })
     .from(users)
+    .where(eq(users.status, "PENDING"))
+    .limit(limit)
+    .offset(offset);
+
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(users)
     .where(eq(users.status, "PENDING"));
-  return accountRequest;
-}
+
+  return {
+    data,
+    total: total[0].count,
+  };
+};
+
 /// Users with borrow count for admin dashboard
 export const fetchUsersWithBorrowCount = async () => {
   const usersWithBorrowCount = await db

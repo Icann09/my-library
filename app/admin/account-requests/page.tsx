@@ -1,12 +1,24 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
-import { Suspense } from "react";
-import { AccountRequestsTableSkeleton } from "@/components/ui/Skeletons";
+import { fetchAccountRequest } from "@/lib/data";
+import { Pagination } from "@/components/admin/Pagination";
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}:{
+  searchParams?: Promise<{ page?: string }>;
+}) {
+  const page = Number((await searchParams)?.page ?? 1);
+  const limit = 20;
+
+  const { data, total } = await fetchAccountRequest({ page, limit });
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="p-6">
-      <h2 className="text-lg font-semibold mb-4">Account Registration Requests</h2>
+      <h2 className="text-lg font-semibold mb-4">
+        Account Registration Requests
+      </h2>
+
       <div className="overflow-x-auto rounded-lg shadow border">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50">
@@ -18,15 +30,12 @@ export default async function Page() {
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
-          <Suspense fallback={<AccountRequestsTableSkeleton />}>
-            <AccountRequestsTable />
-          </Suspense>
+
+          <AccountRequestsTable accountRequests={data} />
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }
-
-
-
-
