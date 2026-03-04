@@ -213,6 +213,14 @@ export const fetchAccountRequest = async ({
   };
 };
 
+export const fetchAccountRequestCount = async () => {
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(users)
+    .where(eq(users.status, "PENDING"));
+  return total[0].count;
+}
+
 /// Users with borrow count for admin dashboard
 export const fetchUsersWithBorrowCount = async () => {
   const usersWithBorrowCount = await db

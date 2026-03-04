@@ -3,7 +3,7 @@ import AccountRequestCard from "./AccountRequestCard";
 import { fetchAccountRequest } from "@/lib/data";
 
 export default async function AccountRequest() {
-  const accountRequest = await fetchAccountRequest();
+  const accountRequest = await fetchAccountRequest({ page: 1, limit: 20 }).then(res => res.data);
 
   return (
     <div className="p-[10px] rounded-xl border border-[#E4E4F0] bg-white max-w-[540px] h-[380px] flex flex-col relative">
