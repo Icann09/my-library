@@ -1,4 +1,4 @@
-import BooksDeleteController from "@/components/admin/BooksDeleteController";
+
 import BooksTable from "@/components/admin/BooksTable";
 import { Button } from "@/components/ui/button";
 import { BooksTableSkeleton } from "@/components/ui/Skeletons";
@@ -33,7 +33,6 @@ export default async function Page() {
               <Suspense fallback={<BooksTableSkeleton />}>
                 <BooksTable />
               </Suspense>
-              <BooksDeleteController />
             </table>
           </div>
     </section>

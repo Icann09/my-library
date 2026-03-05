@@ -4,13 +4,30 @@ import BorrowedStatusBtn from "./BorrowedStatusBtn";
 import BorrowReceiptBtn from "./BorrowReceiptBtn";
 
 
-export default async function BorrowRecordsTable() {
-  const borrowDetails = await fetchBorrowDetails();
-  console.log("Borrow Records Table"); // Debug log
+interface BorrowRecord {
+  borrowId: string;
+  borrowDate: Date;
+  dueDate: string;
+  returnDate: string | null;
+  status: "BORROWED" | "RETURNED" | "LATE RETURN";
+  userId: string;
+  fullName: string;
+  email: string;
+  bookId: string;
+  bookTitle: string;
+  bookAuthor: string;
+  bookGenre: string;
+  coverUrl: string;
+  coverColor: string;
+  receiptIsGenerated: boolean;
+}   
+
+export default async function BorrowRecordsTable({ borrowRecords }: { borrowRecords: BorrowRecord[] }) {
+
 
   return (
     <tbody>
-      {borrowDetails.map(record => (
+      {borrowRecords.map(record => (
         <tr key={String(record.borrowId)} className="border-b  hover:bg-gray-50">
           <td className="p-4">
             <div className="flex items-center gap-3">

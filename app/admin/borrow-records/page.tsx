@@ -1,9 +1,18 @@
 import BorrowRecordsTable from "@/components/admin/BorrowRecordsTable";
+import { Pagination } from "@/components/admin/Pagination";
 import { BorrowRecordsTableSkeleton } from "@/components/ui/Skeletons";
+import { fetchBorrowDetails } from "@/lib/data";
 import { Suspense } from "react";
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
   console.log("Rendering Borrow Records Page");
+  const page = Number((await searchParams)?.page ?? 1);
+  const limit = 20;
+  const { data, total } = await fetchBorrowDetails({ page, limit });
+  const totalPages = Math.ceil(total / limit);
+
+
+
   return (
     <div className="overflow-x-auto p-4">
       <table className="min-w-full table-auto border-collapse">
@@ -19,9 +28,10 @@ export default async function Page() {
           </tr>
         </thead>
         <Suspense fallback={<BorrowRecordsTableSkeleton />}>
-          <BorrowRecordsTable />
+          <BorrowRecordsTable borrowRecords={data}/>
         </Suspense>
       </table>
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

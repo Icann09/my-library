@@ -33,9 +33,10 @@ export default async function Page({
 
           <AccountRequestsTable accountRequests={data} />
         </table>
+        <Pagination page={page} totalPages={totalPages} />
+
       </div>
 
-      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

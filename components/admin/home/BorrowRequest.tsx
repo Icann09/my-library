@@ -4,7 +4,8 @@ import Link from "next/link";
 import { dateFormat } from "@/lib/utils";
 
 export default async function BorrowRequest() {
-  const borrowDetails = await fetchBorrowDetails();
+  // const borrowDetails = await fetchBorrowDetails();
+  const { data: borrowDetails } = await fetchBorrowDetails({ page: 1, limit: 20 });
   const isEmpty = borrowDetails.length === 0;
   // const isEmpty = true;
 

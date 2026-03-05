@@ -1,10 +1,21 @@
 import ViewIdCardButton from "./ViewIdCardBtn";
 import AccountRequestActionBtn from "./AccountRequestActionBtn";
 
+
+interface AccountRequest {
+  id: string;
+  fullName: string;
+  email: string;
+  createdAt: Date | null;
+  universityId: number;
+  universityCard: string;
+} 
+
+
 export default function AccountRequestsTable({
   accountRequests,
 }: {
-  accountRequests: any[];
+  accountRequests: AccountRequest[];
 }) {
   return (
     <tbody>

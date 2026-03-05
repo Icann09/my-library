@@ -1,17 +1,15 @@
-// UsersTable.tsx (SERVER)
+// BooksTable.tsx (SERVER)
 import { fetchBooksAdmin } from "@/lib/data";
 import BookCover from "@/components/ui/BookCover";
 import Link from "next/link";
-import { Trash2, Pencil } from "lucide-react";
-
-
+import BookDeleteButton from "./BookDeleteBtn";
 
 export default async function BooksTable() {
   const bookRecord = await fetchBooksAdmin();
 
   return (
     <tbody>
-      {bookRecord.map(book => (
+      {bookRecord.map((book) => (
         <tr key={book.id} className="border-b hover:bg-gray-50">
           <td className="p-4">
             <Link
@@ -26,34 +24,18 @@ export default async function BooksTable() {
               <p className="font-semibold">{book.title}</p>
             </Link>
           </td>
-          <td className="p-4 max-w-40">
-            {book.author}
-          </td>
-          <td className="p-4">
-            {book.genre}
-          </td>
+
+          <td className="p-4 max-w-40">{book.author}</td>
+          <td className="p-4">{book.genre}</td>
+
           <td className="p-4">
             {book.createdAt
-              ? new Date(book.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })
+              ? new Date(book.createdAt).toLocaleDateString("en-US")
               : "—"}
           </td>
-          <td className="p-4">
-            {/* <BookAction bookId={book.id}/> */}
-            <div className="flex justify-between">
-              <Link href={`/admin/books/edit/${book.id}`} aria-label="Edit book">
-                <Pencil className="text-blue-600 cursor-pointer" size={16} />
-              </Link>
-              <Trash2
-                className="text-red-600 cursor-pointer"
-                size={16}
-                data-book-id={book.id}
-                data-action ="delete"
-              />
-            </div>
+
+          <td className="p-4 items-center">
+            <BookDeleteButton bookId={book.id} />
           </td>
         </tr>
       ))}

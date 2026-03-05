@@ -127,8 +127,9 @@ export const fetchGenres = async () => {
 
 // Borrow Records fetchers
 /// Borrow records for admin/dashboard 
-export const fetchBorrowDetails = async () => {
-  const borrowDetails = await db
+export const fetchBorrowDetails = async ({ page, limit }: { page: number; limit: number }) => {
+  const offset = (page - 1) * limit;
+  const data = await db
     .select({
       borrowId: borrowRecords.id,
       borrowDate: borrowRecords.borrowDate,
@@ -149,7 +150,14 @@ export const fetchBorrowDetails = async () => {
     .from(borrowRecords)
     .innerJoin(users, eq(borrowRecords.userId, users.id))
     .innerJoin(books, eq(borrowRecords.bookId, books.id));
-  return borrowDetails;
+
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(borrowRecords)
+    .innerJoin(users, eq(borrowRecords.userId, users.id))
+    .innerJoin(books, eq(borrowRecords.bookId, books.id));
+    
+  return { data, total: total[0].count };
 };
 /// Borroed books for user profile page
 export const fetchBorrowedBooksUser = async (userId: string) => {
@@ -213,13 +221,6 @@ export const fetchAccountRequest = async ({
   };
 };
 
-export const fetchAccountRequestCount = async () => {
-  const total = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(users)
-    .where(eq(users.status, "PENDING"));
-  return total[0].count;
-}
 
 /// Users with borrow count for admin dashboard
 export const fetchUsersWithBorrowCount = async () => {
