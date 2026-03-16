@@ -41,10 +41,10 @@ export async function approveAccountRequest(userId: string) {
 
     // TODO: send email confirmation here (e.g., via Resend/SendGrid)
     const user = result[0];
-    await sendEmail({ 
-      email: user.email, 
-      subject: "Account Approval from My-Library",  
-      message: accountApproval(user.fullName)
+    void sendEmail({
+      email: user.email,
+      subject: "Account Approval from My-Library",
+      message: accountApproval(user.fullName),
     });
   
     return { success: true, result };

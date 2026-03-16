@@ -36,14 +36,10 @@ export default function AccountRequestsTable({
             {user.universityId}
           </td>
 
-          <td className="px-4 py-3 text-center">
+          <td className="px-4 py-3 flex justify-center">
             <ViewIdCardButton imageUrl={user.universityCard} />
           </td>
-
-          <td className="px-4 py-3 text-center">
-            <AccountRequestActionBtn action="approve" userId={user.id} />
-            <AccountRequestActionBtn action="reject" userId={user.id} />
-          </td>
+          <AccountRequestActionBtn userId={user.id} />
         </tr>
       ))}
     </tbody>
