@@ -1,6 +1,7 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
 import { fetchAccountRequest } from "@/lib/data";
 import { Pagination } from "@/components/admin/Pagination";
+import ModalController from "@/components/admin/ModalController";
 
 export default async function Page({
   searchParams,
@@ -33,8 +34,8 @@ export default async function Page({
 
           <AccountRequestsTable accountRequests={data} />
         </table>
+        <ModalController />
         <Pagination page={page} totalPages={totalPages} />
-
       </div>
 
     </div>

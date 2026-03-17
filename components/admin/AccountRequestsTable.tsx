@@ -37,7 +37,14 @@ export default function AccountRequestsTable({
           </td>
 
           <td className="px-4 py-3 flex justify-center">
-            <ViewIdCardButton imageUrl={user.universityCard} />
+            {/* <ViewIdCardButton imageUrl={user.universityCard} /> */}
+            <button
+              data-id-card
+              data-image={user.universityCard}
+              className="text-blue-600 hover:underline flex items-center gap-1"
+            >
+              View ID Card
+            </button>
           </td>
           <AccountRequestActionBtn userId={user.id} />
         </tr>

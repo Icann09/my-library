@@ -1,49 +1,16 @@
 "use client";
 
-import { useState, memo } from "react";
-import { ExternalLink } from "lucide-react";
 import { IKImage } from "imagekitio-next";
 import config from "@/lib/config";
 
-type ViewIdCardButtonProps = {
-  imageUrl: string;
-};
-
-function ViewIdCardButton({ imageUrl }: ViewIdCardButtonProps) {
-  const [showModal, setShowModal] = useState(false);
-
-  function openModal() {
-    setShowModal(true);
-  }
-
-  function closeModal() {
-    setShowModal(false);
-  }
-
-  return (
-    <>
-      <button
-        onClick={openModal}
-        className="text-blue-600 hover:underline flex items-center gap-1"
-      >
-        View ID Card <ExternalLink size={14} />
-      </button>
-
-      {showModal && (
-        <Modal imageUrl={imageUrl} onClose={closeModal} />
-      )}
-    </>
-  );
-}
-
-export default memo(ViewIdCardButton);
-
-type ModalProps = {
-  imageUrl: string;
+type Props = {
+  imageUrl: string | null;
   onClose: () => void;
 };
 
-function Modal({ imageUrl, onClose }: ModalProps) {
+export default function GlobalIdCardModal({ imageUrl, onClose }: Props) {
+  if (!imageUrl) return null;
+
   return (
     <div
       role="dialog"
@@ -57,7 +24,7 @@ function Modal({ imageUrl, onClose }: ModalProps) {
       >
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-black text-lg"
+          className="absolute top-2 right-2 text-lg"
         >
           ✕
         </button>
