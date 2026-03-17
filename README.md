@@ -1,20 +1,119 @@
-# 🛒 My-Library (Next.js)
+# 🛒 MyLibrary — Scalable Digital Library System
 
-A production-ready digital library system demonstrating:
-
-- Server-first architecture with Next.js App Router
-- Role-based access control (RBAC) enforced on the server
-- Real-time borrowing workflows with concurrency safety
-- Background email reminders using Upstash Workflows
-
+A production-ready full-stack application built with Next.js App Router, focusing on server-first architecture, performance, and concurrency safety.
 
 
 ## 🔗 Live Demo
 https://my-library-dun.vercel.app
 
-
 ## 📦 Repository
 https://github.com/Icann09/my-library
+
+
+## 🚀 Key Highlights
+
+- ⚡ Server-first architecture using React Server Components (RSC)
+- 🔐 Secure RBAC enforced at server, layout, and database levels
+- 🧠 Concurrency-safe borrowing system (prevents race conditions)
+- ⏱ Reliable background jobs with Upstash Workflows (QStash)
+- 📉 Reduced client bundle & hydration cost
+
+
+## 🧠 Engineering Impact
+
+- Eliminated race conditions using database-level constraints + insert-first strategy
+- Reduced client-side complexity by moving logic to Server Actions
+- Designed serverless-safe background jobs without cron dependency
+- Optimized large UI interactions using server/client separation
+
+
+## 🚩 Problem
+
+- Digital library systems require:
+- Secure authentication & role management
+- Reliable tracking of borrowing & overdue books
+- Background processing for time-based events
+- Concurrency safety for simultaneous actions
+
+
+## ✅ Solution
+
+Built a server-first system that:
+- Handles authentication securely via session cookies
+- Enforces RBAC entirely on the server
+- Uses Server Components & Server Actions for data integrity
+- Runs background workflows via QStash for reliability
+
+
+## 🧩 Key Challenges & Solutions
+
+🔁 Race Condition in Borrowing
+- Problem: Multiple users borrowing the same book simultaneously
+- Solution:
+  - UNIQUE(user_id, book_id) constraint
+  - PostgreSQL error handling (23505)
+  - Insert-first strategy
+
+⏱ Serverless Scheduling
+- Problem: No reliable cron jobs in serverless
+- Solution:
+  - Upstash QStash workflows
+  - Event-driven background execution
+
+
+## ✨ Features
+
+👤 User
+- Authentication (sign up / sign in / sign out)
+- Browse & search books
+- Borrow books
+- Track borrowing activity
+- Receive email notifications
+
+🛠 Admin
+- Admin dashboard
+- Manage books & users
+- Approve/reject accounts
+- Manage borrow records
+- Generate receipts
+
+
+## 🧱 Architecture
+
+- Server Components → data fetching & protected UI
+- Client Components → interactivity
+- Server Actions → mutations (no API routes)
+- Workflows (QStash) → background jobs
+
+
+## 🔑 Core Decisions
+
+Server Actions over API Routes
+Why:
+- Less boilerplate
+- Built-in auth
+- Type safety
+Trade-off:
+- Tight coupling to Next.js
+
+RBAC Enforcement
+Applied at:
+- Layout level
+- Server Actions
+- Database layer
+
+
+## 🛠 Tech Stack
+
+- Next.js 14 (App Router)
+- React
+- Tailwind CSS + Radix UI
+- Drizzle ORM + PostgreSQL (Neon)
+- NextAuth (Auth)
+- Upstash Redis + QStash
+- Resend (Emails)
+- ImageKit
+- Vercel (Deployment)
 
 
 ## 📸 Previews
@@ -49,6 +148,10 @@ https://github.com/Icann09/my-library
 </p>
 
 
+## 🧪 Testing
+
+- Unit tests for core logic
+- Manual QA for critical flows
 
 ## 🧠 Engineering Highlights
 
@@ -187,45 +290,6 @@ Decision
 - Server Actions were chosen to prioritize security, maintainability, and developer productivity for a web-only application.
 
 
-## 🚀 Getting Started
-
-### 1. Clone the repo
-```bash
-git clone https://github.com/Icann09/my-library.git
-cd my-library
-```
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Setup Environment Variables
-env
-
-DATABASE_URL=
-NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=
-NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=
-IMAGEKIT_PRIVATE_KEY=
-NEXT_PUBLIC_API_ENDPOINT=
-NEXT_PUBLIC_DATABASE=
-AUTH_SECRET=
-UPSTASH_REDIS_URL=
-UPSTASH_REDIS_TOKEN=
-QSTASH_URL=
-QSTASH_TOKEN=
-QSTASH_CURRENT_SIGNING_KEY=
-QSTASH_NEXT_SIGNING_KEY=
-NEXT_PUBLIC_PROD_API_ENDPOINT=
-RESEND_TOKEN=
-SITE_URL=
-
-
-### 4. Run Locally
-```bash
-npm run dev
-```
-
----
 ## 📂 Project Structure
 app/  
   ├── (public)      → Public routes  
@@ -241,8 +305,8 @@ lib/
 
 ## 👨‍💻 About Me
 
-I'm Muhammad Kaisan Farasdag, a front-end developer transitioning into full-stack development.
-I focus on building scalable, user-focused web applications using modern JavaScript frameworks.
+I’m Muhammad Kaisan Farasdag, a front-end developer transitioning into full-stack engineering.
 
+I focus on building scalable, performance-oriented applications using modern web technologies.
 - GitHub: https://github.com/Icann09
 - LinkedIn: https://www.linkedin.com/in/muhammad-kaisan-35a103211
