@@ -1,5 +1,5 @@
+import ViewIdCardBtn from "./ViewIdCardBtn";
 import AccountRequestActionBtn from "./AccountRequestActionBtn";
-
 
 interface AccountRequest {
   id: string;
@@ -17,7 +17,7 @@ export default function AccountRequestsTable({
   accountRequests: AccountRequest[];
 }) {
   return (
-    <tbody>
+    <tbody id="account-request-table">
       {accountRequests.map((user) => (
         <tr key={user.id} className="border-t">
           <td className="px-4 py-3">
@@ -36,14 +36,7 @@ export default function AccountRequestsTable({
           </td>
 
           <td className="px-4 py-3 flex justify-center">
-            {/* <ViewIdCardButton imageUrl={user.universityCard} /> */}
-            <button
-              data-id-card
-              data-image={user.universityCard}
-              className="text-blue-600 hover:underline flex items-center gap-1"
-            >
-              View ID Card
-            </button>
+            <ViewIdCardBtn imageUrl={user.universityCard} />
           </td>
           <AccountRequestActionBtn userId={user.id} />
         </tr>

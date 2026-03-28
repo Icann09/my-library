@@ -49,13 +49,7 @@ export default async function UsersTable() {
         <td className="p-4 text-center">{user.borrowCount}</td>
         <td className="p-4 text-center">{user.universityId}</td>
         <td className="p-4 text-center">
-          <button
-            data-id-card
-            data-image={user.universityCard}
-            className="text-blue-600 hover:underline flex items-center gap-1"
-          >
-            View ID Card
-          </button>
+          <ViewIdCardButton imageUrl={user.universityCard} />
         </td>
         <td className="p-4 text-center">
           {/* Users Delete Button */}

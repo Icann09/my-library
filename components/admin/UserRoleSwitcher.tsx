@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateUserRole } from "@/lib/admin/actions/user";
-
 
 type Role = "USER" | "ADMIN";
 
@@ -17,47 +16,38 @@ export default function UserRoleSwitcher({
   userId: string;
   currentRole: Role;
 }) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [role, setRole] = useState<Role>(currentRole);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleChangeRole = async (newRole: Role) => {
+  function handleChangeRole(newRole: Role) {
     if (newRole === role) {
       setIsOpen(false);
       return;
     }
 
-    try {
-      setIsLoading(true);
+    // Optimistic UI
+    setRole(newRole);
+    setIsOpen(false);
 
-      // Optimistic UI
-      setRole(newRole);
-
+    startTransition(async () => {
       const res = await updateUserRole(userId, newRole);
 
       if (res.success) {
         toast.success("Role updated");
-        router.refresh();
       } else {
         setRole(currentRole); // rollback
         toast.error("Failed to update role");
       }
-    } catch (err) {
-      setRole(currentRole); // rollback
-      toast.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-      setIsOpen(false);
-    }
-  };
+    });
+  }
 
   return (
     <div className="relative">
-      {/* Toggle Button */}
+      {/* Toggle */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        disabled={isLoading}
+        disabled={isPending}
         className={`px-2 py-1 rounded-full text-xs ${
           role === "USER"
             ? "bg-pink-100 text-pink-600"
@@ -71,10 +61,10 @@ export default function UserRoleSwitcher({
       {isOpen && (
         <div className="absolute bg-white shadow-md rounded-xl border w-28 mt-1 z-10">
           {ROLES.map((roleOption) => (
-            <div
+            <button
               key={roleOption}
               onClick={() => handleChangeRole(roleOption)}
-              className={`px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100 ${
+              className={`w-full text-left px-3 py-2 flex items-center gap-2 hover:bg-gray-100 ${
                 role === roleOption ? "font-semibold" : ""
               }`}
             >
@@ -87,7 +77,7 @@ export default function UserRoleSwitcher({
               >
                 {roleOption}
               </span>
-            </div>
+            </button>
           ))}
         </div>
       )}

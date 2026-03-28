@@ -1,4 +1,3 @@
-import { fetchBorrowDetails } from "@/lib/data";
 import BookCover from "@/components/ui/BookCover";
 import BorrowedStatusBtn from "./BorrowedStatusBtn";
 import BorrowReceiptBtn from "./BorrowReceiptBtn";

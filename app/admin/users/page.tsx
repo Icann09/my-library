@@ -1,4 +1,3 @@
-import ModalController from "@/components/admin/ModalController";
 import UsersTable from "@/components/admin/UsersTable";
 import { UsersTableSkeleton } from "@/components/ui/Skeletons";
 import { Suspense } from "react";
@@ -26,7 +25,6 @@ export default async function Page() {
           <UsersTable />
         </Suspense>
       </table>
-      <ModalController />
     </div>
   );
 }

@@ -33,7 +33,6 @@ export default async function BooksTable() {
               ? new Date(book.createdAt).toLocaleDateString("en-US")
               : "—"}
           </td>
-
           <td className="p-4 items-center">
             <BookDeleteButton bookId={book.id} />
           </td>

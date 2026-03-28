@@ -56,10 +56,10 @@ export const signInWithCredentials = async (
 export const signUp = async (params: AuthCredentials) => {
   const { fullName, email, universityId, password, universityCard } = params;
 
-  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
-  const { success } = await ratelimit.limit(ip);
+  // const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  // const { success } = await ratelimit.limit(ip);
 
-  if (!success) return redirect("/too-fast");
+  // if (!success) return redirect("/too-fast");
 
   const existingUser = await db
     .select()
@@ -98,12 +98,8 @@ export const signUp = async (params: AuthCredentials) => {
   }
 };
 
+
 export const logOut = async () => {
-  try {
-    await signOut({ redirect: false });
-    redirect("/signIn");
-  } catch (error) {
-    console.error("Logout error:", error);
-    redirect("/login?error=logout_failed");
-  }
-}
+  await signOut({ redirect: false });
+  redirect("/sign-in");
+};

@@ -1,8 +1,7 @@
 import AccountRequestsTable from "@/components/admin/AccountRequestsTable";
 import { fetchAccountRequest } from "@/lib/data";
 import { Pagination } from "@/components/admin/Pagination";
-import ModalController from "@/components/admin/ModalController";
-import AccountRequestTableController from "@/components/admin/AccountRequestTableController";
+
 
 export default async function Page({
   searchParams,
@@ -22,7 +21,7 @@ export default async function Page({
       </h2>
 
       <div className="overflow-x-auto rounded-lg shadow border">
-        <AccountRequestTableController />
+
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50">
             <tr className="text-center text-gray-700">
@@ -35,10 +34,8 @@ export default async function Page({
           </thead>
           <AccountRequestsTable accountRequests={data} />
         </table>
-        <ModalController />
         <Pagination page={page} totalPages={totalPages} />
       </div>
-
     </div>
   );
 }
