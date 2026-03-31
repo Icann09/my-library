@@ -1,23 +1,28 @@
 "use client";
 
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BookCard from "@/components/ui/BookCard";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useQueryParams } from "@/hooks/useQueryParams";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useCallback } from "react";
 
 
-type ClientSearchProps = {
+type Props = {
   books: Book[];
   total: number;
   page: number;
   perPage: number;
   query: string;
   genre: string;
+  genres: string[];
 };
 
+const normalize = (val: string) =>
+  val.trim().replace(/\s+/g, " ");
 
 export default function ClientSearch({
   books,
@@ -26,103 +31,70 @@ export default function ClientSearch({
   perPage,
   query,
   genre,
-  genres
-}: ClientSearchProps & { genres: string[] }) {
+  genres,
+}: Props) {
 
-  const router = useRouter();
-  const pathname = usePathname();
+  const { updateParams, isPending } = useQueryParams();
+  const [searchInput, setSearchInput] = useState(query);
 
-  const [input, setInput] = useState(query);
-  const [isTyping, setIsTyping] = useState(false);
+  // sync server → client
 
-  
 
-  const updateParams = (params: Record<string, string | null>) => {
-  const sp = new URLSearchParams(window.location.search);
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (!value) sp.delete(key);
-    else sp.set(key, value);
-  });
-
-  router.replace(`${pathname}?${sp.toString()}`);
-};
-  // sync from server
   useEffect(() => {
-    setInput(query);
-    setIsTyping(false);   // 👈 server update
+    if (normalize(query) !== normalize(searchInput)) {
+      setSearchInput(query);
+    }
   }, [query]);
-  // only fire when USER types
-  useEffect(() => {
-    if (!isTyping) return;
 
-    const id = setTimeout(() => {
-      updateParams({
-        q: input || null,
-        page: "1",
-      });
-    }, 300);
+  const debounceSearch = useCallback((val: string) => {
 
-    return () => clearTimeout(id);
-  }, [input, isTyping]);
+    const normalized = normalize(val);
+
+    if (normalized === query) return;
+
+    updateParams({
+      q: normalized || null,
+      page: "1",
+    });
+  }, [updateParams, query]);
+
+  useDebounce(searchInput, 300, true, debounceSearch);
 
   const totalPages = Math.ceil(total / perPage);
 
-  
-
   return (
-    <section className="py-3  md:py-10" aria-labelledby="search-page-heading">
+    <section className="py-3 md:py-10">
       {/* Search */}
       <div className="text-center mb-10">
-        <h2 className="text-lg text-gray-400 mb-2">
-          DISCOVER YOUR NEXT GREAT READ:
-        </h2>
-        <h1 id="search-page-heading" className="text-4xl font-bold mb-6">
+        <h1 className="text-4xl font-bold mb-6">
           Explore and Search for{" "}
-          <span className="text-yellow-300">Any Book</span> In Our Library
+          <span className="text-yellow-300">Any Book</span>
         </h1>
 
         <div className="max-w-xl mx-auto relative">
-          <label htmlFor="book-search" className="sr-only">
-            Search books by title
-          </label>
-          <div className="relative">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              aria-hidden="true"
-            />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
 
-            <Input
-              id="book-search"
-              type="text"
-              placeholder="Search books by title…"
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                setIsTyping(true);   // 👈 mark user interaction
-              }}
-              className="pl-9"
-              aria-describedby="search-help"
-            />
-          </div>
-          <p id="search-help" className="sr-only">
-            Results update automatically as you type
-          </p>
+          <Input
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+            placeholder="Search books..."
+            className="pl-9"
+          />
         </div>
       </div>
 
       {/* Filter */}
       <div className="mx-auto max-w-7xl flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold">
-          Search Results for{" "}
-          <span className="text-yellow-300">{query || "All Books"}</span>
+          Results for{" "}
+          <span className="text-yellow-300">
+            {query || "All Books"}
+          </span>
         </h3>
-        <label htmlFor="genre-filter" className="sr-only">
-          Filter books by genre
-        </label>
+
         <select
-          id="genre-filter"
-          className="bg-gray-800 border border-gray-700 px-4 py-2 rounded"
           value={genre}
           onChange={(e) =>
             updateParams({
@@ -130,22 +102,19 @@ export default function ClientSearch({
               page: "1",
             })
           }
+          className="bg-gray-800 border border-gray-700 px-4 py-2 rounded"
         >
           <option value="">All Genres</option>
-          {genres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
+          {genres.map((g) => (
+            <option key={g} value={g}>
+              {g}
             </option>
           ))}
         </select>
       </div>
 
       {/* Results */}
-      <div
-        className="mx-auto max-w-7xl"
-        aria-live="polite"
-        aria-busy={false}
-      >
+      <div className="mx-auto max-w-7xl">
         {books.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
@@ -157,18 +126,19 @@ export default function ClientSearch({
             {/* Pagination */}
             <div className="flex justify-center gap-2 mt-10">
               <Button
-                variant="ghost"
-                disabled={page === 1}
-                aria-label="Previous page"
-                onClick={() => updateParams({ page: String(page - 1) })}
+                disabled={page === 1 || isPending}
+                onClick={() =>
+                  updateParams({ page: String(page - 1) })
+                }
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft />
               </Button>
+
               {Array.from({ length: totalPages }).map((_, i) => (
                 <Button
-                  aria-current={page === i + 1 ? "page" : undefined}
-                  key={i + 1}
+                  key={i}
                   variant={page === i + 1 ? "default" : "ghost"}
+                  disabled={isPending}
                   onClick={() =>
                     updateParams({ page: String(i + 1) })
                   }
@@ -178,12 +148,12 @@ export default function ClientSearch({
               ))}
 
               <Button
-                variant="ghost"
-                disabled={page === totalPages}
-                aria-label="Next page"
-                onClick={() => updateParams({ page: String(page + 1) })}
+                disabled={page === totalPages || isPending}
+                onClick={() =>
+                  updateParams({ page: String(page + 1) })
+                }
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight />
               </Button>
             </div>
           </>
@@ -195,15 +165,20 @@ export default function ClientSearch({
               width={200}
               height={200}
             />
-            <h3 className="text-yellow-300 font-bold text-lg">
+            <h3 className="text-yellow-300 font-bold">
               No Results Found
             </h3>
-            <p>Try different keywords or filters.</p>
+
             <Button
-              onClick={() => updateParams({ q: null, genre: null, page: null })}
-              className="bg-yellow-300 text-black"
+              onClick={() =>
+                updateParams({
+                  q: null,
+                  genre: null,
+                  page: "1",
+                })
+              }
             >
-              CLEAR SEARCH
+              Clear Search
             </Button>
           </div>
         )}

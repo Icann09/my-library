@@ -23,15 +23,19 @@ export default async function SearchPage({
 
   const query = params.q ?? "";
   const genre = params.genre ?? "";
-  const page = Number(params.page ?? "1");
+  const rawPage = Number(params.page);
+  const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
   const perPage = 12;
+  
 
   const total  = await fetchBooksCountFiltered({ query, genre });
 
   const totalPages = Math.max(1, Math.ceil(total / perPage));
   
   if (page > totalPages) {
-    redirect(`/search?page=${totalPages}`);
+    redirect(
+      `/search?q=${query}&genre=${genre}&page=${totalPages}`
+    );
   }
 
   // 👇 clamp invalid page
@@ -51,7 +55,7 @@ export default async function SearchPage({
     <ClientSearch
       books={books}
       total={total}
-      page={page}
+      page={safePage}
       perPage={perPage}
       query={query}
       genre={genre}
