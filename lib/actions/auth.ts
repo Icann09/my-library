@@ -18,9 +18,9 @@ export const signInWithCredentials = async (
   const { email, password } = params
 
   // 🔒 Rate limit
-  // const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1"
-  // const { success } = await ratelimit.limit(ip)
-  // if (!success) return redirect("/too-fast")
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1"
+  const { success } = await ratelimit.limit(ip)
+  if (!success) return redirect("/too-fast")
 
   // 🟢 Step 1: Check user
   const user = await db.select().from(users).where(eq(users.email, email)).limit(1)
@@ -56,10 +56,10 @@ export const signInWithCredentials = async (
 export const signUp = async (params: AuthCredentials) => {
   const { fullName, email, universityId, password, universityCard } = params;
 
-  // const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
-  // const { success } = await ratelimit.limit(ip);
+  const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1";
+  const { success } = await ratelimit.limit(ip);
 
-  // if (!success) return redirect("/too-fast");
+  if (!success) return redirect("/too-fast");
 
   const existingUser = await db
     .select()

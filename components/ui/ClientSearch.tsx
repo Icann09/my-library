@@ -102,7 +102,7 @@ export default function ClientSearch({
               page: "1",
             })
           }
-          className="bg-gray-800 border border-gray-700 px-4 py-2 rounded"
+          className="bg-gray-800 border border-gray-700 pl-3 rounded"
         >
           <option value="">All Genres</option>
           {genres.map((g) => (

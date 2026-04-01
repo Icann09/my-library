@@ -7,14 +7,14 @@ export function useDebounce(
   delay: number,
   enabled: boolean,
   callback: (val: string) => void
-) {
-  useEffect(() => {
-    if (!enabled) return;
+  ) {
+    useEffect(() => {
+      if (!enabled) return;
 
-    const id = setTimeout(() => {
-      callback(value);
-    }, delay);
+      const id = setTimeout(() => {
+        callback(value);
+      }, delay);
 
-    return () => clearTimeout(id);
-  }, [value, delay, enabled, callback]);
-}
+      return () => clearTimeout(id);
+    }, [value, delay, enabled, callback]);
+  }

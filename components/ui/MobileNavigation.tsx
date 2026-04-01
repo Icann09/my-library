@@ -33,7 +33,7 @@ export default function MobileNavigation({ session }: { session: any })  {
           <Image src="/icons/menu.svg" alt="menu" width={30} height={30} className="bg-white"/>
         </SheetTrigger>
         <SheetContent className="h-screen px-3 bg-accent-foreground">
-          <SheetTitle className="text-center py-2">
+          <SheetTitle className="text-center py-4">
             <Link href="/my-profile" className="flex items-center">
               <div className="flex items-center justify-items-start">
                 <Avatar>
@@ -51,7 +51,7 @@ export default function MobileNavigation({ session }: { session: any })  {
               </div>
               
             </Link>
-            <Separator className="mb-4 mt-2 bg-light-200/20"/>
+            <Separator className=" mt-2 bg-light-200/20"/>
           </SheetTitle>
           <nav className="flex items-center gap-6">
             <Link
@@ -71,7 +71,7 @@ export default function MobileNavigation({ session }: { session: any })  {
               Search
             </Link>
           </nav>
-          <Separator className="my-5 bg-light-200/20"/>
+          <Separator className=" bg-light-200/20"/>
           <div className="flex flex-col justify-between gap-5">
             <button
               onClick={() => logOut()}

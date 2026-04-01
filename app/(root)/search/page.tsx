@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 
 export default async function SearchPage({
   searchParams,
-}: {
-  searchParams: Promise<{
-    q?: string;
-    genre?: string;
-    page?: string;
-  }>;
-}) {
+  }: {
+    searchParams: Promise<{
+      q?: string;
+      genre?: string;
+      page?: string;
+    }>;
+  }) {
   const params = await searchParams;
 
   const query = params.q ?? "";
