@@ -1,12 +1,19 @@
+import { Pagination } from "@/components/admin/Pagination";
 import UsersTable from "@/components/admin/UsersTable";
 import { UsersTableSkeleton } from "@/components/ui/Skeletons";
+import { fetchUsersWithBorrowCount } from "@/lib/data";
 import { Suspense } from "react";
 
 
 
 
-export default async function Page() {
-  
+export default async function Page({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
+  const page = Number((await searchParams)?.page) || 1;
+  const limit = 10;
+  const { data: users, total } = await fetchUsersWithBorrowCount({ page, limit });
+  const totalPages = Math.ceil(total / limit);
+
+
   return (
     <div className="overflow-x-auto p-4">
       <table className="min-w-full table-auto border-collapse">
@@ -22,9 +29,10 @@ export default async function Page() {
           </tr>
         </thead>
         <Suspense fallback={<UsersTableSkeleton />}>
-          <UsersTable />
+          <UsersTable users={users} />
         </Suspense>
       </table>
+      <Pagination page={page} totalPages={totalPages} />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { books, borrowRecords, users } from "@/database/schema";
 import { eq, lt, and, sql, desc, getTableColumns, ilike } from "drizzle-orm"
 import { subHours } from "date-fns";
 import { unstable_cache } from "next/cache";
+import page from "@/app/admin/books/[id]/page";
 
 
 // Books fetchers
@@ -89,9 +90,9 @@ export const fetchBooksSearch = async ({
   };
 };
 /// Books for admin/dashboard with caching   
-export const fetchBooksAdmin = unstable_cache( 
-  async () => {
-   return await db 
+export const fetchBooksAdmin = async ({ page, limit }: { page: number; limit: number }) => {
+  const offset = (page - 1) * limit;
+  const data = await db 
     .select({
       id: books.id,
       title: books.title,
@@ -101,10 +102,17 @@ export const fetchBooksAdmin = unstable_cache(
       coverUrl: books.coverUrl,
       coverColor: books.coverColor
     }).from(books)
-  },
-  ["admin-books"],
-  { tags: ["books"] }
-); 
+    .orderBy(desc(books.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(books);
+
+  return { data, total: total[0].count };
+  }; 
+
 /// Books with ID
 export const fetchBookWithId = async (id: string) => {
   const book = await db
@@ -149,13 +157,14 @@ export const fetchBorrowDetails = async ({ page, limit }: { page: number; limit:
     })
     .from(borrowRecords)
     .innerJoin(users, eq(borrowRecords.userId, users.id))
-    .innerJoin(books, eq(borrowRecords.bookId, books.id));
+    .innerJoin(books, eq(borrowRecords.bookId, books.id))
+    .limit(limit)
+    .offset(offset)
+    .orderBy(desc(borrowRecords.createdAt));
 
   const total = await db
     .select({ count: sql<number>`count(*)` })
-    .from(borrowRecords)
-    .innerJoin(users, eq(borrowRecords.userId, users.id))
-    .innerJoin(books, eq(borrowRecords.bookId, books.id));
+    .from(borrowRecords);
     
   return { data, total: total[0].count };
 };
@@ -223,8 +232,9 @@ export const fetchAccountRequest = async ({
 
 
 /// Users with borrow count for admin dashboard
-export const fetchUsersWithBorrowCount = async () => {
-  const usersWithBorrowCount = await db
+export const fetchUsersWithBorrowCount = async ({ page , limit }: { page: number; limit: number }) => {
+  const offset = (page - 1) * limit;
+  const data = await db
     .select ({
       id: users.id,
       fullName: users.fullName,
@@ -238,9 +248,17 @@ export const fetchUsersWithBorrowCount = async () => {
     .from(users)
     .leftJoin(borrowRecords, eq(users.id, borrowRecords.userId))
     .where(eq(users.status, "APPROVED"))
-    .groupBy(users.id);
+    .groupBy(users.id)
+    .limit(limit)
+    .offset(offset)
+    .orderBy(desc(users.createdAt));
+
+  const total = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(users)
+    .where(eq(users.status, "APPROVED"));
     
-  return usersWithBorrowCount;
+  return { data, total: total[0].count };
 }
 
 export const fetchUserUniversityId = async (userId: string) => {

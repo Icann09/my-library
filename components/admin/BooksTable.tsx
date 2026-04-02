@@ -1,15 +1,23 @@
 // BooksTable.tsx (SERVER)
-import { fetchBooksAdmin } from "@/lib/data";
 import BookCover from "@/components/ui/BookCover";
 import Link from "next/link";
 import BookDeleteButton from "./BookDeleteBtn";
 
-export default async function BooksTable() {
-  const bookRecord = await fetchBooksAdmin();
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  genre: string;
+  createdAt: Date;
+  coverUrl: string;
+  coverColor: string;
+}
+
+export default async function BooksTable({ books }: { books: Book[] }) {
 
   return (
     <tbody>
-      {bookRecord.map((book) => (
+      {books.map((book) => (
         <tr key={book.id} className="border-b hover:bg-gray-50">
           <td className="p-4">
             <Link
@@ -24,7 +32,6 @@ export default async function BooksTable() {
               <p className="font-semibold">{book.title}</p>
             </Link>
           </td>
-
           <td className="p-4 max-w-40">{book.author}</td>
           <td className="p-4">{book.genre}</td>
 

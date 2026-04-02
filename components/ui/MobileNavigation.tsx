@@ -24,7 +24,7 @@ export default function MobileNavigation({ session }: { session: any })  {
   const user = session?.user;
   const initials = getInitials(user?.name || "IN");
   return (
-    <header className="flex h-[60px] justify-between px-5 py-7 md:hidden">
+    <header className="flex fixed top-0 left-0 w-full h-[60px] justify-between px-5 py-7 md:hidden z-100">
       <Link href="/">
         <Image src="/logo.png" alt="logo" width={40} height={40} />
       </Link>

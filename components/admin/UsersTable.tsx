@@ -1,13 +1,21 @@
 // UsersTable.tsx (SERVER)
 import ViewIdCardButton from "@/components/admin/ViewIdCardBtn";
-import { fetchUsersWithBorrowCount } from "@/lib/data";
 import UserDeleteButton from "./UserDeleteBtn";
 import UserRoleSwitcher from "./UserRoleSwitcher";
 
+interface User {
+  id: string;
+  fullName: string;
+  email: string;
+  createdAt: Date | null;
+  role: "USER" | "ADMIN" | null;
+  universityId: number;
+  universityCard: string;
+  borrowCount: number;
+}
 
+export default async function UsersTable({ users }: { users: User[] }) {
 
-export default async function UsersTable() {
-  const users = await fetchUsersWithBorrowCount();
 
   return (
       <tbody>

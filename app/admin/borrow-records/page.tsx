@@ -5,13 +5,11 @@ import { fetchBorrowDetails } from "@/lib/data";
 import { Suspense } from "react";
 
 export default async function Page({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
-  console.log("Rendering Borrow Records Page");
+
   const page = Number((await searchParams)?.page ?? 1);
-  const limit = 20;
+  const limit = 10;
   const { data, total } = await fetchBorrowDetails({ page, limit });
   const totalPages = Math.ceil(total / limit);
-
-
 
   return (
     <div className="overflow-x-auto p-4">

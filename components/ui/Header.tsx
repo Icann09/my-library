@@ -19,7 +19,7 @@ export default function Header({ session }: { session: any })  {
 
 
   return (
-    <header className="hidden md:flex w-full mx-auto my-6 px-4 justify-between items-center ">
+    <header className="hidden md:flex fixed top-0 left-0 w-full mx-auto my-6 px-4 justify-between items-center z-100">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
         <Image src="/logo.png" alt="logo" width={40} height={40} />

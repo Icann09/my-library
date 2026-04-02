@@ -1,12 +1,20 @@
 
 import BooksTable from "@/components/admin/BooksTable";
+import { Pagination } from "@/components/admin/Pagination";
 import { Button } from "@/components/ui/button";
 import { BooksTableSkeleton } from "@/components/ui/Skeletons";
+import { fetchBooksAdmin } from "@/lib/data";
 import Link from "next/link";
 import { Suspense } from "react";
 
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams?: Promise<{ page?: string }> }) {
+  const page = Number((await searchParams)?.page) || 1;
+  const limit = 10;
+  const { data: books, total } = await fetchBooksAdmin({ page, limit });
+  const totalPages = Math.ceil(total / limit);
+
+
   return (
     <section className="w-full rounded-2xl bg-white p-4 text-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -30,9 +38,10 @@ export default async function Page() {
               </tr>
             </thead>
             <Suspense fallback={<BooksTableSkeleton />}>
-              <BooksTable />
+              <BooksTable books={books} />
             </Suspense>
           </table>
+          <Pagination page={page} totalPages={totalPages} />
         </div>
       </div>
     </section>
