@@ -12,7 +12,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<{ 
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="overflow-x-auto p-4">
+    <section className="overflow-x-auto p-4 mb-10 sm:mb-0">
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr className="text-center bg-gray-50">
@@ -30,7 +30,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<{ 
         </Suspense>
       </table>
       <Pagination page={page} totalPages={totalPages} />
-    </div>
+    </section>
   );
 }
 

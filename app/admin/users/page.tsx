@@ -15,7 +15,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<{ 
 
 
   return (
-    <div className="overflow-x-auto p-4">
+    <section className="overflow-x-auto p-4 mb-10 sm:mb-0">
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-50 text-center">
@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<{ 
         </Suspense>
       </table>
       <Pagination page={page} totalPages={totalPages} />
-    </div>
+    </section>
   );
 }
 

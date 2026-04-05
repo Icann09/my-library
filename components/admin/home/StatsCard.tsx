@@ -14,7 +14,7 @@ export default async function StatsCard() {
             key={key}
             className="w-1/3 h-[90px] p-[14px] rounded-md flex flex-col justify-around bg-white"
           >
-            <p className="text-base font-medium text-left">
+            <p className="text-sm sm:text-base font-medium text-left">
               {title}{" "}
               {value !== 0 ? (
                 <span className={isIncrease ? "text-green-500" : "text-red-500"}>
@@ -25,7 +25,7 @@ export default async function StatsCard() {
               )}
             </p>
 
-            <p className="text-3xl font-ibm-plex-sans font-[600]">
+            <p className="text-sm sm:text-3xl font-ibm-plex-sans font-[600]">
               {total}
             </p>
           </div>

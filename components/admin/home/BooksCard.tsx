@@ -21,8 +21,8 @@ export default function BooksCard(props: Props) {
     coverColor,
   } = props;
   return (
-    <div className="flex items-center gap-4 p-2 bg-white rounded-md w-[508px]">
-      <BookCover coverColor={coverColor} coverImage={coverUrl} variant="small" />
+    <div className="flex items-center gap-4 p-2 bg-admin-gray rounded-md w-[508px]">
+      <BookCover coverColor={coverColor} coverImage={coverUrl} variant="small" className="hidden sm:block" />
       <div className="flex flex-col justify-between pr-9 text-[14px]">
         <div className="">
           <p className="font-semibold text-lg">{title}</p>

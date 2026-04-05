@@ -5,6 +5,7 @@ import Header from "@/components/admin/Header";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import { MobileBottomNav } from "@/components/admin/home/MobileBottomNav";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -22,7 +23,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   return (
     <main className="flex min-h-screen w-full flex-row">
-      <Sidebar session={session} />
+      <MobileBottomNav />
+      <Sidebar session={session}/>
       <div className="admin-container">
         <Header session={session} />
         {children}

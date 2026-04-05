@@ -15,7 +15,7 @@ export default async function Page({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="p-6">
+    <section className="p-4 mb-10 sm:mb-0">
       <h2 className="text-lg font-semibold mb-4">
         Account Registration Requests
       </h2>
@@ -36,6 +36,6 @@ export default async function Page({
         </table>
         <Pagination page={page} totalPages={totalPages} />
       </div>
-    </div>
+    </section>
   );
 }

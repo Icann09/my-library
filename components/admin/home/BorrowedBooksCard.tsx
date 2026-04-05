@@ -24,12 +24,12 @@ export default function BorrowedBooksCard(props : Props) {
   } = props;
   
   return (
-    <div className="flex gap-2 p-2 bg-admin-gray justify-between rounded-md w-[508px]">
-      <BookCover coverColor={bookColor} coverImage={bookCover} variant="small" />
+    <div className="flex gap-2 p-2 bg-admin-gray justify-between rounded-md w-full ">
+      <BookCover coverColor={bookColor} coverImage={bookCover} variant="small" className="hidden sm:block"/>
       <div className="flex flex-col justify-between pr-9 w-[340px]">
-        <div className="">
-          <p className="font-semibold text-lg">{bookTitle}</p>
-          <p className="text-sm text-gray-500">By {bookAuthor} • {bookGenre}</p>
+        <div>
+          <p className="font-semibold text-sm sm:text-lg">{bookTitle}</p>
+          <p className="hidden sm:block text-sm text-gray-500">By {bookAuthor} • {bookGenre}</p>
         </div>
         <div className="flex items-center gap-1 mt-2 text-gray-500">
           <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
@@ -37,7 +37,7 @@ export default function BorrowedBooksCard(props : Props) {
           </div>
           <p className="text-[10px]">{userFullName}</p>
           <Calendar size={16} className="ml-2"/>
-          <span>{borrowDate}</span>
+          <span className="text-[10px] sm:text-sm">{borrowDate}</span>
         </div>
       </div>
       <div className="flex items-start">

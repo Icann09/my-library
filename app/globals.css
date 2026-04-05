@@ -268,7 +268,7 @@
     @apply flex w-[calc(100%-264px)] flex-1 flex-col bg-light-300 p-5 xs:py-3;
   }
   .admin-sidebar {
-    @apply sticky left-0 top-0 flex h-dvh flex-col justify-between bg-white px-5 pb-5 pt-10 max-w-2xl;
+    @apply hidden sm:flex sticky left-0 top-0 h-dvh flex-col justify-between bg-white px-5 pb-5 pt-10 max-w-2xl;
   }
   .admin-sidebar .logo {
     @apply flex flex-row items-center gap-2 border-b border-dashed border-primary-admin/20 pb-10 max-md:justify-center;

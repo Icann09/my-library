@@ -16,7 +16,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<{ 
 
 
   return (
-    <section className="w-full rounded-2xl bg-white p-4 text-sm">
+    <section className="w-full rounded-2xl bg-white p-4 text-sm mb-10 sm:mb-0">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-xl font-semibold">All Books</h2>
         <Button className="bg-primary-admin" asChild>

@@ -12,7 +12,7 @@ export default async function BorrowRequest() {
   return (
     <div className="p-[10px] rounded-xl border border-[#E4E4F0] bg-white max-w-[540px] h-[380px]">
       <div className="flex items-center justify-between mb-1">
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-sm sm:text-xl font-semibold text-gray-900">
           Borrow Requests
         </h2>
 
@@ -22,7 +22,6 @@ export default async function BorrowRequest() {
           </button>
         </Link>
       </div>
-
       <div className="relative flex flex-col gap-3 max-h-[300px] w-full overflow-y-auto pr-2 rounded-md">
         {isEmpty ? (
           <p className="text-sm text-gray-500 text-center py-10">
@@ -43,9 +42,6 @@ export default async function BorrowRequest() {
           ))
         )}
       </div>
-
-      {/* fade-out gradient */}
-      <div className="pointer-events-none absolute bottom-[10px] left-[10px] right-[10px] h-[75px] bg-gradient-to-b from-transparent to-white" />
     </div>
   );
 }

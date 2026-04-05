@@ -5,19 +5,23 @@ interface Props {
   email: string;
 }
 
-export default function AccountRequestCard(props : Props) {
-  const { fullName, email } = props;
+export default function AccountRequestCard({ fullName, email }: Props) {
   return (
-    <div className="w-[160px] h-[130px] rounded-sm bg-admin-gray flex flex-col gap-1 justify-center items-center">
-      <div className="text-[20px] font-semibold size-[48px] rounded-full border-[1px] bg-[#99AFFF] text-blue-700 p-1 flex justify-center items-center">
+    <div className="h-[50px] sm:h-[70px] rounded-md bg-admin-gray p-3 flex items-center gap-3 hover:shadow-sm transition">
+      {/* Avatar */}
+      <div className="hidden sm:flex flex-shrink-0 size-12 rounded-full bg-[#99AFFF] text-blue-700 items-center justify-center font-semibold text-lg">
         {getInitials(fullName)}
       </div>
-      <div className="font-semibold text-center text-[16px]">
-        {fullName}
-      </div>
-      <div className="text-gray-400 text-[14px]">
-        {email}
+
+      {/* Info */}
+      <div className="flex flex-col min-w-0">
+        <p className="font-semibold text-sm truncate">
+          {fullName}
+        </p>
+        <p className="text-xs text-gray-500 truncate">
+          {email}
+        </p>
       </div>
     </div>
-  )
+  );
 }
