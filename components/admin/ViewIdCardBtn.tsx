@@ -24,7 +24,7 @@ function ViewIdCardButton({ imageUrl }: ViewIdCardButtonProps) {
     <>
       <button
         onClick={openModal}
-        className="text-blue-600 hover:underline flex items-center gap-1"
+        className="text-blue-600 hover:underline flex items-center gap-1 min-w-[100px] mx-auto"
       >
         View ID Card <ExternalLink size={14} />
       </button>

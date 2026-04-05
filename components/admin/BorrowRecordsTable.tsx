@@ -27,16 +27,16 @@ export default async function BorrowRecordsTable({ borrowRecords }: { borrowReco
   return (
     <tbody>
       {borrowRecords.map(record => (
-        <tr key={String(record.borrowId)} className="border-b  hover:bg-gray-50">
-          <td className="p-4">
+        <tr key={String(record.borrowId)} className="border-b  hover:bg-gray-50 text-sm">
+          <td className="p-1 md:p-3">
             <div className="flex items-center gap-3">
               <BookCover coverColor={record.coverColor} coverImage={record.coverUrl} variant="extraSmall"/> 
-              <p className="font-semibold">
+              <p className="font-semibold truncate max-w-[150px] sm:max-w-[280px]">
                 {record.bookTitle}
               </p>
             </div>
           </td>
-          <td className="p-4 flex items-center gap-3">
+          <td className="p-1 md:p-3 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
               {record.fullName
               ?.split(' ')
@@ -46,13 +46,13 @@ export default async function BorrowRecordsTable({ borrowRecords }: { borrowReco
             </div>
             <div>
               <p className="font-medium">{record.fullName}</p>
-              <p className="text-sm text-gray-500">{record.email}</p>
+              <p className="text-gray-500">{record.email}</p>
             </div>
           </td>
-          <td className="p-4">
+          <td className="p-1 md:p-3">
             <BorrowedStatusBtn status={record.status} borrowId={record.borrowId} bookId={record.bookId}/>
           </td>
-          <td className="p-4 text-center">
+          <td className="p-1 md:p-3 text-center">
             {record.borrowDate
               ? new Date(record.borrowDate).toLocaleDateString("en-US", {
                   year: "numeric",
@@ -61,13 +61,13 @@ export default async function BorrowRecordsTable({ borrowRecords }: { borrowReco
                 })
               : "N/A"}
           </td>
-          <td className="p-4 text-center">
+          <td className="p-1 md:p-3 text-center">
             {record.returnDate ? String(record.returnDate) : "N/A"}
           </td>
-          <td className="p-4 text-center">
+          <td className="p-1 md:p-3 text-center">
             {String(record.dueDate)}
           </td>
-          <td className="p-4 text-center">
+          <td className="p-1 md:p-3 text-center">
             <BorrowReceiptBtn 
               borrowId={String(record.borrowId)}
               isGenerated={Boolean(record.receiptIsGenerated)}

@@ -24,7 +24,7 @@ interface Props {
 
 export default function BookCover({ className, variant = "regular", coverColor = "#012B48", coverImage}: Props) {
   return (
-    <div className={cn("relative transition-all duration-300", variantStyles[variant], className)}>
+    <div className={cn("relative transition-all duration-300 flex-shrink-0", variantStyles[variant], className)}>
       <BookCoverSvg coverColor={coverColor}/>
       <div className="absolute z-10" style={{ left: "12%", width: "87.5%", height: "88%"}} >
       <IKImage
@@ -32,7 +32,7 @@ export default function BookCover({ className, variant = "regular", coverColor =
         urlEndpoint={config.env.imageKit.urlEndpoint}
         alt="Book cover"
         fill
-        className="rounded-sm object-fill"
+        className="rounded-sm object-fill "
         loading="lazy"
         lqip={{ active: true }}
       />

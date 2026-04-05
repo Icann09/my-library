@@ -8,7 +8,7 @@ export default function AccountRequestActionBtn({
   loadingAction?: "approve" | "reject" | null;
 }) {
   return (
-    <td className="px-4 py-3 text-center space-x-2">
+    <td className="px-4 py-3 text-center space-x-2 flex justify-center">
       <button
         data-action="approve"
         data-id={userId}

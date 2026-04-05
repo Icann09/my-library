@@ -23,7 +23,7 @@ export function Pagination({
 
       {/* Page Info */}
       <div className="px-4 py-1.5 text-sm font-medium text-gray-600">
-        Page <span className="text-black">{page}</span> of{" "}
+        <span className="text-black">{page}</span> of{" "}
         <span className="text-black">{totalPages}</span>
       </div>
 

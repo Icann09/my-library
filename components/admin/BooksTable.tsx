@@ -19,7 +19,7 @@ export default async function BooksTable({ books }: { books: Book[] }) {
     <tbody>
       {books.map((book) => (
         <tr key={book.id} className="border-b hover:bg-gray-50">
-          <td className="p-4">
+          <td className="p-1 md:p-3 flex">
             <Link
               href={`/admin/books/${book.id}`}
               className="flex items-center gap-3 hover:underline"
@@ -29,18 +29,18 @@ export default async function BooksTable({ books }: { books: Book[] }) {
                 coverImage={book.coverUrl}
                 variant="extraSmall"
               />
-              <p className="font-semibold">{book.title}</p>
+              <p className="font-semibold truncate max-w-[150px] sm:max-w-[250px]">{book.title}</p>
             </Link>
           </td>
-          <td className="p-4 max-w-40">{book.author}</td>
-          <td className="p-4">{book.genre}</td>
+          <td className="p-1 md:p-3 max-w-[150px] truncate sm:max-w-[250px]">{book.author}</td>
+          <td className="p-1 md:p-3">{book.genre}</td>
 
-          <td className="p-4">
+          <td className="p-1 md:p-3">
             {book.createdAt
               ? new Date(book.createdAt).toLocaleDateString("en-US")
               : "—"}
           </td>
-          <td className="p-4 items-center">
+          <td className="p-1 md:p-3 text-center">
             <BookDeleteButton bookId={book.id} />
           </td>
         </tr>

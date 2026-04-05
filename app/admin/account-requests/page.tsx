@@ -25,11 +25,11 @@ export default async function Page({
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50">
             <tr className="text-center text-gray-700">
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Date Joined</th>
-              <th className="px-4 py-2">University ID No</th>
-              <th className="px-4 py-2">University ID Card</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="p-1 md:p-3">Name</th>
+              <th className="p-1 md:p-3">Date Joined</th>
+              <th className="p-1 md:p-3">University ID No</th>
+              <th className="p-1 md:p-3">University ID Card</th>
+              <th className="p-1 md:p-3">Actions</th>
             </tr>
           </thead>
           <AccountRequestsTable accountRequests={data} />

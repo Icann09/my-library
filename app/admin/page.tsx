@@ -17,7 +17,7 @@ export default async function Page() {
           <StatsCard />
         </Suspense>
       </section>
-      <section className="flex flex-col justify-between md:flex-row">
+<section className="flex flex-col  md:flex-row md:items-center md:justify-between max-w-7xl mx-auto">
         {/* Borrow and Account request */}
         <div className="flex flex-col gap-3">
           {/* Borrow request */}  

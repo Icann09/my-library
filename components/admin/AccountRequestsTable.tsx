@@ -20,22 +20,22 @@ export default function AccountRequestsTable({
     <tbody id="account-request-table">
       {accountRequests.map((user) => (
         <tr key={user.id} className="border-t">
-          <td className="px-4 py-3">
-            <p className="font-medium">{user.fullName}</p>
+          <td className="px-4 py-1 md:py-3">
+            <p className="font-medium truncate">{user.fullName}</p>
             <p className="text-gray-500 text-xs">{user.email}</p>
           </td>
 
-          <td className="px-4 py-3 text-center">
+          <td className="px-4 py-1 md:py-3  text-center">
             {user.createdAt
               ? new Date(user.createdAt).toLocaleDateString("en-US")
               : "N/A"}
           </td>
 
-          <td className="px-4 py-3 text-center">
+          <td className="px-4 py-1 md:py-3 text-center">
             {user.universityId}
           </td>
 
-          <td className="px-4 py-3 flex justify-center">
+          <td className="px-4 py-1 md:py-3 text-center">
             <ViewIdCardBtn imageUrl={user.universityCard} />
           </td>
           <AccountRequestActionBtn userId={user.id} />
