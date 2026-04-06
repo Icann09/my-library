@@ -2,6 +2,7 @@
 import ViewIdCardButton from "@/components/admin/ViewIdCardBtn";
 import UserDeleteButton from "./UserDeleteBtn";
 import UserRoleSwitcher from "./UserRoleSwitcher";
+import Link from "next/link";
 
 interface User {
   id: string;
@@ -21,18 +22,20 @@ export default async function UsersTable({ users }: { users: User[] }) {
       <tbody className="text-sm">
         {users.map(user => (
           <tr key={user.id} className="border-b hover:bg-gray-50">
-            <td className="p-1 md:p-3 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+            <td className="p-1 md:p-3"> 
+              <Link href={`/admin/users/${user.id}`} className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
                   {user.fullName
                   ?.split(' ')
                   .slice(0, 2) // only take the first two words (first and second name)
                   .map(n => n.charAt(0).toUpperCase())
                   .join('')}
                 </div>
-              <div>
+                <div>
                   <p className="font-medium">{user.fullName}</p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
+              </Link>
               </td>
               <td className="p-1 md:p-3 text-center min-w-[120px]">
                 {user.createdAt
@@ -42,6 +45,7 @@ export default async function UsersTable({ users }: { users: User[] }) {
                       day: "numeric",
                     })
                   : "N/A"}
+            
               </td>
               <td className="p-1 md:p-3 text-center">
                 {/* Users Role Switcher Component */}

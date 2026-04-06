@@ -24,8 +24,8 @@ export default function BorrowedBooksCard(props : Props) {
   } = props;
   
   return (
-    <div className="flex gap-2 p-2 bg-admin-gray justify-between rounded-md w-full ">
-      <BookCover coverColor={bookColor} coverImage={bookCover} variant="small" className="hidden sm:block"/>
+    <div className="flex items-center gap-2 p-2 bg-admin-gray justify-between rounded-md w-full ">
+      <BookCover coverColor={bookColor} coverImage={bookCover} variant="small" className="hidden sm:flex"/>
       <div className="flex flex-col justify-between pr-9 w-[340px]">
         <div>
           <p className="font-semibold text-sm sm:text-lg">{bookTitle}</p>

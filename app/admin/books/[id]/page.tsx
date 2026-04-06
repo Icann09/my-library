@@ -11,9 +11,12 @@ import { notFound } from "next/navigation";
 
 
 
-
-export default async function page({ params }: {params: { id: string } }) {
-  const id = params.id;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
   const book = await fetchBookWithId(id);
 
@@ -46,7 +49,7 @@ export default async function page({ params }: {params: { id: string } }) {
               <p>Created at:</p>
               <p className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                {dateFormat(book[0].createdAt)}
+                {dateFormat(book[0].createdAt?.toString() || "")}
               </p>
 
           </div>

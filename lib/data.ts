@@ -3,7 +3,7 @@ import { books, borrowRecords, users } from "@/database/schema";
 import { eq, lt, and, sql, desc, getTableColumns, ilike } from "drizzle-orm"
 import { subHours } from "date-fns";
 import { unstable_cache } from "next/cache";
-import page from "@/app/admin/books/[id]/page";
+
 
 
 // Books fetchers
@@ -269,6 +269,20 @@ export const fetchUserUniversityId = async (userId: string) => {
     .limit(1);
   
   return userUniversityId[0]?.universityId;
+}
+
+export const fetchUserWithId = async (userId: string) => {
+  const user = await db
+    .select({
+      fullName: users.fullName,
+      email: users.email,
+      universityId: users.universityId,
+    })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  
+  return user[0];
 }
 
 
